@@ -1,0 +1,4 @@
+org\netbeans\modules\autoupdate\silentupdate\UpdateActivator$1.class
+org\netbeans\modules\autoupdate\silentupdate\UpdateActivator.class
+org\netbeans\modules\autoupdate\silentupdate\UpdateHandler.class
+org\netbeans\modules\autoupdate\silentupdate\UpdateHandler$UpdateHandlerException.class
