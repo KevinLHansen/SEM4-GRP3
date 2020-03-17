@@ -7,7 +7,7 @@ OpenIDE-Module-Layer: org/netbeans/modules/autoupdate/silentupdate/res
  ources/layer.xml
 OpenIDE-Module-Specification-Version: 1.0
 OpenIDE-Module-Implementation-Version: 1.0-20200317
-OpenIDE-Module-Build-Version: 202003171355
+OpenIDE-Module-Build-Version: 202003171449
 OpenIDE-Module: dk.sdu.mmmi.cbse.SilentUpdate
 OpenIDE-Module-Public-Packages: -
 OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1

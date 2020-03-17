@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 OpenIDE-Module-Install: dk/sdu/mmmi/cbse/core/main/Installer.class
 OpenIDE-Module-Specification-Version: 1.0
 OpenIDE-Module-Implementation-Version: 1.0-20200317
-OpenIDE-Module-Build-Version: 202003171354
+OpenIDE-Module-Build-Version: 202003171449
 OpenIDE-Module: dk.sdu.mmmi.cbse.Core
 OpenIDE-Module-Public-Packages: -
 OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1

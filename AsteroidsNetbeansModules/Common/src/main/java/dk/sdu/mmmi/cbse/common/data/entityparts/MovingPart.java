@@ -9,22 +9,21 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import static dk.sdu.mmmi.cbse.common.data.GameKeys.LEFT;
 import static dk.sdu.mmmi.cbse.common.data.GameKeys.RIGHT;
-import static dk.sdu.mmmi.cbse.common.data.GameKeys.UP;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
+import static dk.sdu.mmmi.cbse.common.data.GameKeys.UP;
 
 /**
  *
  * @author Alexander
  */
-public class MovingPart
-        implements EntityPart {
+public class MovingPart implements EntityPart {
 
     private float dx, dy;
     private float deceleration, acceleration;
     private float maxSpeed, rotationSpeed;
-    private boolean left, right, up;
+    private boolean left, right, up, down;
 
     public MovingPart(float deceleration, float acceleration, float maxSpeed, float rotationSpeed) {
         this.deceleration = deceleration;
@@ -73,6 +72,10 @@ public class MovingPart
     public void setUp(boolean up) {
         this.up = up;
     }
+    
+    public void setDown(boolean down) {
+        this.down = down;
+    }
 
     @Override
     public void process(GameData gameData, Entity entity) {
@@ -82,20 +85,27 @@ public class MovingPart
         float radians = positionPart.getRadians();
         float dt = gameData.getDelta();
 
-        // turning
+        // move entitity by altering coordinates depending on input
+        
+        int speed = 3; // entity speed
+        
         if (left) {
-            radians += rotationSpeed * dt;
+            //radians += rotationSpeed * dt;      
+            x += -speed;
         }
 
         if (right) {
-            radians -= rotationSpeed * dt;
+            //radians -= rotationSpeed * dt;          
+            x += speed;
         }
-
-        // accelerating            
+         
         if (up) {
-            dx += cos(radians) * acceleration * dt;
-            dy += sin(radians) * acceleration * dt;
+            //dx += cos(radians) * acceleration * dt;
+            //dy += sin(radians) * acceleration * dt;           
+            y += speed;
         }
+        
+        if (down) { y += -speed; }
 
         // deccelerating
         float vec = (float) sqrt(dx * dx + dy * dy);

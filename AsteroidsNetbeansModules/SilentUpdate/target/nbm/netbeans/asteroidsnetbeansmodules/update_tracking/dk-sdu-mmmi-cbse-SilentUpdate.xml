@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><module codename="dk.sdu.mmmi.cbse.SilentUpdate">
-    <module_version install_time="1584453326421" last="true" origin="installer" specification_version="1.0">
+    <module_version install_time="1584456571542" last="true" origin="installer" specification_version="1.0">
         <file crc="1326258683" name="config/Modules/dk-sdu-mmmi-cbse-SilentUpdate.xml"/>
-        <file crc="138754463" name="modules/dk-sdu-mmmi-cbse-SilentUpdate.jar"/>
+        <file crc="1154175797" name="modules/dk-sdu-mmmi-cbse-SilentUpdate.jar"/>
+        <file crc="3450270136" name="update_tracking/dk-sdu-mmmi-cbse-SilentUpdate.xml"/>
     </module_version>
 </module>
