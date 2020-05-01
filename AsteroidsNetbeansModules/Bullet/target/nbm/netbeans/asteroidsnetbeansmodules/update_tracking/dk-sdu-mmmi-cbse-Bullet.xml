@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><module codename="dk.sdu.mmmi.cbse.Bullet">
-    <module_version install_time="1584456566901" last="true" origin="installer" specification_version="1.0">
+    <module_version install_time="1588342831976" last="true" origin="installer" specification_version="1.0">
         <file crc="1703511565" name="config/Modules/dk-sdu-mmmi-cbse-Bullet.xml"/>
-        <file crc="3527853834" name="modules/dk-sdu-mmmi-cbse-Bullet.jar"/>
-        <file crc="1328056679" name="update_tracking/dk-sdu-mmmi-cbse-Bullet.xml"/>
+        <file crc="3517023013" name="modules/dk-sdu-mmmi-cbse-Bullet.jar"/>
     </module_version>
 </module>
