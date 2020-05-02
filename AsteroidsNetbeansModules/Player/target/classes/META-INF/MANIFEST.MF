@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 OpenIDE-Module-Localizing-Bundle: dk/sdu/mmmi/cbse/playersystem/Bundle
  .properties
 OpenIDE-Module-Specification-Version: 1.0
-OpenIDE-Module-Implementation-Version: 1.0-20200501
-OpenIDE-Module-Build-Version: 202005011420
+OpenIDE-Module-Implementation-Version: 1.0-20200502
+OpenIDE-Module-Build-Version: 202005022337
 OpenIDE-Module: dk.sdu.mmmi.cbse.Player
 OpenIDE-Module-Public-Packages: -
 OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
@@ -11,6 +11,9 @@ OpenIDE-Module-Display-Category: dk.sdu.mmmi.cbse
 OpenIDE-Module-Name: Player
 OpenIDE-Module-Short-Description: <undefined>
 OpenIDE-Module-Long-Description: <undefined>
+X-Class-Path: ext/dk.sdu.mmmi.cbse.Player/com-badlogicgames-gdx/gdx.ja
+ r
+Maven-Class-Path: com.badlogicgames.gdx:gdx:1.9.10
 OpenIDE-Module-Module-Dependencies: org.netbeans.api.annotations.commo
  n/1 > 1.33, dk.sdu.mmmi.cbse.Common > 1.0, org.openide.util.lookup > 
  8.39

@@ -6,6 +6,7 @@ import dk.sdu.mmmi.cbse.common.data.GameData;
 public class ShootingPart implements EntityPart {
 
     private boolean isShooting;
+    private String direction;
     private String ID;
 
     public ShootingPart(String id) {
@@ -30,5 +31,13 @@ public class ShootingPart implements EntityPart {
 
     public void setID(String ID) {
         this.ID = ID;
+    }
+    
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
+    
+    public String getDirection() {
+        return direction;
     }
 }

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 OpenIDE-Module-Specification-Version: 1.0
-OpenIDE-Module-Implementation-Version: 1.0-20200501
-OpenIDE-Module-Build-Version: 202005011420
+OpenIDE-Module-Implementation-Version: 1.0-20200502
+OpenIDE-Module-Build-Version: 202005022337
 OpenIDE-Module: dk.sdu.mmmi.cbse.Common
 OpenIDE-Module-Public-Packages: dk.sdu.mmmi.cbse.common.data.*, dk.sdu
  .mmmi.cbse.common.data.entityparts.*, dk.sdu.mmmi.cbse.common.events.
@@ -11,6 +11,9 @@ OpenIDE-Module-Display-Category: dk.sdu.mmmi.cbse
 OpenIDE-Module-Name: Common
 OpenIDE-Module-Short-Description: <undefined>
 OpenIDE-Module-Long-Description: <undefined>
+X-Class-Path: ext/dk.sdu.mmmi.cbse.Common/com-badlogicgames-gdx/gdx.ja
+ r
+Maven-Class-Path: com.badlogicgames.gdx:gdx:1.9.10
 OpenIDE-Module-Module-Dependencies: org.netbeans.api.annotations.commo
  n/1 > 1.33, org.openide.modules > 7.54, org.openide.util.ui > 9.14
 

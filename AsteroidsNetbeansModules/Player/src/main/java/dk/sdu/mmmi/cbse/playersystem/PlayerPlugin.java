@@ -1,5 +1,7 @@
 package dk.sdu.mmmi.cbse.playersystem;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
@@ -25,12 +27,12 @@ public class PlayerPlugin implements IGamePluginService {
     public void start(GameData gameData, World world) {
 
         // Add entities to the world
-        player = createPlayerShip(gameData);
+        player = createPlayer(gameData);
         world.addEntity(player);
     }
 
-    private Entity createPlayerShip(GameData gameData) {
-
+    private Entity createPlayer(GameData gameData) {
+        
         float deacceleration = 150;
         float acceleration = 500;
         float maxSpeed = 1000;
@@ -44,17 +46,17 @@ public class PlayerPlugin implements IGamePluginService {
         colour[1] = 1.0f;
         colour[2] = 1.0f;
         colour[3] = 1.0f;
-
-        Entity playerShip = new Player();
-        playerShip.setRadius(8);
-        playerShip.setColour(colour);
-        playerShip.add(new MovingPart(deacceleration, acceleration, maxSpeed, rotationSpeed));
-        playerShip.add(new PositionPart(x, y, radians));
+        
+        player = new Player();
+        player.setRadius(8);
+        player.setColour(colour);
+        player.add(new MovingPart(deacceleration, acceleration, maxSpeed, rotationSpeed));
+        player.add(new PositionPart(x, y, radians));
         UUID uuid = UUID.randomUUID();
-        playerShip.add(new ShootingPart(uuid.toString()));
-        playerShip.add(new LifePart(1));
+        player.add(new ShootingPart(uuid.toString()));
+        player.add(new LifePart(1));
 
-        return playerShip;
+        return player;
     }
 
     @Override

@@ -6,20 +6,24 @@ import org.openide.modules.ModuleInstall;
 
 public class Installer extends ModuleInstall {
 
-    private static Game g;
+    private static Game game;
 
     @Override
     public void restored() {
 
-        g = new Game();
+        game = new Game();
 
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = "Asteroids";
-        cfg.width = 800;
-        cfg.height = 600;
+        cfg.title = "SEM4 GRP3";
+        cfg.width = 1500;
+        cfg.height = 800;
+        
+        cfg.backgroundFPS = 60;
+        cfg.foregroundFPS = 60;
+        
         cfg.useGL30 = false;
         cfg.resizable = false;
 
-        new LwjglApplication(g, cfg);
+        new LwjglApplication(game, cfg);
     }
 }

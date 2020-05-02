@@ -26,11 +26,29 @@ public class BulletControlSystem implements IEntityProcessingService {
             if (entity.getPart(ShootingPart.class) != null) {
 
                 ShootingPart shootingPart = entity.getPart(ShootingPart.class);
-                //Shoot if isShooting is true, ie. space is pressed.
+                // Shoot if isShooting is true
                 if (shootingPart.isShooting()) {
                     PositionPart positionPart = entity.getPart(PositionPart.class);
-                    //Add entity radius to initial position to avoid immideate collision.
-                    bullet = createBullet(positionPart.getX() + entity.getRadius(), positionPart.getY() + entity.getRadius(), positionPart.getRadians(), shootingPart.getID());
+                    
+                    // Assign direction of bullet
+                    String direction = shootingPart.getDirection();
+                    float radians = 0;
+                    switch (direction) {
+                        case "up":
+                            radians = 0;
+                            break;
+                        case "left":
+                            radians = 270;
+                            break;
+                        case "down":
+                            radians = 180;
+                            break;
+                        case "right":
+                            radians = 90;
+                            break;
+                    }
+                    // Add entity radius to initial position to avoid immideate collision.
+                    bullet = createBullet(positionPart.getX() + entity.getRadius(), positionPart.getY() + entity.getRadius(), radians, shootingPart.getID());
                     shootingPart.setIsShooting(false);
                     world.addEntity(bullet);
                 }

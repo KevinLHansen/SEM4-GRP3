@@ -6,8 +6,8 @@ OpenIDE-Module-Install: org/netbeans/modules/autoupdate/silentupdate/U
 OpenIDE-Module-Layer: org/netbeans/modules/autoupdate/silentupdate/res
  ources/layer.xml
 OpenIDE-Module-Specification-Version: 1.0
-OpenIDE-Module-Implementation-Version: 1.0-20200501
-OpenIDE-Module-Build-Version: 202005011420
+OpenIDE-Module-Implementation-Version: 1.0-20200502
+OpenIDE-Module-Build-Version: 202005022337
 OpenIDE-Module: dk.sdu.mmmi.cbse.SilentUpdate
 OpenIDE-Module-Public-Packages: -
 OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1

@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
@@ -20,8 +21,7 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 
 public class Game implements ApplicationListener {
-
-    private static OrthographicCamera cam;
+    private static OrthographicCamera camera;
     private ShapeRenderer sr;
     private final Lookup lookup = Lookup.getDefault();
     private final GameData gameData = new GameData();
@@ -31,13 +31,15 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create() {
-        gameData.setDisplayWidth(Gdx.graphics.getWidth());
-        gameData.setDisplayHeight(Gdx.graphics.getHeight());
+        float w = Gdx.graphics.getWidth();
+        float h = Gdx.graphics.getHeight();
+        
+        gameData.setDisplayWidth((int) w);
+        gameData.setDisplayHeight((int) h);
 
-        cam = new OrthographicCamera(gameData.getDisplayWidth(), gameData.getDisplayHeight());
-        cam.translate(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2);
-        cam.update();
-
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, w / 2, h / 2);
+        
         sr = new ShapeRenderer();
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
@@ -61,6 +63,8 @@ public class Game implements ApplicationListener {
         gameData.setDelta(Gdx.graphics.getDeltaTime());
         gameData.getKeys().update();
 
+        camera.update();
+        
         update();
         draw();
     }

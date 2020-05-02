@@ -1,5 +1,7 @@
 package dk.sdu.mmmi.cbse.playersystem;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.GameKeys;
@@ -25,12 +27,29 @@ public class PlayerControlSystem implements IEntityProcessingService {
             ShootingPart shootingPart = player.getPart(ShootingPart.class);
             LifePart lifePart = player.getPart(LifePart.class);
 
-            movingPart.setLeft(gameData.getKeys().isDown(GameKeys.LEFT));
-            movingPart.setRight(gameData.getKeys().isDown(GameKeys.RIGHT));
-            movingPart.setUp(gameData.getKeys().isDown(GameKeys.UP));
-            movingPart.setDown(gameData.getKeys().isDown((GameKeys.DOWN)));
+            movingPart.setUp(gameData.getKeys().isDown(GameKeys.W));
+            movingPart.setLeft(gameData.getKeys().isDown(GameKeys.A));
+            movingPart.setDown(gameData.getKeys().isDown((GameKeys.S)));
+            movingPart.setRight(gameData.getKeys().isDown(GameKeys.D));
 
-            shootingPart.setIsShooting(gameData.getKeys().isDown(GameKeys.SPACE));
+            // Shooting processing
+            if (gameData.getKeys().isDown(GameKeys.UP)) {
+                shootingPart.setIsShooting(true);
+                shootingPart.setDirection("up");
+            }         
+            if (gameData.getKeys().isDown(GameKeys.LEFT)) {
+                shootingPart.setIsShooting(true);
+                shootingPart.setDirection("left");
+            }           
+            if (gameData.getKeys().isDown(GameKeys.DOWN)) {
+                shootingPart.setIsShooting(true);
+                shootingPart.setDirection("down");
+            }         
+            if (gameData.getKeys().isDown(GameKeys.RIGHT)) {
+                shootingPart.setIsShooting(true);
+                shootingPart.setDirection("right");
+            }
+            
 
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);
@@ -50,6 +69,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
         float y = positionPart.getY();
         float radians = positionPart.getRadians();
         float radius = entity.getRadius();
+        
 
 //        shapex[0] = (float) (x + Math.cos(radians) * entity.getRadius());
 //        shapey[0] = (float) (y + Math.sin(radians) * entity.getRadius());

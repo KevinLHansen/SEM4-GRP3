@@ -7,12 +7,9 @@ package dk.sdu.mmmi.cbse.common.data.entityparts;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
-import static dk.sdu.mmmi.cbse.common.data.GameKeys.LEFT;
-import static dk.sdu.mmmi.cbse.common.data.GameKeys.RIGHT;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
-import static dk.sdu.mmmi.cbse.common.data.GameKeys.UP;
 
 /**
  *
@@ -85,7 +82,7 @@ public class MovingPart implements EntityPart {
         float radians = positionPart.getRadians();
         float dt = gameData.getDelta();
 
-        // move entitity by altering coordinates depending on input
+        // move entity by altering coordinates depending on input
         
         int speed = 3; // entity speed
         
@@ -100,8 +97,8 @@ public class MovingPart implements EntityPart {
         }
          
         if (up) {
-            //dx += cos(radians) * acceleration * dt;
-            //dy += sin(radians) * acceleration * dt;           
+//            dx += cos(radians) * acceleration * dt;
+//            dy += sin(radians) * acceleration * dt;           
             y += speed;
         }
         
