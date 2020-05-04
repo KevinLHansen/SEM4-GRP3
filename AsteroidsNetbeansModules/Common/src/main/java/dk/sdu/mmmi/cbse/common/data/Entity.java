@@ -1,14 +1,15 @@
 package dk.sdu.mmmi.cbse.common.data;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import dk.sdu.mmmi.cbse.common.data.entityparts.EntityPart;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import org.openide.util.Exceptions;
 
 public class Entity implements Serializable {
 
@@ -18,13 +19,21 @@ public class Entity implements Serializable {
     private float[] shapeY = new float[4];
     private float radius;
     private float[] colour;
+    private byte[] textureBytes;
     private Texture texture;
     private Map<Class, EntityPart> parts;
 
     public Entity() {
 
-        parts = new ConcurrentHashMap<>();
-        //texture = new Texture(Gdx.files.local("../../assets/img/default.png"));
+        try {
+            parts = new ConcurrentHashMap<>();
+            
+            InputStream stream = Entity.class.getResourceAsStream("/img/default.png");
+            byte[] bytes = stream.readAllBytes();
+            textureBytes = bytes;
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        }
     }
 
     public void add(EntityPart part) {
@@ -74,7 +83,7 @@ public class Entity implements Serializable {
     public void setColour(float[] c) {
         this.colour = c;
     }
-    
+
     public Texture getTexture() {
         return texture;
     }
@@ -82,5 +91,13 @@ public class Entity implements Serializable {
     public void setTexture(Texture texture) {
         this.texture = texture;
     }
-    
+
+    public byte[] getTextureBytes() {
+        return textureBytes;
+    }
+
+    public void setTextureBytes(byte[] textureBytes) {
+        this.textureBytes = textureBytes;
+    }
+
 }

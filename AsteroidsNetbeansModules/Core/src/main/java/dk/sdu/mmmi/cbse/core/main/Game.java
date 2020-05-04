@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -24,6 +25,7 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 
 public class Game implements ApplicationListener {
+
     private static OrthographicCamera camera;
     private ShapeRenderer sr;
     private SpriteBatch batch;
@@ -37,16 +39,15 @@ public class Game implements ApplicationListener {
     public void create() {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
-        
+
         gameData.setDisplayWidth((int) w);
         gameData.setDisplayHeight((int) h);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, w / 2, h / 2);
-        
+
         sr = new ShapeRenderer();
         batch = new SpriteBatch();
-        
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
@@ -105,13 +106,21 @@ public class Game implements ApplicationListener {
             sr.end();
         }
     }
-    
+
     private void drawSprites() {
         batch.begin();
-        batch.draw(new Texture(Gdx.files.local("../../assets/img/bullet.png")), Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        
         for (Entity entity : world.getEntities()) {
-//            PositionPart pp = entity.getPart(PositionPart.class);
-//            batch.draw(entity.getTexture(), pp.getX(), pp.getY());
+            // if texture has not already been created for entity
+            if (entity.getTexture() == null) {
+                // get byte array from entity and convert to texture
+                Pixmap pixmap = new Pixmap(entity.getTextureBytes(), 0, entity.getTextureBytes().length);
+                entity.setTexture(new Texture(pixmap));
+            }
+            // get positionPart to attach sprite to position
+            PositionPart pp = entity.getPart(PositionPart.class);
+            // draw sprite using texture and positionpart
+            batch.draw(entity.getTexture(), pp.getX(), pp.getY());
         }
         batch.end();
     }
