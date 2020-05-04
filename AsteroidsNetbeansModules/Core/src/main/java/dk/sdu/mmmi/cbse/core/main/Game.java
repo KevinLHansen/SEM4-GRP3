@@ -2,6 +2,7 @@ package dk.sdu.mmmi.cbse.core.main;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -107,7 +108,7 @@ public class Game implements ApplicationListener {
     
     private void drawSprites() {
         batch.begin();
-        batch.draw(new Texture(Gdx.files.internal("bullet.png")), Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        batch.draw(new Texture(Gdx.files.local("assets/bullet.png")), Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         for (Entity entity : world.getEntities()) {
 //            PositionPart pp = entity.getPart(PositionPart.class);
 //            batch.draw(entity.getTexture(), pp.getX(), pp.getY());
