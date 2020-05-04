@@ -1,5 +1,7 @@
 package dk.sdu.mmmi.cbse.common.data;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import dk.sdu.mmmi.cbse.common.data.entityparts.EntityPart;
 import java.io.Serializable;
@@ -15,11 +17,12 @@ public class Entity implements Serializable {
     private float[] shapeY = new float[4];
     private float radius;
     private float[] colour;
-    private Sprite sprite;
+    private Texture texture;
     private Map<Class, EntityPart> parts;
 
     public Entity() {
         parts = new ConcurrentHashMap<>();
+        //texture = new Texture("default.png");
     }
 
     public void add(EntityPart part) {
@@ -70,11 +73,12 @@ public class Entity implements Serializable {
         this.colour = c;
     }
     
-    public void setSprite(Sprite sprite) {
-        this.sprite = sprite;
+    public Texture getTexture() {
+        return texture;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
     
-    public Sprite getSprite() {
-        return sprite;
-    }
 }

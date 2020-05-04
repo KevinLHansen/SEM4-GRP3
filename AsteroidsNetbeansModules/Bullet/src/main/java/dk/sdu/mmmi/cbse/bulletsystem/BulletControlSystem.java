@@ -1,7 +1,7 @@
 package dk.sdu.mmmi.cbse.bulletsystem;
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
@@ -64,7 +64,8 @@ public class BulletControlSystem implements IEntityProcessingService {
     //Could potentially do some shenanigans with differing colours for differing sources.
     private Entity createBullet(float x, float y, float radians, String direction, String uuid) {
         Entity b = new Bullet();
-
+        //b.setTexture(new Texture("bullet.png"));
+        
         b.add(new PositionPart(x, y, radians));
         MovingPart mp = new MovingPart(0, 5000, 300, 0);
         

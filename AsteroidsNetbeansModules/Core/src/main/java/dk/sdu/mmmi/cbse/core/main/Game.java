@@ -4,11 +4,13 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
@@ -23,6 +25,7 @@ import org.openide.util.LookupListener;
 public class Game implements ApplicationListener {
     private static OrthographicCamera camera;
     private ShapeRenderer sr;
+    private SpriteBatch batch;
     private final Lookup lookup = Lookup.getDefault();
     private final GameData gameData = new GameData();
     private World world = new World();
@@ -41,6 +44,8 @@ public class Game implements ApplicationListener {
         camera.setToOrtho(false, w / 2, h / 2);
         
         sr = new ShapeRenderer();
+        batch = new SpriteBatch();
+        
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
@@ -65,6 +70,7 @@ public class Game implements ApplicationListener {
 
         update();
         draw();
+        drawSprites();
     }
 
     private void update() {
@@ -97,6 +103,16 @@ public class Game implements ApplicationListener {
 
             sr.end();
         }
+    }
+    
+    private void drawSprites() {
+        batch.begin();
+        batch.draw(new Texture(Gdx.files.internal("bullet.png")), Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        for (Entity entity : world.getEntities()) {
+//            PositionPart pp = entity.getPart(PositionPart.class);
+//            batch.draw(entity.getTexture(), pp.getX(), pp.getY());
+        }
+        batch.end();
     }
 
     @Override
