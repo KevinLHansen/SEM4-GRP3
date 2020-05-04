@@ -1,6 +1,7 @@
 package dk.sdu.mmmi.cbse.common.data;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import dk.sdu.mmmi.cbse.common.data.entityparts.EntityPart;
@@ -21,8 +22,9 @@ public class Entity implements Serializable {
     private Map<Class, EntityPart> parts;
 
     public Entity() {
+
         parts = new ConcurrentHashMap<>();
-        //texture = new Texture("default.png");
+        //texture = new Texture(Gdx.files.local("../../assets/img/default.png"));
     }
 
     public void add(EntityPart part) {

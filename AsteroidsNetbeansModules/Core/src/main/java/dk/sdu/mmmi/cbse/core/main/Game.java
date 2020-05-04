@@ -108,7 +108,7 @@ public class Game implements ApplicationListener {
     
     private void drawSprites() {
         batch.begin();
-        batch.draw(new Texture(Gdx.files.local("assets/bullet.png")), Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        batch.draw(new Texture(Gdx.files.local("../../assets/img/bullet.png")), Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         for (Entity entity : world.getEntities()) {
 //            PositionPart pp = entity.getPart(PositionPart.class);
 //            batch.draw(entity.getTexture(), pp.getX(), pp.getY());
