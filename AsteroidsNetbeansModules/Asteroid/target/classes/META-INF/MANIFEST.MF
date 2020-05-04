@@ -3,7 +3,7 @@ OpenIDE-Module-Localizing-Bundle: dk/sdu/mmmi/cbse/asteroid/Bundle.pro
  perties
 OpenIDE-Module-Specification-Version: 1.0
 OpenIDE-Module-Implementation-Version: 1.0-20200504
-OpenIDE-Module-Build-Version: 202005040958
+OpenIDE-Module-Build-Version: 202005041018
 OpenIDE-Module: dk.sdu.mmmi.cbse.Asteroid
 OpenIDE-Module-Public-Packages: -
 OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
