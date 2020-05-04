@@ -5,12 +5,10 @@
  */
 package dk.sdu.mmmi.cbse.item;
 
-import dk.sdu.mmmi.cbse.common.data.Entity;
-
 /**
  *
  * @author maimartinsen
  */
-public class Item extends Entity {
+public class ItemType {
     
 }
