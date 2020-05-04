@@ -27,7 +27,6 @@ public class AsteroidSystem implements IEntityProcessingService {
 
             float speed = (float) Math.random() * 10f + 40f;
             if (rnd.nextInt() < 8) {
-                movingPart.setMaxSpeed(speed);
                 movingPart.setUp(true);
             } else {
                 movingPart.setLeft(true);

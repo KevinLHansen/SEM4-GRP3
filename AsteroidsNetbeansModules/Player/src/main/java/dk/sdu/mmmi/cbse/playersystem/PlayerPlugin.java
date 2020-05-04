@@ -1,7 +1,5 @@
 package dk.sdu.mmmi.cbse.playersystem;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
@@ -48,9 +46,9 @@ public class PlayerPlugin implements IGamePluginService {
         colour[3] = 1.0f;
         
         player = new Player();
-        player.setRadius(8);
+        player.setRadius(10);
         player.setColour(colour);
-        player.add(new MovingPart(deacceleration, acceleration, maxSpeed, rotationSpeed));
+        player.add(new MovingPart());
         player.add(new PositionPart(x, y, radians));
         UUID uuid = UUID.randomUUID();
         player.add(new ShootingPart(uuid.toString()));

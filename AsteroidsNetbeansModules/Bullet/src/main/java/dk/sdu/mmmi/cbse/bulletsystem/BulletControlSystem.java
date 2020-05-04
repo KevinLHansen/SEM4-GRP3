@@ -1,7 +1,5 @@
 package dk.sdu.mmmi.cbse.bulletsystem;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
@@ -31,9 +29,7 @@ public class BulletControlSystem implements IEntityProcessingService {
                 // Shoot if isShooting is true
                 if (shootingPart.isShooting()) {
                     PositionPart positionPart = entity.getPart(PositionPart.class);
-
-                    // Add entity radius to initial position to avoid immideate collision.
-                    bullet = createBullet(positionPart.getX() + entity.getRadius(), positionPart.getY() + entity.getRadius(), 0, shootingPart.getDirection(), shootingPart.getID());
+                    bullet = createBullet(positionPart.getX(), positionPart.getY(), shootingPart.getDirection(), entity.getRadius(), shootingPart.getID());
                     shootingPart.setIsShooting(false);
                     world.addEntity(bullet);
                 }
@@ -44,7 +40,6 @@ public class BulletControlSystem implements IEntityProcessingService {
             PositionPart ppb = b.getPart(PositionPart.class);
             MovingPart mpb = b.getPart(MovingPart.class);
             TimerPart btp = b.getPart(TimerPart.class);
-            //mpb.setUp(true);
             btp.reduceExpiration(gameData.getDelta());
             LifePart lpb = b.getPart(LifePart.class);
             //If duration is exceeded, remove the bullet.
@@ -62,46 +57,57 @@ public class BulletControlSystem implements IEntityProcessingService {
     }
 
     //Could potentially do some shenanigans with differing colours for differing sources.
-    private Entity createBullet(float x, float y, float radians, String direction, String uuid) {
-        Entity b = new Bullet();
-        //b.setTexture(new Texture("bullet.png"));
+    private Entity createBullet(float x, float y, String direction, float radius, String uuid) {
+        Entity bullet = new Bullet();
         
-        b.add(new PositionPart(x, y, radians));
-        MovingPart mp = new MovingPart(0, 5000, 300, 0);
+        PositionPart pp;
+        MovingPart mp = new MovingPart();
         
+        // Assign direction of bullet and add entity radius to start position of bullet to avoid immediate collision
         switch (direction) {
             case "up":
                 mp.setUp(true);
                 mp.setLeft(false);
                 mp.setDown(false);
                 mp.setRight(false);
+                
+                pp = new PositionPart(x, y + radius, 0);
                 break;
             case "left":
                 mp.setUp(false);
                 mp.setLeft(true);
                 mp.setDown(false);
                 mp.setRight(false);
+                
+                pp = new PositionPart(x - radius, y, 0);
                 break;
             case "down":
                 mp.setUp(false);
                 mp.setLeft(false);
                 mp.setDown(true);
                 mp.setRight(false);
+                
+                pp = new PositionPart(x, y - radius, 0);
                 break;
             case "right":
                 mp.setUp(false);
                 mp.setLeft(false);
                 mp.setDown(false);
                 mp.setRight(true);
+                pp = new PositionPart(x + radius, y, 0);
+                break;
+            default:
+                pp = new PositionPart(x, y, 0);
                 break;
         }
         
-        b.add(mp);
-        b.add(new TimerPart(3));
-        b.add(new LifePart(1));
+        bullet.add(pp);
+        bullet.add(mp);
+        bullet.add(new TimerPart(3));
+        bullet.add(new LifePart(1));
         // Projectile Part only used for better collision detection     
-        b.add(new ProjectilePart(uuid.toString()));
-        b.setRadius(2);
+        bullet.add(new ProjectilePart(uuid.toString()));
+        bullet.setRadius(2);
 
         float[] colour = new float[4];
         colour[0] = 0.2f;
@@ -109,9 +115,9 @@ public class BulletControlSystem implements IEntityProcessingService {
         colour[2] = 0.7f;
         colour[3] = 1.0f;
 
-        b.setColour(colour);
+        bullet.setColour(colour);
 
-        return b;
+        return bullet;
     }
 
     private void updateShape(Entity entity) {

@@ -2,6 +2,7 @@ package dk.sdu.mmmi.cbse.common.data;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import dk.sdu.mmmi.cbse.common.data.entityparts.EntityPart;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,14 +21,15 @@ public class Entity implements Serializable {
     private float radius;
     private float[] colour;
     private byte[] textureBytes;
-    private Texture texture;
+    private Sprite sprite;
     private Map<Class, EntityPart> parts;
+    private String type;
 
     public Entity() {
 
+        parts = new ConcurrentHashMap<>();
+        type = "entity";
         try {
-            parts = new ConcurrentHashMap<>();
-            
             InputStream stream = Entity.class.getResourceAsStream("/img/default.png");
             byte[] bytes = stream.readAllBytes();
             textureBytes = bytes;
@@ -36,6 +38,14 @@ public class Entity implements Serializable {
         }
     }
 
+    public void assignTexture(String filePatch) {
+        try {
+            this.textureBytes = Entity.class.getResourceAsStream(filePatch).readAllBytes();
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+    }
+    
     public void add(EntityPart part) {
         parts.put(part.getClass(), part);
     }
@@ -84,14 +94,6 @@ public class Entity implements Serializable {
         this.colour = c;
     }
 
-    public Texture getTexture() {
-        return texture;
-    }
-
-    public void setTexture(Texture texture) {
-        this.texture = texture;
-    }
-
     public byte[] getTextureBytes() {
         return textureBytes;
     }
@@ -100,4 +102,21 @@ public class Entity implements Serializable {
         this.textureBytes = textureBytes;
     }
 
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    
 }

@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import dk.sdu.mmmi.cbse.bulletsystem.Bullet;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
@@ -71,7 +73,7 @@ public class Game implements ApplicationListener {
         gameData.getKeys().update();
 
         update();
-        draw();
+        //draw();
         drawSprites();
     }
 
@@ -111,16 +113,23 @@ public class Game implements ApplicationListener {
         batch.begin();
         
         for (Entity entity : world.getEntities()) {
-            // if texture has not already been created for entity
-            if (entity.getTexture() == null) {
+            // if sprite has not already been created for entity
+            if (entity.getSprite() == null) {
                 // get byte array from entity and convert to texture
                 Pixmap pixmap = new Pixmap(entity.getTextureBytes(), 0, entity.getTextureBytes().length);
-                entity.setTexture(new Texture(pixmap));
+                Sprite sprite = new Sprite((new Texture(pixmap)));
+                if (entity.getType() == "bullet") {
+                    //sprite.scale((float) 0.1);
+                    sprite.setSize(10, 10);
+                }
+                entity.setSprite(sprite);
             }
             // get positionPart to attach sprite to position
             PositionPart pp = entity.getPart(PositionPart.class);
-            // draw sprite using texture and positionpart
-            batch.draw(entity.getTexture(), pp.getX(), pp.getY());
+            // configure and draw sprite using positionpart
+            Sprite sprite = entity.getSprite();
+            sprite.setCenter(pp.getX(), pp.getY());
+            sprite.draw(batch);
         }
         batch.end();
     }
@@ -171,6 +180,5 @@ public class Game implements ApplicationListener {
                 }
             }
         }
-
     };
 }

@@ -55,7 +55,7 @@ public class AsteroidPlugin implements IGamePluginService {
         colour[3] = 1.0f;
 
         Entity asteroidLarge = new Asteroid(LARGE);
-        asteroidLarge.add(new MovingPart(0, speed, speed, 0));
+        asteroidLarge.add(new MovingPart());
         asteroidLarge.add(new PositionPart(x, y, radians));
         asteroidLarge.add(new LifePart(1));
         asteroidLarge.setColour(colour);
