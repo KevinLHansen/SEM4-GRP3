@@ -68,6 +68,7 @@
         <module>Enemy</module>
         <module>Collision</module>
         <module>Item</module>
+        <module>CommonItem</module>
     </modules>
 
     <properties>
