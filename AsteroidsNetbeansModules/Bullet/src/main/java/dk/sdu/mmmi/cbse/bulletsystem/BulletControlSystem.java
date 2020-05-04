@@ -1,5 +1,7 @@
 package dk.sdu.mmmi.cbse.bulletsystem;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
@@ -29,26 +31,9 @@ public class BulletControlSystem implements IEntityProcessingService {
                 // Shoot if isShooting is true
                 if (shootingPart.isShooting()) {
                     PositionPart positionPart = entity.getPart(PositionPart.class);
-                    
-                    // Assign direction of bullet
-                    String direction = shootingPart.getDirection();
-                    float radians = 0;
-                    switch (direction) {
-                        case "up":
-                            radians = 0;
-                            break;
-                        case "left":
-                            radians = 270;
-                            break;
-                        case "down":
-                            radians = 180;
-                            break;
-                        case "right":
-                            radians = 90;
-                            break;
-                    }
+
                     // Add entity radius to initial position to avoid immideate collision.
-                    bullet = createBullet(positionPart.getX() + entity.getRadius(), positionPart.getY() + entity.getRadius(), radians, direction, shootingPart.getID());
+                    bullet = createBullet(positionPart.getX() + entity.getRadius(), positionPart.getY() + entity.getRadius(), 0, shootingPart.getDirection(), shootingPart.getID());
                     shootingPart.setIsShooting(false);
                     world.addEntity(bullet);
                 }
