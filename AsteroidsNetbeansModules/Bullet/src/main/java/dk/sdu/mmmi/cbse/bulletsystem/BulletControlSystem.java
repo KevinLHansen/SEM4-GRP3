@@ -48,7 +48,7 @@ public class BulletControlSystem implements IEntityProcessingService {
                             break;
                     }
                     // Add entity radius to initial position to avoid immideate collision.
-                    bullet = createBullet(positionPart.getX() + entity.getRadius(), positionPart.getY() + entity.getRadius(), radians, shootingPart.getID());
+                    bullet = createBullet(positionPart.getX() + entity.getRadius(), positionPart.getY() + entity.getRadius(), radians, direction, shootingPart.getID());
                     shootingPart.setIsShooting(false);
                     world.addEntity(bullet);
                 }
@@ -59,7 +59,7 @@ public class BulletControlSystem implements IEntityProcessingService {
             PositionPart ppb = b.getPart(PositionPart.class);
             MovingPart mpb = b.getPart(MovingPart.class);
             TimerPart btp = b.getPart(TimerPart.class);
-            mpb.setUp(true);
+            //mpb.setUp(true);
             btp.reduceExpiration(gameData.getDelta());
             LifePart lpb = b.getPart(LifePart.class);
             //If duration is exceeded, remove the bullet.
@@ -77,11 +77,40 @@ public class BulletControlSystem implements IEntityProcessingService {
     }
 
     //Could potentially do some shenanigans with differing colours for differing sources.
-    private Entity createBullet(float x, float y, float radians, String uuid) {
+    private Entity createBullet(float x, float y, float radians, String direction, String uuid) {
         Entity b = new Bullet();
 
         b.add(new PositionPart(x, y, radians));
-        b.add(new MovingPart(0, 5000, 300, 0));
+        MovingPart mp = new MovingPart(0, 5000, 300, 0);
+        
+        switch (direction) {
+            case "up":
+                mp.setUp(true);
+                mp.setLeft(false);
+                mp.setDown(false);
+                mp.setRight(false);
+                break;
+            case "left":
+                mp.setUp(false);
+                mp.setLeft(true);
+                mp.setDown(false);
+                mp.setRight(false);
+                break;
+            case "down":
+                mp.setUp(false);
+                mp.setLeft(false);
+                mp.setDown(true);
+                mp.setRight(false);
+                break;
+            case "right":
+                mp.setUp(false);
+                mp.setLeft(false);
+                mp.setDown(false);
+                mp.setRight(true);
+                break;
+        }
+        
+        b.add(mp);
         b.add(new TimerPart(3));
         b.add(new LifePart(1));
         // Projectile Part only used for better collision detection     
