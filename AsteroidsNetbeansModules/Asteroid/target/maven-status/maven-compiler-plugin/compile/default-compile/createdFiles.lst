@@ -1,5 +1,0 @@
-META-INF\services\dk.sdu.mmmi.cbse.common.services.IGamePluginService
-META-INF\services\dk.sdu.mmmi.cbse.common.services.IEntityProcessingService
-dk\sdu\mmmi\cbse\asteroid\AsteroidPlugin.class
-dk\sdu\mmmi\cbse\asteroid\AsteroidSplitter.class
-dk\sdu\mmmi\cbse\asteroid\AsteroidSystem.class
