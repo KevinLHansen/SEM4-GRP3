@@ -14,6 +14,7 @@ import org.openide.util.lookup.ServiceProviders;
 
 @ServiceProviders(value = {
     @ServiceProvider(service = IGamePluginService.class),})
+
 public class PlayerPlugin implements IGamePluginService {
 
     private Entity player;
@@ -27,6 +28,12 @@ public class PlayerPlugin implements IGamePluginService {
         // Add entities to the world
         player = createPlayer(gameData);
         world.addEntity(player);
+    }
+
+    @Override
+    public void stop(GameData gameData, World world) {
+        // Remove entities
+        world.removeEntity(player);
     }
 
     private Entity createPlayer(GameData gameData) {
@@ -44,7 +51,7 @@ public class PlayerPlugin implements IGamePluginService {
         colour[1] = 1.0f;
         colour[2] = 1.0f;
         colour[3] = 1.0f;
-        
+
         player = new Player();
         player.setRadius(10);
         player.setColour(colour);
@@ -55,12 +62,6 @@ public class PlayerPlugin implements IGamePluginService {
         player.add(new LifePart(1));
 
         return player;
-    }
-
-    @Override
-    public void stop(GameData gameData, World world) {
-        // Remove entities
-        world.removeEntity(player);
     }
 
 }
