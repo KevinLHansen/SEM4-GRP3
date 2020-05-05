@@ -20,7 +20,7 @@ public class CollisionDetector implements IPostEntityProcessingService {
     public void process(GameData gameData, World world) {
         for (Entity e : world.getEntities()) {
             for (Entity f : world.getEntities()) {
-                if (e.getID().equals(f.getID())) {
+                if (e.getID().equals(f.getID())) { // so that entity cannot collide with oneself
                     continue;
                 }
 
@@ -81,20 +81,16 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         }
 
                     }
-
                     world.removeEntity(f);
                 }
-
-                LifePart lpe = e.getPart(LifePart.class);
-                if (lpe.isDead()) {
-                    world.removeEntity(e);
+                if (e.getPart(LifePart.class) != null) {
+                    LifePart lpe = e.getPart(LifePart.class);
+                    if (lpe.isDead()) { world.removeEntity(e); }
                 }
-
-                LifePart lpf = f.getPart(LifePart.class);
-                if (lpf.isDead()) {
-                    world.removeEntity(f);
+                if (f.getPart(LifePart.class) != null) {
+                    LifePart lpf = f.getPart(LifePart.class);
+                    if (lpf.isDead()) { world.removeEntity(f); }
                 }
-
             }
         }
     }
