@@ -16,8 +16,8 @@ public class SpriteConfig {
     }
     
     public SpriteConfig() {
-        width = 20;
-        height = 20;
+        width = 32;
+        height = 32;
         scale = 1;
     }
 
