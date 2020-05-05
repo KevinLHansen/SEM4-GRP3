@@ -72,6 +72,8 @@ public class Game implements ApplicationListener {
 
         gameData.setDelta(Gdx.graphics.getDeltaTime());
         gameData.getKeys().update();
+        // convert delta (seconds) to milliseconds and update deltaTotal
+        gameData.setDeltaTotal(gameData.getDeltaTotal() + (int) (gameData.getDelta() * 1000));
 
         update();
         drawSprites();
