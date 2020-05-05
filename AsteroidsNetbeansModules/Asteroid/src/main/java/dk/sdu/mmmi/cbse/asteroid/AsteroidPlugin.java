@@ -19,10 +19,6 @@ import java.util.UUID;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
-/**
- *
- * @author Phillip Olsen
- */
 @ServiceProviders(value = {
     @ServiceProvider(service = IGamePluginService.class),})
 public class AsteroidPlugin implements IGamePluginService {

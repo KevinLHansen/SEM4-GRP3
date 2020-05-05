@@ -8,10 +8,6 @@ package dk.sdu.mmmi.cbse.common.data.entityparts;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 
-/**
- *
- * @author Phillip O
- */
 public class SplitterPart implements EntityPart {
 
     boolean shouldSplit = false;

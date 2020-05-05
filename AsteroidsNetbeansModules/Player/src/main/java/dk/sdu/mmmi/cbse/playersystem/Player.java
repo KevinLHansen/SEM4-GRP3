@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package dk.sdu.mmmi.cbse.playersystem;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
@@ -11,6 +7,6 @@ public class Player extends Entity {
     
     public Player() {
         assignTexture("/img/player.png");
-        setType("player");
+        setSpriteConfig(32, 32, 1);
    }
 }

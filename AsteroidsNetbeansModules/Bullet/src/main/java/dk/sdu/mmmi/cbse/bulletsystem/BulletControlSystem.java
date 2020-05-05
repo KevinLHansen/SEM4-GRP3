@@ -28,10 +28,12 @@ public class BulletControlSystem implements IEntityProcessingService {
                 ShootingPart shootingPart = entity.getPart(ShootingPart.class);
                 // Shoot if isShooting is true
                 if (shootingPart.isShooting()) {
-                    PositionPart positionPart = entity.getPart(PositionPart.class);
-                    bullet = createBullet(positionPart.getX(), positionPart.getY(), shootingPart.getDirection(), entity.getRadius(), shootingPart.getID());
+                    if (true) {
+                        PositionPart positionPart = entity.getPart(PositionPart.class);
+                        bullet = createBullet(positionPart.getX(), positionPart.getY(), shootingPart.getDirection(), entity.getRadius(), shootingPart.getID());
+                        world.addEntity(bullet);  
+                    }
                     shootingPart.setIsShooting(false);
-                    world.addEntity(bullet);
                 }
             }
         }

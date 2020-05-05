@@ -1,7 +1,5 @@
 package dk.sdu.mmmi.cbse.common.data;
 
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import dk.sdu.mmmi.cbse.common.data.entityparts.EntityPart;
 import java.io.IOException;
@@ -23,13 +21,14 @@ public class Entity implements Serializable {
     private byte[] textureBytes;
     private Sprite sprite;
     private Map<Class, EntityPart> parts;
-    private String type;
+    private SpriteConfig spriteCfg;
 
     public Entity() {
 
         parts = new ConcurrentHashMap<>();
-        type = "entity";
+        spriteCfg = new SpriteConfig();
         try {
+            // assign default texture
             InputStream stream = Entity.class.getResourceAsStream("/img/default.png");
             byte[] bytes = stream.readAllBytes();
             textureBytes = bytes;
@@ -110,13 +109,11 @@ public class Entity implements Serializable {
         this.sprite = sprite;
     }
 
-    public String getType() {
-        return type;
+    public SpriteConfig getSpriteCfg() {
+        return spriteCfg;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setSpriteConfig(int width, int height, float scale) {
+        spriteCfg = new SpriteConfig(width, height, scale);
     }
-
-    
 }

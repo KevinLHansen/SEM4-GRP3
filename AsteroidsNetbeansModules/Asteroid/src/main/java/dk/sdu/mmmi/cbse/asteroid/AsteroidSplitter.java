@@ -20,10 +20,6 @@ import java.util.Random;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
-/**
- *
- * @author Phillip Olsen
- */
 @ServiceProviders(value = {
     @ServiceProvider(service = IEntityProcessingService.class),})
 public class AsteroidSplitter implements IEntityProcessingService {

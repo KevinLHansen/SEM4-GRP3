@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dk.sdu.mmmi.cbse.bulletsystem.Bullet;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+import dk.sdu.mmmi.cbse.common.data.SpriteConfig;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
@@ -73,7 +74,6 @@ public class Game implements ApplicationListener {
         gameData.getKeys().update();
 
         update();
-        //draw();
         drawSprites();
     }
 
@@ -89,26 +89,6 @@ public class Game implements ApplicationListener {
         }
     }
 
-    private void draw() {
-        for (Entity entity : world.getEntities()) {
-            sr.setColor(1, 1, 1, 1);
-
-            sr.begin(ShapeRenderer.ShapeType.Line);
-
-            float[] shapex = entity.getShapeX();
-            float[] shapey = entity.getShapeY();
-
-            for (int i = 0, j = shapex.length - 1;
-                    i < shapex.length;
-                    j = i++) {
-
-                sr.line(shapex[i], shapey[i], shapex[j], shapey[j]);
-            }
-
-            sr.end();
-        }
-    }
-
     private void drawSprites() {
         batch.begin();
         
@@ -118,10 +98,10 @@ public class Game implements ApplicationListener {
                 // get byte array from entity and convert to texture
                 Pixmap pixmap = new Pixmap(entity.getTextureBytes(), 0, entity.getTextureBytes().length);
                 Sprite sprite = new Sprite((new Texture(pixmap)));
-                if (entity.getType() == "bullet") {
-                    //sprite.scale((float) 0.1);
-                    sprite.setSize(10, 10);
-                }
+                // get SpriteConfig from entity
+                SpriteConfig spriteCfg = entity.getSpriteCfg();
+                sprite.setSize(spriteCfg.getWidth(), spriteCfg.getHeight());
+                sprite.setScale(spriteCfg.getScale());
                 entity.setSprite(sprite);
             }
             // get positionPart to attach sprite to position

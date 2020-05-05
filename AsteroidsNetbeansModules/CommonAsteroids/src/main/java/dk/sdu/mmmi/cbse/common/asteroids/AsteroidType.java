@@ -5,10 +5,6 @@
  */
 package dk.sdu.mmmi.cbse.common.asteroids;
 
-/**
- *
- * @author Phillip Olsen
- */
 public enum AsteroidType {
 
     LARGE("LARGE"),
