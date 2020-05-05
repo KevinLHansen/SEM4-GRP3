@@ -13,6 +13,7 @@ import org.openide.util.lookup.ServiceProviders;
 
 @ServiceProviders(value = {
     @ServiceProvider(service = IEntityProcessingService.class),})
+
 public class AsteroidSystem implements IEntityProcessingService {
 
     int numPoints = 6;

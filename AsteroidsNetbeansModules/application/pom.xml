@@ -105,6 +105,16 @@
             <artifactId>CommonAsteroids</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>Item</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>CommonItem</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

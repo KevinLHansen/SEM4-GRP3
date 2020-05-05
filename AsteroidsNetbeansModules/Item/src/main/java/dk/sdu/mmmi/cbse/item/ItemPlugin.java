@@ -12,6 +12,7 @@ import org.openide.util.lookup.ServiceProviders;
 
 @ServiceProviders(value = {
     @ServiceProvider(service = IGamePluginService.class),})
+
 public class ItemPlugin implements IGamePluginService {
     
     private Entity item;
@@ -35,15 +36,15 @@ public class ItemPlugin implements IGamePluginService {
         float x = gameData.getDisplayWidth() / 2 + 100;
         float y = gameData.getDisplayHeight() / 2 + 50;
 
-        float[] colour = new float[4];
-        colour[0] = 0.2f;
-        colour[1] = 1.0f;
-        colour[2] = 0.07f;
-        colour[3] = 1.0f;
+//        float[] colour = new float[4];
+//        colour[0] = 0.2f;
+//        colour[1] = 1.0f;
+//        colour[2] = 0.07f;
+//        colour[3] = 1.0f;
         
         Entity itemType = new Item(ItemType.getRandomType());
         itemType.add(new PositionPart(x, y, radians));
-        itemType.setColour(colour);
+//        itemType.setColour(colour);
         itemType.setRadius(10);
         
         return (Item) itemType;
