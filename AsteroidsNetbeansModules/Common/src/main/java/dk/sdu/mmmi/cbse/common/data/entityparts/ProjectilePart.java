@@ -8,11 +8,6 @@ package dk.sdu.mmmi.cbse.common.data.entityparts;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 
-/**
- * Only used as a bullet identifier for better collision
- *
- * @author Phillip O
- */
 public class ProjectilePart implements EntityPart {
 
     String ID;

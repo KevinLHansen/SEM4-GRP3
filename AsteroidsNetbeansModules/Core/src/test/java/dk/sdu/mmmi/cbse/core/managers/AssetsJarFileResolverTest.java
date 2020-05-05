@@ -14,10 +14,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.mockito.Mockito.*;
 
-/**
- *
- * @author jcs
- */
 public class AssetsJarFileResolverTest {
 
     public AssetsJarFileResolverTest() {

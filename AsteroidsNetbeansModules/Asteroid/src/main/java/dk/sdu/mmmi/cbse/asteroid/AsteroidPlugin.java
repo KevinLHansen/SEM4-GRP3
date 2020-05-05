@@ -19,10 +19,6 @@ import java.util.UUID;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
-/**
- *
- * @author Phillip Olsen
- */
 @ServiceProviders(value = {
     @ServiceProvider(service = IGamePluginService.class),})
 public class AsteroidPlugin implements IGamePluginService {
@@ -55,7 +51,7 @@ public class AsteroidPlugin implements IGamePluginService {
         colour[3] = 1.0f;
 
         Entity asteroidLarge = new Asteroid(LARGE);
-        asteroidLarge.add(new MovingPart(0, speed, speed, 0));
+        asteroidLarge.add(new MovingPart());
         asteroidLarge.add(new PositionPart(x, y, radians));
         asteroidLarge.add(new LifePart(1));
         asteroidLarge.setColour(colour);

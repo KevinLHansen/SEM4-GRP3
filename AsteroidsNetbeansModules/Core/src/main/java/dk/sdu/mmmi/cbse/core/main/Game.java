@@ -2,13 +2,20 @@ package dk.sdu.mmmi.cbse.core.main;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import dk.sdu.mmmi.cbse.bulletsystem.Bullet;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+import dk.sdu.mmmi.cbse.common.data.SpriteConfig;
 import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
@@ -21,8 +28,10 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 
 public class Game implements ApplicationListener {
+
     private static OrthographicCamera camera;
     private ShapeRenderer sr;
+    private SpriteBatch batch;
     private final Lookup lookup = Lookup.getDefault();
     private final GameData gameData = new GameData();
     private World world = new World();
@@ -33,14 +42,15 @@ public class Game implements ApplicationListener {
     public void create() {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
-        
+
         gameData.setDisplayWidth((int) w);
         gameData.setDisplayHeight((int) h);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, w / 2, h / 2);
-        
+
         sr = new ShapeRenderer();
+        batch = new SpriteBatch();
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
@@ -63,10 +73,8 @@ public class Game implements ApplicationListener {
         gameData.setDelta(Gdx.graphics.getDeltaTime());
         gameData.getKeys().update();
 
-        camera.update();
-        
         update();
-        draw();
+        drawSprites();
     }
 
     private void update() {
@@ -81,24 +89,29 @@ public class Game implements ApplicationListener {
         }
     }
 
-    private void draw() {
+    private void drawSprites() {
+        batch.begin();
+        
         for (Entity entity : world.getEntities()) {
-            sr.setColor(1, 1, 1, 1);
-
-            sr.begin(ShapeRenderer.ShapeType.Line);
-
-            float[] shapex = entity.getShapeX();
-            float[] shapey = entity.getShapeY();
-
-            for (int i = 0, j = shapex.length - 1;
-                    i < shapex.length;
-                    j = i++) {
-
-                sr.line(shapex[i], shapey[i], shapex[j], shapey[j]);
+            // if sprite has not already been created for entity
+            if (entity.getSprite() == null) {
+                // get byte array from entity and convert to texture
+                Pixmap pixmap = new Pixmap(entity.getTextureBytes(), 0, entity.getTextureBytes().length);
+                Sprite sprite = new Sprite((new Texture(pixmap)));
+                // get SpriteConfig from entity
+                SpriteConfig spriteCfg = entity.getSpriteCfg();
+                sprite.setSize(spriteCfg.getWidth(), spriteCfg.getHeight());
+                sprite.setScale(spriteCfg.getScale());
+                entity.setSprite(sprite);
             }
-
-            sr.end();
+            // get positionPart to attach sprite to position
+            PositionPart pp = entity.getPart(PositionPart.class);
+            // configure and draw sprite using positionpart
+            Sprite sprite = entity.getSprite();
+            sprite.setCenter(pp.getX(), pp.getY());
+            sprite.draw(batch);
         }
+        batch.end();
     }
 
     @Override
@@ -147,6 +160,5 @@ public class Game implements ApplicationListener {
                 }
             }
         }
-
     };
 }

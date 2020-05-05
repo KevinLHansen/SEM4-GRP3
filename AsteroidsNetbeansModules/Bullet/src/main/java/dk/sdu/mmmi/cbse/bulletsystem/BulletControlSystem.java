@@ -28,29 +28,12 @@ public class BulletControlSystem implements IEntityProcessingService {
                 ShootingPart shootingPart = entity.getPart(ShootingPart.class);
                 // Shoot if isShooting is true
                 if (shootingPart.isShooting()) {
-                    PositionPart positionPart = entity.getPart(PositionPart.class);
-                    
-                    // Assign direction of bullet
-                    String direction = shootingPart.getDirection();
-                    float radians = 0;
-                    switch (direction) {
-                        case "up":
-                            radians = 0;
-                            break;
-                        case "left":
-                            radians = 270;
-                            break;
-                        case "down":
-                            radians = 180;
-                            break;
-                        case "right":
-                            radians = 90;
-                            break;
+                    if (true) {
+                        PositionPart positionPart = entity.getPart(PositionPart.class);
+                        bullet = createBullet(positionPart.getX(), positionPart.getY(), shootingPart.getDirection(), entity.getRadius(), shootingPart.getID());
+                        world.addEntity(bullet);  
                     }
-                    // Add entity radius to initial position to avoid immideate collision.
-                    bullet = createBullet(positionPart.getX() + entity.getRadius(), positionPart.getY() + entity.getRadius(), radians, shootingPart.getID());
                     shootingPart.setIsShooting(false);
-                    world.addEntity(bullet);
                 }
             }
         }
@@ -59,7 +42,6 @@ public class BulletControlSystem implements IEntityProcessingService {
             PositionPart ppb = b.getPart(PositionPart.class);
             MovingPart mpb = b.getPart(MovingPart.class);
             TimerPart btp = b.getPart(TimerPart.class);
-            mpb.setUp(true);
             btp.reduceExpiration(gameData.getDelta());
             LifePart lpb = b.getPart(LifePart.class);
             //If duration is exceeded, remove the bullet.
@@ -77,16 +59,57 @@ public class BulletControlSystem implements IEntityProcessingService {
     }
 
     //Could potentially do some shenanigans with differing colours for differing sources.
-    private Entity createBullet(float x, float y, float radians, String uuid) {
-        Entity b = new Bullet();
-
-        b.add(new PositionPart(x, y, radians));
-        b.add(new MovingPart(0, 5000, 300, 0));
-        b.add(new TimerPart(3));
-        b.add(new LifePart(1));
+    private Entity createBullet(float x, float y, String direction, float radius, String uuid) {
+        Entity bullet = new Bullet();
+        
+        PositionPart pp;
+        MovingPart mp = new MovingPart();
+        
+        // Assign direction of bullet and add entity radius to start position of bullet to avoid immediate collision
+        switch (direction) {
+            case "up":
+                mp.setUp(true);
+                mp.setLeft(false);
+                mp.setDown(false);
+                mp.setRight(false);
+                
+                pp = new PositionPart(x, y + radius, 0);
+                break;
+            case "left":
+                mp.setUp(false);
+                mp.setLeft(true);
+                mp.setDown(false);
+                mp.setRight(false);
+                
+                pp = new PositionPart(x - radius, y, 0);
+                break;
+            case "down":
+                mp.setUp(false);
+                mp.setLeft(false);
+                mp.setDown(true);
+                mp.setRight(false);
+                
+                pp = new PositionPart(x, y - radius, 0);
+                break;
+            case "right":
+                mp.setUp(false);
+                mp.setLeft(false);
+                mp.setDown(false);
+                mp.setRight(true);
+                pp = new PositionPart(x + radius, y, 0);
+                break;
+            default:
+                pp = new PositionPart(x, y, 0);
+                break;
+        }
+        
+        bullet.add(pp);
+        bullet.add(mp);
+        bullet.add(new TimerPart(3));
+        bullet.add(new LifePart(1));
         // Projectile Part only used for better collision detection     
-        b.add(new ProjectilePart(uuid.toString()));
-        b.setRadius(2);
+        bullet.add(new ProjectilePart(uuid.toString()));
+        bullet.setRadius(2);
 
         float[] colour = new float[4];
         colour[0] = 0.2f;
@@ -94,9 +117,9 @@ public class BulletControlSystem implements IEntityProcessingService {
         colour[2] = 0.7f;
         colour[3] = 1.0f;
 
-        b.setColour(colour);
+        bullet.setColour(colour);
 
-        return b;
+        return bullet;
     }
 
     private void updateShape(Entity entity) {

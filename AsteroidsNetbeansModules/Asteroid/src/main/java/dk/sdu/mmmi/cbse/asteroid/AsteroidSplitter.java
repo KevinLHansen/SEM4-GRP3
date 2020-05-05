@@ -20,10 +20,6 @@ import java.util.Random;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
-/**
- *
- * @author Phillip Olsen
- */
 @ServiceProviders(value = {
     @ServiceProvider(service = IEntityProcessingService.class),})
 public class AsteroidSplitter implements IEntityProcessingService {
@@ -79,7 +75,7 @@ public class AsteroidSplitter implements IEntityProcessingService {
         colour[3] = 1.0f;
 
         Entity asteroid = new Asteroid(SMALL);
-        asteroid.add(new MovingPart(0, speed, speed, 0));
+        asteroid.add(new MovingPart());
         asteroid.add(new PositionPart(x + rnd.nextInt(50), y + rnd.nextInt(50), radians));
         asteroid.add(new LifePart(1));
         asteroid.add(new SplitterPart(uuid));
@@ -102,7 +98,7 @@ public class AsteroidSplitter implements IEntityProcessingService {
 
         asteroid.setColour(colour);
 
-        asteroid.add(new MovingPart(0, speed, speed, 0));
+        asteroid.add(new MovingPart());
         asteroid.add(new PositionPart(x + rnd.nextInt(50), y + rnd.nextInt(50), radians));
         asteroid.add(new LifePart(1));
         asteroid.add(new SplitterPart(uuid));

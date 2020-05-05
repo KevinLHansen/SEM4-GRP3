@@ -2,10 +2,13 @@ package dk.sdu.mmmi.cbse.common.data;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import dk.sdu.mmmi.cbse.common.data.entityparts.EntityPart;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import org.openide.util.Exceptions;
 
 public class Entity implements Serializable {
 
@@ -15,13 +18,33 @@ public class Entity implements Serializable {
     private float[] shapeY = new float[4];
     private float radius;
     private float[] colour;
+    private byte[] textureBytes;
     private Sprite sprite;
     private Map<Class, EntityPart> parts;
+    private SpriteConfig spriteCfg;
 
     public Entity() {
+
         parts = new ConcurrentHashMap<>();
+        spriteCfg = new SpriteConfig();
+        try {
+            // assign default texture
+            InputStream stream = Entity.class.getResourceAsStream("/img/default.png");
+            byte[] bytes = stream.readAllBytes();
+            textureBytes = bytes;
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        }
     }
 
+    public void assignTexture(String filePatch) {
+        try {
+            this.textureBytes = Entity.class.getResourceAsStream(filePatch).readAllBytes();
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+    }
+    
     public void add(EntityPart part) {
         parts.put(part.getClass(), part);
     }
@@ -69,12 +92,28 @@ public class Entity implements Serializable {
     public void setColour(float[] c) {
         this.colour = c;
     }
-    
+
+    public byte[] getTextureBytes() {
+        return textureBytes;
+    }
+
+    public void setTextureBytes(byte[] textureBytes) {
+        this.textureBytes = textureBytes;
+    }
+
+    public Sprite getSprite() {
+        return sprite;
+    }
+
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
     }
-    
-    public Sprite getSprite() {
-        return sprite;
+
+    public SpriteConfig getSpriteCfg() {
+        return spriteCfg;
+    }
+
+    public void setSpriteConfig(int width, int height, float scale) {
+        spriteCfg = new SpriteConfig(width, height, scale);
     }
 }
