@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import dk.sdu.mmmi.cbse.bulletsystem.Bullet;
 import dk.sdu.mmmi.cbse.common.data.Entity;
@@ -20,9 +21,12 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
@@ -30,13 +34,14 @@ import org.openide.util.LookupListener;
 public class Game implements ApplicationListener {
 
     private static OrthographicCamera camera;
-    private ShapeRenderer sr;
     private SpriteBatch batch;
     private final Lookup lookup = Lookup.getDefault();
     private final GameData gameData = new GameData();
     private World world = new World();
     private List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
     private Lookup.Result<IGamePluginService> result;
+    private Texture background;
+    private TextureRegion backgroundRegion;
 
     @Override
     public void create() {
@@ -46,10 +51,20 @@ public class Game implements ApplicationListener {
         gameData.setDisplayWidth((int) w);
         gameData.setDisplayHeight((int) h);
 
+        // Background
+        InputStream streamBg = Entity.class.getResourceAsStream("/img/background.png");
+        byte[] bytesBg;
+        try {
+            bytesBg = streamBg.readAllBytes();
+            background = new Texture(new Pixmap(bytesBg, 0, bytesBg.length));
+            background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        }
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, w / 2, h / 2);
 
-        sr = new ShapeRenderer();
         batch = new SpriteBatch();
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
@@ -69,6 +84,11 @@ public class Game implements ApplicationListener {
         // clear screen to black
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // Background
+        batch.begin();
+        batch.draw(background, 0, 0, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.end();
 
         gameData.setDelta(Gdx.graphics.getDeltaTime());
         gameData.getKeys().update();
@@ -93,7 +113,7 @@ public class Game implements ApplicationListener {
 
     private void drawSprites() {
         batch.begin();
-        
+
         for (Entity entity : world.getEntities()) {
             // if sprite has not already been created for entity
             if (entity.getSprite() == null) {
