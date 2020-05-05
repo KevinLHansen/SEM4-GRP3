@@ -44,7 +44,7 @@ public class Entity implements Serializable {
             Exceptions.printStackTrace(ex);
         }
     }
-    
+
     public void add(EntityPart part) {
         parts.put(part.getClass(), part);
     }
