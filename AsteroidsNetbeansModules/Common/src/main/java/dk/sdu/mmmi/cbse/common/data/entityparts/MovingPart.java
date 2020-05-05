@@ -8,8 +8,14 @@ public class MovingPart implements EntityPart {
 
     private float dx, dy;
     private boolean left, right, up, down;
+    private int speed; // speed of entity (how many coordinates to move per movement)
 
+    public MovingPart(int speed) {
+        this.speed = speed;
+    }
+    
     public MovingPart() {
+        speed = 3;
     }
 
     public float getDx() {
@@ -44,9 +50,7 @@ public class MovingPart implements EntityPart {
         float radians = positionPart.getRadians();
         float dt = gameData.getDelta();
 
-        // move entity by altering coordinates depending on input      
-        int speed = 3; // entity speed
-        
+        // move entity by altering coordinates depending on input   
         if (up)    { y +=  speed; }  
         if (left)  { x += -speed; }
         if (down)  { y += -speed; }      

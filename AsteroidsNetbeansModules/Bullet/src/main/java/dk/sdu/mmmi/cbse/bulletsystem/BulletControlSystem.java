@@ -47,6 +47,7 @@ public class BulletControlSystem implements IEntityProcessingService {
             TimerPart btp = b.getPart(TimerPart.class);
             btp.reduceExpiration(gameData.getDelta());
             LifePart lpb = b.getPart(LifePart.class);
+            
             //If duration is exceeded, remove the bullet.
 //            if (btp.getExpiration() < 0) {
 //                world.removeEntity(bullet);
@@ -66,7 +67,7 @@ public class BulletControlSystem implements IEntityProcessingService {
         Entity bullet = new Bullet();
 
         PositionPart pp;
-        MovingPart mp = new MovingPart();
+        MovingPart mp = new MovingPart(4);
 
         // Assign direction of bullet and add entity radius to start position of bullet to avoid immediate collision
         switch (direction) {
@@ -91,7 +92,7 @@ public class BulletControlSystem implements IEntityProcessingService {
                 mp.setLeft(false);
                 mp.setDown(true);
                 mp.setRight(false);
-
+                
                 pp = new PositionPart(x, y - radius, 0);
                 break;
             case "right":
@@ -99,6 +100,7 @@ public class BulletControlSystem implements IEntityProcessingService {
                 mp.setLeft(false);
                 mp.setDown(false);
                 mp.setRight(true);
+                
                 pp = new PositionPart(x + radius, y, 0);
                 break;
             default:
