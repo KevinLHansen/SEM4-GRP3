@@ -14,6 +14,9 @@ import org.openide.util.lookup.ServiceProviders;
 public class ItemPlugin implements IGamePluginService {
     
     private Entity item;
+    
+    public ItemPlugin() {
+    }
 
     @Override
     public void start(GameData gameData, World world) {
