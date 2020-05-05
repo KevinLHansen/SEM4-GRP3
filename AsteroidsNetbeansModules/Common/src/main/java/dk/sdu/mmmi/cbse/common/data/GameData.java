@@ -8,7 +8,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class GameData {
 
     private float delta;
-    private int deltaTotal; // total runtime of game in ms
     private int displayWidth;
     private int displayHeight;
     private final GameKeys keys = new GameKeys();
@@ -64,14 +63,4 @@ public class GameData {
 
         return r;
     }
-
-    public int getDeltaTotal() {
-        return deltaTotal;
-    }
-
-    public void setDeltaTotal(int deltaTotal) {
-        this.deltaTotal = deltaTotal;
-    }
-    
-    
 }

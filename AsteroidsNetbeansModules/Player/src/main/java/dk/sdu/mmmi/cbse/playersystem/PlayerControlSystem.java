@@ -10,7 +10,6 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.ShootingPart;
-import dk.sdu.mmmi.cbse.common.data.entityparts.TimerPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
@@ -27,7 +26,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
             MovingPart movingPart = player.getPart(MovingPart.class);
             ShootingPart shootingPart = player.getPart(ShootingPart.class);
             LifePart lifePart = player.getPart(LifePart.class);
-            TimerPart timerPart = player.getPart(TimerPart.class);
 
             movingPart.setUp(gameData.getKeys().isDown(GameKeys.W));
             movingPart.setLeft(gameData.getKeys().isDown(GameKeys.A));
@@ -57,7 +55,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
             positionPart.process(gameData, player);
             shootingPart.process(gameData, player);
             lifePart.process(gameData, player);
-            timerPart.process(gameData, player);
 
             updateShape(player);
 

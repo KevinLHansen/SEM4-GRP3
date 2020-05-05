@@ -37,9 +37,9 @@ public class Entity implements Serializable {
         }
     }
 
-    public void assignTexture(String filePath) {
+    public void assignTexture(String filePatch) {
         try {
-            this.textureBytes = Entity.class.getResourceAsStream(filePath).readAllBytes();
+            this.textureBytes = Entity.class.getResourceAsStream(filePatch).readAllBytes();
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }
