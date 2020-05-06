@@ -8,5 +8,6 @@ public class Player extends Entity {
     public Player() {
         assignTexture("/img/player.png");
         setSpriteConfig(32, 32, 1);
+        setType("player");
    }
 }

@@ -15,14 +15,14 @@ public class Installer extends ModuleInstall {
 
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Pepega Hunter 2020";
-        cfg.width = 1500;
-        cfg.height = 800;
+        cfg.width = 1280;
+        cfg.height = 720;
         
         cfg.backgroundFPS = 60;
         cfg.foregroundFPS = 60;
         
         cfg.useGL30 = false;
-        cfg.resizable = false;
+        cfg.resizable = true;
 
         new LwjglApplication(game, cfg);
     }
