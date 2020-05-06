@@ -52,7 +52,7 @@ public class Game implements ApplicationListener {
         gameData.setDisplayHeight((int) h);
 
         // Background
-        InputStream streamBg = Entity.class.getResourceAsStream("/img/background2.png");
+        InputStream streamBg = Entity.class.getResourceAsStream("/img/background.png");
         byte[] bytesBg;
         try {
             bytesBg = streamBg.readAllBytes();

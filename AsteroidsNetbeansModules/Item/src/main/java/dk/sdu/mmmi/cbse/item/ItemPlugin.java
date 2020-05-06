@@ -12,7 +12,10 @@ import org.openide.util.lookup.ServiceProviders;
     @ServiceProvider(service = IGamePluginService.class),})
 
 public class ItemPlugin implements IGamePluginService {
-    
+
+    public ItemPlugin() {
+    }
+
     private Entity item;
 
     @Override
@@ -27,9 +30,9 @@ public class ItemPlugin implements IGamePluginService {
             world.removeEntity(e);
         }
     }
-    
+
     private Item createItem(GameData gameData) {
-        
+
         float radians = 3.1415f / 2 + (float) Math.random();
         float x = gameData.getDisplayWidth() / 2 + 100;
         float y = gameData.getDisplayHeight() / 2 + 50;
@@ -39,15 +42,12 @@ public class ItemPlugin implements IGamePluginService {
 //        colour[1] = 1.0f;
 //        colour[2] = 0.07f;
 //        colour[3] = 1.0f;
-        
         Entity itemType = new Item(ItemType.getRandomType());
         itemType.add(new PositionPart(x, y, radians));
 //        itemType.setColour(colour);
         itemType.setRadius(10);
-        
+
         return (Item) itemType;
     }
-    
-    
-    
+
 }

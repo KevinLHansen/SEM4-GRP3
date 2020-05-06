@@ -42,9 +42,7 @@
         </dependency>
         <dependency>
             <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-api-annotations-common</artifactId>
-            <version>RELEASE112</version>
-            <artifactId>org-openide-util-lookup</artifactId>
+            <artifactId>org-openide-util-ui</artifactId>
             <version>${netbeans.version}</version>
             <type>jar</type>
         </dependency>
