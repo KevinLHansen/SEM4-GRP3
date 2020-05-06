@@ -14,7 +14,7 @@ public class Installer extends ModuleInstall {
         game = new Game();
 
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = "SEM4 GRP3";
+        cfg.title = "Pepega Hunter 2020";
         cfg.width = 1500;
         cfg.height = 800;
         
