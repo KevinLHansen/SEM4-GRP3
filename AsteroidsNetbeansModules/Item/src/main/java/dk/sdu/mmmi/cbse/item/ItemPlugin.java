@@ -8,16 +8,15 @@ import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
-@ServiceProviders(value = {
-    @ServiceProvider(service = IGamePluginService.class),})
+@ServiceProviders(value = { @ServiceProvider(service = IGamePluginService.class),})
 
 public class ItemPlugin implements IGamePluginService {
+    
+    private Entity item;
 
     public ItemPlugin() {
     }
-
-    private Entity item;
-
+    
     @Override
     public void start(GameData gameData, World world) {
         item = createItem(gameData);
@@ -33,21 +32,14 @@ public class ItemPlugin implements IGamePluginService {
 
     private Item createItem(GameData gameData) {
 
-        float radians = 3.1415f / 2 + (float) Math.random();
-        float x = gameData.getDisplayWidth() / 2 + 100;
-        float y = gameData.getDisplayHeight() / 2 + 50;
-
-//        float[] colour = new float[4];
-//        colour[0] = 0.2f;
-//        colour[1] = 1.0f;
-//        colour[2] = 0.07f;
-//        colour[3] = 1.0f;
-        Entity itemType = new Item(ItemType.getRandomType());
-        itemType.add(new PositionPart(x, y, radians));
-//        itemType.setColour(colour);
-        itemType.setRadius(10);
-
-        return (Item) itemType;
+        float x = (float) (gameData.getDisplayWidth() * Math.random());
+        float y = (float) (gameData.getDisplayHeight() * Math.random());
+        
+        item = new Item();
+        item.add(new PositionPart(x, y));
+        item.setRadius(15);
+        
+        return (Item) item;
     }
 
 }
