@@ -10,7 +10,6 @@ public class EnlargePlayer extends Item implements IPowerUp {
     }
 
     @Override
-    public void playerEffect(Entity playerEntity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void affectPlayer(Entity playerEntity) {
     }
 }
