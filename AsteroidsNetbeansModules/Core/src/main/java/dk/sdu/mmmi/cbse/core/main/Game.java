@@ -2,12 +2,16 @@ package dk.sdu.mmmi.cbse.core.main;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import dk.sdu.mmmi.cbse.bulletsystem.Bullet;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.SpriteConfig;
@@ -37,6 +41,7 @@ public class Game implements ApplicationListener {
     private List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
     private Lookup.Result<IGamePluginService> result;
     private Texture background;
+    private TextureRegion backgroundRegion;
 
     @Override
     public void create() {
@@ -57,10 +62,8 @@ public class Game implements ApplicationListener {
             Exceptions.printStackTrace(ex);
         }
 
-        // Camera
-        float aspectRatio = h / w;
-        camera = new OrthographicCamera(600, 600 * aspectRatio);
-        camera.update(); 
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, w / 2, h / 2);
 
         batch = new SpriteBatch();
 
@@ -81,7 +84,7 @@ public class Game implements ApplicationListener {
         // clear screen to black
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
+
         // Background
         batch.begin();
         batch.draw(background, 0, 0, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -90,12 +93,11 @@ public class Game implements ApplicationListener {
         gameData.setDelta(Gdx.graphics.getDeltaTime());
         gameData.getKeys().update();
 
-        updateServices();
+        update();
         drawSprites();
-        updateCamera();
     }
 
-    private void updateServices() {
+    private void update() {
         // Update
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices()) {
             entityProcessorService.process(gameData, world);
@@ -127,38 +129,9 @@ public class Game implements ApplicationListener {
             // configure and draw sprite using positionpart
             Sprite sprite = entity.getSprite();
             sprite.setCenter(pp.getX(), pp.getY());
-            sprite.draw(batch);   
+            sprite.draw(batch);
         }
         batch.end();
-    }
-    
-    public void updateCamera() {
-        // find player and set camera to its location
-        for (Entity entity : world.getEntities()) {
-            if (entity.getType().toLowerCase() == "player") {
-                PositionPart pp = entity.getPart(PositionPart.class);
-                float newX;
-                float newY;
-                float playerX = pp.getX();
-                float playerY = pp.getY();
-                
-                // prevent camera from showing out of bounds area when near edge of world
-                if (playerX > Gdx.graphics.getWidth() - camera.viewportWidth / 2 || playerX < 0 + camera.viewportWidth / 2) {
-                    newX = camera.position.x;
-                } else {
-                    newX = playerX;
-                }
-                
-                if (playerY > Gdx.graphics.getHeight() - camera.viewportHeight / 2 || playerY < 0 + camera.viewportHeight / 2) {
-                    newY = camera.position.y;
-                } else {
-                    newY = playerY;
-                }
-                camera.position.set(newX, newY, 0);
-            }
-        }
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
     }
 
     @Override

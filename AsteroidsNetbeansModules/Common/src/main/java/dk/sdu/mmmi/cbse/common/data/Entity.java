@@ -21,14 +21,12 @@ public class Entity implements Serializable {
     private byte[] textureBytes;
     private Sprite sprite;
     private Map<Class, EntityPart> parts;
-    private String type;
     private SpriteConfig spriteCfg;
 
     public Entity() {
 
         parts = new ConcurrentHashMap<>();
         spriteCfg = new SpriteConfig();
-        type = "entity";
         try {
             // assign default texture
             InputStream stream = Entity.class.getResourceAsStream("/img/default.png");
@@ -118,14 +116,4 @@ public class Entity implements Serializable {
     public void setSpriteConfig(int width, int height, float scale) {
         spriteCfg = new SpriteConfig(width, height, scale);
     }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-    
-    
 }
