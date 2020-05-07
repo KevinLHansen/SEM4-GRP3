@@ -4,5 +4,5 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
 
 public interface IPowerUp {
 
-    Entity affectPlayer(Entity entity);
+    void affectPlayer(Entity entity);
 }
