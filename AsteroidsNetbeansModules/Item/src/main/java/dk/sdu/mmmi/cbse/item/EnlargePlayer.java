@@ -10,6 +10,9 @@ public class EnlargePlayer extends Item implements IPowerUp {
     }
 
     @Override
-    public void affectPlayer(Entity playerEntity) {
+    public Entity affectPlayer(Entity playerEntity) {
+        playerEntity.setSpriteConfig(32, 32, 2);
+        playerEntity.setRadius(20);
+        return playerEntity;
     }
 }

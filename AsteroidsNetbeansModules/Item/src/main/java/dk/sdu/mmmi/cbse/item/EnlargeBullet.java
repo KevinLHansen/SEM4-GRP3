@@ -10,7 +10,7 @@ public class EnlargeBullet extends Item implements IPowerUp {
     }
 
     @Override
-    public void affectPlayer(Entity playerEntity) {
-        
+    public Entity affectPlayer(Entity playerEntity) {
+        return null;
     }
 }
