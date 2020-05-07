@@ -10,7 +10,9 @@ public class EnlargeBullet extends Item implements IPowerUp {
     }
 
     @Override
-    public void affectPlayer(Entity playerEntity) {
-        
+    public Entity affectPlayer(Entity bulletEntity) {
+        bulletEntity.setSpriteConfig(32, 32, 2);
+        bulletEntity.setRadius(4);
+        return bulletEntity;
     }
 }
