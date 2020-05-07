@@ -1,5 +1,7 @@
 package dk.sdu.mmmi.cbse.item;
 
+import dk.sdu.mmmi.cbse.common.data.Entity;
+
 public class EnlargeBullet extends Item implements IPowerUp {
 
     public EnlargeBullet() {
@@ -8,7 +10,7 @@ public class EnlargeBullet extends Item implements IPowerUp {
     }
 
     @Override
-    public void playerEffect() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void playerEffect(Entity playerEntity) {
+
     }
 }
