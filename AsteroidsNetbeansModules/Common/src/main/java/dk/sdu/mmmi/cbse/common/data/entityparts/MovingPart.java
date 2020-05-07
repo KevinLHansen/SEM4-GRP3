@@ -1,4 +1,3 @@
-
 package dk.sdu.mmmi.cbse.common.data.entityparts;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
@@ -8,6 +7,10 @@ public class MovingPart implements EntityPart {
 
     private float dx, dy;
     private boolean left, right, up, down;
+
+    public MovingPart(int speed) {
+        this.speed = speed;
+    }
 
     public MovingPart() {
     }
@@ -31,7 +34,7 @@ public class MovingPart implements EntityPart {
     public void setUp(boolean up) {
         this.up = up;
     }
-    
+
     public void setDown(boolean down) {
         this.down = down;
     }
@@ -42,30 +45,32 @@ public class MovingPart implements EntityPart {
         float x = positionPart.getX();
         float y = positionPart.getY();
         float radians = positionPart.getRadians();
-        float dt = gameData.getDelta();
+        float delta = gameData.getDelta();
 
-        // move entity by altering coordinates depending on input      
-        int speed = 3; // entity speed
-        
-        if (up)    { y +=  speed; }  
+        // move entity by altering coordinates depending on input
+        if (up)    { y +=  speed; }
         if (left)  { x += -speed; }
-        if (down)  { y += -speed; }      
+        if (down)  { y += -speed; }
         if (right) { x +=  speed; }
 
-        // set position
-        x += dx * dt;
-        if (x > gameData.getDisplayWidth()) {
-            x = 0;
-        } else if (x < 0) {
-            x = gameData.getDisplayWidth();
-        }
+        // wrapping edges of screen
+//        x += dx * delta;
+//        if (x > gameData.getDisplayWidth()) {
+//            x = 0;
+//        } else if (x < 0) {
+//            x = gameData.getDisplayWidth();
+//        }
+//
+//        y += dy * delta;
+//        if (y > gameData.getDisplayHeight()) {
+//            y = 0;
+//        } else if (y < 0) {
+//            y = gameData.getDisplayHeight();
+//        }
 
-        y += dy * dt;
-        if (y > gameData.getDisplayHeight()) {
-            y = 0;
-        } else if (y < 0) {
-            y = gameData.getDisplayHeight();
-        }
+        // prevent entity from leaving world boundaries
+        if (x > gameData.getDisplayWidth() || x < 0) { x = positionPart.getX(); }
+        if (y > gameData.getDisplayHeight() || y < 0) { y = positionPart.getY(); }
 
         positionPart.setX(x);
         positionPart.setY(y);
