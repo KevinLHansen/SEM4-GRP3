@@ -58,13 +58,13 @@
             <version>${project.version}</version>
         </dependency>
 
-        
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>SilentUpdate</artifactId>
             <version>${project.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>Player</artifactId>
@@ -73,11 +73,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>Bullet</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>Asteroid</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
