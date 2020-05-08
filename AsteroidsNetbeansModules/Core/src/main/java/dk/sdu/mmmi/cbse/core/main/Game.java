@@ -13,9 +13,21 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.Map;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.SpriteConfig;
@@ -47,6 +59,7 @@ public class Game implements ApplicationListener {
     private Texture background;
     private OrthogonalTiledMapRenderer mapRenderer;
     private TiledMap tiledMap;
+    private Box2DDebugRenderer b2dr;
 
     @Override
     public void create() {
@@ -68,6 +81,7 @@ public class Game implements ApplicationListener {
         }
 
         // Tilemap
+        b2dr = new Box2DDebugRenderer();
         loadMap("tilemap.tmx");
         
         // Camera
@@ -106,6 +120,7 @@ public class Game implements ApplicationListener {
         updateServices();
         drawMap();
         drawSprites();
+        b2dr.render(world.getB2dWorld(), camera.combined);
         updateCamera();
     }
 
@@ -114,6 +129,35 @@ public class Game implements ApplicationListener {
         TmxMapLoader mapLoader = new TmxMapLoader();//new InternalFileHandleResolver()); // TEMPORARY SOLUTION
         tiledMap = mapLoader.load(mapPath);
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        this.createWalls(tiledMap);
+    }
+    
+    private void createWalls(Map map){
+        String layerName = "walls";
+        
+        MapLayer layer = map.getLayers().get(layerName);
+        if (layer == null){
+            System.out.println("\n\n\n\n\n\n\nno walls!!!\n\n\n\n\n");
+        }
+        
+        BodyDef bdef = new BodyDef();
+        PolygonShape shape = new PolygonShape();
+        FixtureDef fdef = new FixtureDef();
+        Body body;
+        
+        for (MapObject object : layer.getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set(rect.getX() + rect.getWidth() / 2, rect.getY() + rect.getHeight() / 2);
+            
+            body = world.getB2dWorld().createBody(bdef);
+            
+            shape.setAsBox(rect.getWidth() / 2, rect.getHeight() / 2);
+            fdef.shape = shape;
+            body.createFixture(fdef);
+            
+        }
     }
     
     private void drawMap() {
