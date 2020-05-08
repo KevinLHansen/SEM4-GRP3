@@ -2,12 +2,20 @@ package dk.sdu.mmmi.cbse.core.main;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.SpriteConfig;
@@ -37,6 +45,8 @@ public class Game implements ApplicationListener {
     private List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
     private Lookup.Result<IGamePluginService> result;
     private Texture background;
+    private OrthogonalTiledMapRenderer mapRenderer;
+    private TiledMap tiledMap;
 
     @Override
     public void create() {
@@ -57,6 +67,9 @@ public class Game implements ApplicationListener {
             Exceptions.printStackTrace(ex);
         }
 
+        // Tilemap
+        loadMap("tilemap.tmx");
+        
         // Camera
         float aspectRatio = h / w;
         camera = new OrthographicCamera(600, 600 * aspectRatio);
@@ -91,10 +104,23 @@ public class Game implements ApplicationListener {
         gameData.getKeys().update();
 
         updateServices();
+        drawMap();
         drawSprites();
         updateCamera();
     }
 
+    private void loadMap(String mapPath) {
+        //TmxMapLoader mapLoader = new TmxMapLoader(new AbsoluteFileHandleResolver());
+        TmxMapLoader mapLoader = new TmxMapLoader();//new InternalFileHandleResolver()); // TEMPORARY SOLUTION
+        tiledMap = mapLoader.load(mapPath);
+        mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+    }
+    
+    private void drawMap() {
+        mapRenderer.setView((OrthographicCamera) camera);
+        mapRenderer.render();
+    }
+    
     private void updateServices() {
         // Update
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices()) {
@@ -142,14 +168,19 @@ public class Game implements ApplicationListener {
                 float playerX = pp.getX();
                 float playerY = pp.getY();
                 
+                int mapWidth = tiledMap.getProperties().get("width", Integer.class);
+                int mapHeight = tiledMap.getProperties().get("height", Integer.class);
+                int tileWidth = tiledMap.getProperties().get("tilewidth", Integer.class);
+                int tileHeight = tiledMap.getProperties().get("tileheight", Integer.class);
+                
                 // prevent camera from showing out of bounds area when near edge of world
-                if (playerX > Gdx.graphics.getWidth() - camera.viewportWidth / 2 || playerX < 0 + camera.viewportWidth / 2) {
+                if (playerX > mapWidth * tileWidth - camera.viewportWidth / 2 || playerX < 0 + camera.viewportWidth / 2) {
                     newX = camera.position.x;
                 } else {
                     newX = playerX;
                 }
                 
-                if (playerY > Gdx.graphics.getHeight() - camera.viewportHeight / 2 || playerY < 0 + camera.viewportHeight / 2) {
+                if (playerY > mapHeight * tileHeight - camera.viewportHeight / 2 || playerY < 0 + camera.viewportHeight / 2) {
                     newY = camera.position.y;
                 } else {
                     newY = playerY;
