@@ -11,7 +11,7 @@ public class Bullet extends Entity {
     
     public Bullet() {
         assignTexture("/img/bullet.png");
-        setSpriteConfig(10, 10, 1);
+        setSpriteConfig(16, 16, 1);
         setType("bullet");
     }
 }

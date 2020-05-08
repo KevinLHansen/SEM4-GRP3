@@ -14,7 +14,7 @@ public class MovingPart implements EntityPart {
     }
 
     public MovingPart() {
-        speed = 4;
+        speed = 3;
     }
 
     public float getDx() {
@@ -54,21 +54,6 @@ public class MovingPart implements EntityPart {
         if (left)  { x += -speed; }
         if (down)  { y += -speed; }
         if (right) { x +=  speed; }
-
-        // wrapping edges of screen
-//        x += dx * delta;
-//        if (x > gameData.getDisplayWidth()) {
-//            x = 0;
-//        } else if (x < 0) {
-//            x = gameData.getDisplayWidth();
-//        }
-//
-//        y += dy * delta;
-//        if (y > gameData.getDisplayHeight()) {
-//            y = 0;
-//        } else if (y < 0) {
-//            y = gameData.getDisplayHeight();
-//        }
 
         // prevent entity from leaving world boundaries
         if (x > gameData.getDisplayWidth() || x < 0) { x = positionPart.getX(); }

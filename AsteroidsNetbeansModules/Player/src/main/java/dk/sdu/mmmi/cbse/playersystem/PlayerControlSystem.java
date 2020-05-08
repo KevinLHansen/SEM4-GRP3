@@ -25,6 +25,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
             MovingPart movingPart = player.getPart(MovingPart.class);
             ShootingPart shootingPart = player.getPart(ShootingPart.class);
             LifePart lifePart = player.getPart(LifePart.class);
+            TimerPart timerPart = player.getPart(TimerPart.class);
 
             movingPart.setUp(gameData.getKeys().isDown(GameKeys.W));
             movingPart.setLeft(gameData.getKeys().isDown(GameKeys.A));
@@ -54,6 +55,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
             positionPart.process(gameData, player);
             shootingPart.process(gameData, player);
             lifePart.process(gameData, player);
+            timerPart.process(gameData, player);
         }
     }
 }
