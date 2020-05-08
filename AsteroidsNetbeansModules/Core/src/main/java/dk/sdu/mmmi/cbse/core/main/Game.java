@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
@@ -67,7 +68,7 @@ public class Game implements ApplicationListener {
         }
 
         // Tilemap
-        loadMap("/tilemap/tilemap.tmx");
+        loadMap("tilemap.tmx");
         
         // Camera
         float aspectRatio = h / w;
@@ -112,7 +113,7 @@ public class Game implements ApplicationListener {
 
     private void loadMap(String mapPath) {
         //TmxMapLoader mapLoader = new TmxMapLoader(new AbsoluteFileHandleResolver());
-        TmxMapLoader mapLoader = new TmxMapLoader(new ExternalFileHandleResolver()); // TEMPORARY SOLUTION
+        TmxMapLoader mapLoader = new TmxMapLoader();//new InternalFileHandleResolver()); // TEMPORARY SOLUTION
         tiledMap = mapLoader.load(mapPath);
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
