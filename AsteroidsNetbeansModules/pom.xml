@@ -64,7 +64,6 @@
         <module>Player</module>
         <module>Bullet</module>
         <module>Enemy</module>
-        <module>Collision</module>
         <module>Item</module>
     </modules>
 

@@ -1,16 +1,17 @@
 package dk.sdu.mmmi.cbse.item;
 
+import dk.sdu.mmmi.cbse.item.powerups.*;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
+import dk.sdu.mmmi.cbse.item.powerups.IncreaseFireRatePowerUp;
 import java.util.Random;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
-@ServiceProviders(value = {
-    @ServiceProvider(service = IGamePluginService.class),})
+@ServiceProviders(value = { @ServiceProvider(service = IGamePluginService.class), })
 
 public class ItemPlugin implements IGamePluginService {
 
@@ -22,7 +23,7 @@ public class ItemPlugin implements IGamePluginService {
     @Override
     public void start(GameData gameData, World world) {
         // add 5 items of random type
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             item = createItem(gameData);
             world.addEntity(item);
         }
@@ -30,21 +31,21 @@ public class ItemPlugin implements IGamePluginService {
 
     @Override
     public void stop(GameData gameData, World world) {
-        for (Entity e : world.getEntities(Item.class)) {
+        for (Entity e : world.getEntities(PowerUp.class)) {
             world.removeEntity(e);
         }
     }
 
-    private Item createItem(GameData gameData) {
+    private Entity createItem(GameData gameData) {
 
         float x = (float) (gameData.getDisplayWidth() * Math.random());
         float y = (float) (gameData.getDisplayHeight() * Math.random());
 
-        // get random number in range 1-2
+        // get random number in range 1-3
         Random rng = new Random();
-        int itemSelect = rng.nextInt(2) + 1;
+        int itemSelect = rng.nextInt(3) + 1;
 
-        Item newItem;
+        Entity newItem;
 
         switch (itemSelect) {
             case 1:
@@ -53,13 +54,16 @@ public class ItemPlugin implements IGamePluginService {
             case 2:
                 newItem = new EnlargeBulletPowerUp();
                 break;
+            case 3:
+                newItem = new IncreaseFireRatePowerUp();
+                break;
             default:
-                newItem = new Item();
+                newItem = new Entity();
                 break;
         }
         
         newItem.add(new PositionPart(x, y));
-        newItem.setRadius(15);
+        newItem.setRadius(12);
         
         return newItem;
     }

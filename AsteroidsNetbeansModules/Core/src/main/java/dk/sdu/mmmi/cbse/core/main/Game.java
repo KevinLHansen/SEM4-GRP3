@@ -7,6 +7,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -16,6 +17,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Matrix4;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.SpriteConfig;
@@ -47,9 +51,12 @@ public class Game implements ApplicationListener {
     private Texture background;
     private OrthogonalTiledMapRenderer mapRenderer;
     private TiledMap tiledMap;
+    private ShapeRenderer shapeRenderer;
 
     @Override
     public void create() {
+        shapeRenderer = new ShapeRenderer();
+
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
@@ -73,7 +80,7 @@ public class Game implements ApplicationListener {
         // Camera
         float aspectRatio = h / w;
         camera = new OrthographicCamera(600, 600 * aspectRatio);
-        camera.update(); 
+        camera.update();
 
         batch = new SpriteBatch();
 
@@ -94,7 +101,7 @@ public class Game implements ApplicationListener {
         // clear screen to black
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
+
         // Background
         batch.begin();
         batch.draw(background, 0, 0, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -103,6 +110,7 @@ public class Game implements ApplicationListener {
         gameData.setDelta(Gdx.graphics.getDeltaTime());
         gameData.getKeys().update();
 
+        //drawDebug(); // debug drawing. commentize to disable
         updateServices();
         drawMap();
         drawSprites();
@@ -137,27 +145,27 @@ public class Game implements ApplicationListener {
         batch.begin();
 
         for (Entity entity : world.getEntities()) {
+            Sprite sprite;
             // if sprite has not already been created for entity
             if (entity.getSprite() == null) {
                 // get byte array from entity and convert to texture
                 Pixmap pixmap = new Pixmap(entity.getTextureBytes(), 0, entity.getTextureBytes().length);
-                Sprite sprite = new Sprite((new Texture(pixmap)));
-                // get SpriteConfig from entity
-                SpriteConfig spriteCfg = entity.getSpriteCfg();
-                sprite.setSize(spriteCfg.getWidth(), spriteCfg.getHeight());
-                sprite.setScale(spriteCfg.getScale());
-                entity.setSprite(sprite);
+                sprite = new Sprite((new Texture(pixmap)));
+            } else {
+                sprite = entity.getSprite();
             }
+            
             // get positionPart to attach sprite to position
             PositionPart pp = entity.getPart(PositionPart.class);
-            // configure and draw sprite using positionpart
-            Sprite sprite = entity.getSprite();
+            // configure and draw sprite using positionpart and entity radius
+            sprite.setSize(entity.getRadius() * 2, entity.getRadius() * 2);
             sprite.setCenter(pp.getX(), pp.getY());
-            sprite.draw(batch);   
+            sprite.draw(batch);
+            entity.setSprite(sprite);
         }
         batch.end();
     }
-    
+
     public void updateCamera() {
         // find player and set camera to its location
         for (Entity entity : world.getEntities()) {
@@ -173,6 +181,7 @@ public class Game implements ApplicationListener {
                 int tileWidth = tiledMap.getProperties().get("tilewidth", Integer.class);
                 int tileHeight = tiledMap.getProperties().get("tileheight", Integer.class);
                 
+
                 // prevent camera from showing out of bounds area when near edge of world
                 if (playerX > mapWidth * tileWidth - camera.viewportWidth / 2 || playerX < 0 + camera.viewportWidth / 2) {
                     newX = camera.position.x;
@@ -180,7 +189,9 @@ public class Game implements ApplicationListener {
                     newX = playerX;
                 }
                 
-                if (playerY > mapHeight * tileHeight - camera.viewportHeight / 2 || playerY < 0 + camera.viewportHeight / 2) {
+                //if (playerY > mapHeight * tileHeight - camera.viewportHeight / 2 || playerY < 0 + camera.viewportHeight / 2) {
+
+                if (playerY > Gdx.graphics.getHeight() - camera.viewportHeight / 2 || playerY < 0 + camera.viewportHeight / 2) {
                     newY = camera.position.y;
                 } else {
                     newY = playerY;
@@ -190,6 +201,19 @@ public class Game implements ApplicationListener {
         }
         camera.update();
         batch.setProjectionMatrix(camera.combined);
+    }
+
+    public void drawDebug() {
+        // draw radius circle for every entity
+        for (Entity entity : world.getEntities()) {
+            PositionPart pp = entity.getPart(PositionPart.class);
+
+            shapeRenderer.setColor(Color.WHITE);
+            shapeRenderer.begin(ShapeType.Line);
+
+            shapeRenderer.circle(pp.getX(), pp.getY(), entity.getRadius());
+            shapeRenderer.end();
+        }
     }
 
     @Override

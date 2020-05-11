@@ -2,6 +2,7 @@ package dk.sdu.mmmi.cbse.common.data;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import dk.sdu.mmmi.cbse.common.data.entityparts.EntityPart;
+import dk.sdu.mmmi.cbse.common.data.entityparts.ShootingPart;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -14,15 +15,13 @@ public class Entity implements Serializable {
 
     private final UUID ID = UUID.randomUUID();
 
-    private float[] shapeX = new float[4];
-    private float[] shapeY = new float[4];
     private float radius;
-    private float[] colour;
     private byte[] textureBytes;
     private Sprite sprite;
     private Map<Class, EntityPart> parts;
     private String type;
     private SpriteConfig spriteCfg;
+    private Entity origin; // stores a copy of the original version of the object. For use when reverting item effects
 
     public Entity() {
 
@@ -37,6 +36,23 @@ public class Entity implements Serializable {
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }
+    }
+    
+    // copy-constructor for making clones of instances (for use with origin)
+    public Entity(Entity clonee) {
+        
+        parts = new ConcurrentHashMap<>();
+        type = "entity";
+        
+        this.radius = clonee.radius;
+        
+        // make a clone of clonee's shootingpart
+        ShootingPart shootingPart = clonee.getPart(ShootingPart.class);
+        ShootingPart shootingPartClone = new ShootingPart();
+        shootingPartClone.setBulletRadius(shootingPart.getBulletRadius());
+        shootingPartClone.setFireRate(shootingPart.getFireRate());
+        this.add(shootingPartClone);
+        // potentially more relevant attributes
     }
 
     public void assignTexture(String filePath) {
@@ -71,30 +87,6 @@ public class Entity implements Serializable {
         return ID.toString();
     }
 
-    public float[] getShapeX() {
-        return shapeX;
-    }
-
-    public void setShapeX(float[] shapeX) {
-        this.shapeX = shapeX;
-    }
-
-    public float[] getShapeY() {
-        return shapeY;
-    }
-
-    public void setShapeY(float[] shapeY) {
-        this.shapeY = shapeY;
-    }
-
-    public float[] getColour() {
-        return this.colour;
-    }
-
-    public void setColour(float[] c) {
-        this.colour = c;
-    }
-
     public byte[] getTextureBytes() {
         return textureBytes;
     }
@@ -127,5 +119,12 @@ public class Entity implements Serializable {
         this.type = type;
     }
     
+    public Entity getOrigin() {
+        return origin;
+    }
+    
+    public void setOrigin(Entity origin) {
+        this.origin = origin;
+    }
     
 }
