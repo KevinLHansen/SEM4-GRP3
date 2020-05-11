@@ -60,7 +60,7 @@ public class Game implements ApplicationListener {
     private Lookup.Result<IGamePluginService> result;
     private Texture background;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private TmxMapLoader tmxMapLoader = new TmxMapLoader();
+    private Box2DDebugRenderer b2dr;
 
     @Override
     public void create() {
@@ -82,9 +82,11 @@ public class Game implements ApplicationListener {
         }
 
         // Tilemap
-        tileLoader = new TileLoader(tmxMapLoader);
+        //tileLoader = new TileLoader(tmxMapLoader);
+        tileLoader = new TileLoader();
         tileLoader.load("tilemap.tmx");
         this.mapRenderer = tileLoader.getRenderer();
+        this.b2dr = tileLoader.getB2dRenderer();
         
         // Camera
         float aspectRatio = h / w;
@@ -124,41 +126,11 @@ public class Game implements ApplicationListener {
         drawSprites();
         updateCamera();
     }
-
-    
-    private void createWalls(Map map){
-        String layerName = "walls";
-        
-        MapLayer layer = map.getLayers().get(layerName);
-        if (layer == null){
-            System.out.println("\n\n\n\n\n\n\nno walls!!!\n\n\n\n\n");
-        }
-        
-        System.out.println(world.getB2dWorld().toString() + "\n\n\n\n\n\n\n\n\n\n");
-        
-        BodyDef bdef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
-        FixtureDef fdef = new FixtureDef();
-        Body body;
-        
-        for (MapObject object : layer.getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set(rect.getX() + rect.getWidth() / 2, rect.getY() + rect.getHeight() / 2);
-            
-            body = world.getB2dWorld().createBody(bdef);
-            
-            shape.setAsBox(rect.getWidth() / 2, rect.getHeight() / 2);
-            fdef.shape = shape;
-            body.createFixture(fdef);
-            
-        }
-    }
     
     private void drawMap() {
         mapRenderer.setView((OrthographicCamera) camera);
         mapRenderer.render();
+        b2dr.render(tileLoader.getWorld(), camera.combined);
     }
     
     private void updateServices() {

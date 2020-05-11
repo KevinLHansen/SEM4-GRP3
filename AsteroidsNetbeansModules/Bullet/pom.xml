@@ -47,10 +47,9 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx</artifactId>
-            <version>1.9.10</version>
-            <type>jar</type>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>LibGDX</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

@@ -67,6 +67,7 @@
         <module>Collision</module>
         <module>Item</module>
         <module>MapLoader</module>
+        <module>LibGDX</module>
     </modules>
 
     <properties>
