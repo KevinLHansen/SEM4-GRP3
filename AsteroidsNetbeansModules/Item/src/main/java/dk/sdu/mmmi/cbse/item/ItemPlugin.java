@@ -58,7 +58,7 @@ public class ItemPlugin implements IGamePluginService {
         }
         
         newItem.add(new PositionPart(x, y));
-        newItem.setRadius(24);
+        newItem.setRadius(12);
         
         return newItem;
     }

@@ -97,7 +97,7 @@ public class Game implements ApplicationListener {
         gameData.setDelta(Gdx.graphics.getDeltaTime());
         gameData.getKeys().update();
 
-        drawDebug();
+        //drawDebug(); // debug drawing. commentize to disable
         updateServices();
         drawSprites();
         updateCamera();
@@ -132,7 +132,7 @@ public class Game implements ApplicationListener {
             // get positionPart to attach sprite to position
             PositionPart pp = entity.getPart(PositionPart.class);
             // configure and draw sprite using positionpart and entity radius
-            sprite.setSize(entity.getRadius(), entity.getRadius());
+            sprite.setSize(entity.getRadius() * 2, entity.getRadius() * 2);
             sprite.setCenter(pp.getX(), pp.getY());
             sprite.draw(batch);
             entity.setSprite(sprite);

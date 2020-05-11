@@ -31,6 +31,11 @@ public class CollisionDetector implements IPostEntityProcessingService {
                 if (f.getType() == "enlargeplayerpowerup" || f.getType() == "enlargebulletpowerup") {
                     continue;
                 }
+                
+                // so that bullets cannot collide with bullets
+                if (f.getType() == "bullet" && e.getType() == "bullet") {
+                    continue;
+                }
 
                 if (circleCollision(e, f)) {
                     // avoid bullets damaging the entity that created said bullet
@@ -53,42 +58,7 @@ public class CollisionDetector implements IPostEntityProcessingService {
                             }
                         }
                     }
-                    // in case it's an asteroid, let it split
-                    if (f.getPart(SplitterPart.class) != null) {
-                        SplitterPart fsp = f.getPart(SplitterPart.class);
-
-                        // in case an asteroid collides with its children
-                        if (e.getPart(SplitterPart.class) != null) {
-                            SplitterPart esp = e.getPart(SplitterPart.class);
-                            if (fsp.getID().equals(esp.getID())) {
-                                continue;
-                            }
-                        }
-                        // if its the first time the asteroid has been processed, let it split
-                        if (!fsp.hasSplit()) {
-                            fsp.setShouldSplit(true);
-                            continue;
-                        }
-
-                    }
-                    // in case it's an asteroid, let it split
-                    if (e.getPart(SplitterPart.class) != null) {
-                        SplitterPart esp = e.getPart(SplitterPart.class);
-
-                        // in case an asteroid collides with its children
-                        if (f.getPart(SplitterPart.class) != null) {
-                            SplitterPart fsp = f.getPart(SplitterPart.class);
-                            if (esp.getID().equals(fsp.getID())) {
-                                continue;
-                            }
-                        }
-                        // if its the first time the asteroid has been processed, let it split
-                        if (!esp.hasSplit()) {
-                            esp.setShouldSplit(true);
-                            continue;
-                        }
-
-                    }
+                    
                     world.removeEntity(f);
                 }
                 if (e.getPart(LifePart.class) != null) {

@@ -14,12 +14,13 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
-@ServiceProviders(value = { @ServiceProvider(service = IEntityProcessingService.class), })
+@ServiceProviders(value = {
+    @ServiceProvider(service = IEntityProcessingService.class),})
 public class BulletControlSystem implements IEntityProcessingService {
 
     private Entity bullet;
     int fireRate = 200; // ms between shots
-    
+
     @Override
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getEntities()) {
@@ -27,35 +28,34 @@ public class BulletControlSystem implements IEntityProcessingService {
 
                 ShootingPart shootingPart = entity.getPart(ShootingPart.class);
                 TimerPart timerPart = entity.getPart(TimerPart.class);
-                
+
                 // Shoot if isShooting is true
                 if (shootingPart.isShooting()) {
                     if (timerPart.getTimer() > fireRate) { // if [fireRate] ms has passed since last bullet fired
                         timerPart.resetTimer();
                         PositionPart positionPart = entity.getPart(PositionPart.class);
-                        bullet = createBullet(positionPart.getX(), positionPart.getY(), shootingPart.getDirection(), entity.getRadius(), shootingPart.getID());
+                        bullet = createBullet(positionPart.getX(), positionPart.getY(), shootingPart.getDirection(), 8, shootingPart.getID());
                         world.addEntity(bullet);
                     }
                     shootingPart.setIsShooting(false);
                 }
             }
+        }
+        for (Entity bullet : world.getEntities(Bullet.class)) {
+            PositionPart ppb = bullet.getPart(PositionPart.class);
+            MovingPart mpb = bullet.getPart(MovingPart.class);
+            TimerPart btp = bullet.getPart(TimerPart.class);
+            btp.reduceExpiration(gameData.getDelta());
+            LifePart lpb = bullet.getPart(LifePart.class);
 
-            for (Entity bullet : world.getEntities(Bullet.class)) {
-                PositionPart ppb = bullet.getPart(PositionPart.class);
-                MovingPart mpb = bullet.getPart(MovingPart.class);
-                TimerPart btp = bullet.getPart(TimerPart.class);
-                btp.reduceExpiration(gameData.getDelta());
-                LifePart lpb = bullet.getPart(LifePart.class);
+            ppb.process(gameData, bullet);
+            mpb.process(gameData, bullet);
+            btp.process(gameData, bullet);
+            lpb.process(gameData, bullet);
 
-                ppb.process(gameData, bullet);
-                mpb.process(gameData, bullet);
-                btp.process(gameData, bullet);
-                lpb.process(gameData, bullet);
-            }
         }
     }
 
-    //Could potentially do some shenanigans with differing colours for differing sources.
     private Entity createBullet(float x, float y, String direction, float radius, String uuid) {
         Entity bullet = new Bullet();
 
@@ -93,6 +93,7 @@ public class BulletControlSystem implements IEntityProcessingService {
                 mp.setLeft(false);
                 mp.setDown(false);
                 mp.setRight(true);
+
                 pp = new PositionPart(x + radius, y, 0);
                 break;
             default:
@@ -106,7 +107,7 @@ public class BulletControlSystem implements IEntityProcessingService {
         bullet.add(new LifePart(1));
         // Projectile Part only used for better collision detection     
         bullet.add(new ProjectilePart(uuid.toString()));
-        bullet.setRadius(16);
+        bullet.setRadius(radius);
 
         return bullet;
     }

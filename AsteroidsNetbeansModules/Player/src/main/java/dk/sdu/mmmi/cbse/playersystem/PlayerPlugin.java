@@ -45,7 +45,7 @@ public class PlayerPlugin implements IGamePluginService {
 
 
         player = new Player();
-        player.setRadius(32);
+        player.setRadius(16);
         player.add(new MovingPart(3));
         player.add(new PositionPart(x, y, radians));
         UUID uuid = UUID.randomUUID();

@@ -11,8 +11,6 @@ import org.openide.util.lookup.ServiceProviders;
 
 public class BulletPlugin implements IGamePluginService {
 
-    private Entity bullet;
-
     @Override
     public void start(GameData gameData, World world) {
 

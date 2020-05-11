@@ -34,13 +34,13 @@ public class EnemyPlugin implements IGamePluginService {
         float y = new Random().nextFloat() * gameData.getDisplayHeight();
         float radians = 3.1415f / 2;
 
-        Entity enemyShip = new Enemy();
-        enemyShip.setRadius(24);
-        enemyShip.add(new MovingPart());
-        enemyShip.add(new PositionPart(x, y, radians));
-        enemyShip.add(new LifePart(1));
+        Entity enemy = new Enemy();
+        enemy.setRadius(12);
+        enemy.add(new MovingPart());
+        enemy.add(new PositionPart(x, y, radians));
+        enemy.add(new LifePart(1));
 
-        return enemyShip;
+        return enemy;
     }
 
     @Override
