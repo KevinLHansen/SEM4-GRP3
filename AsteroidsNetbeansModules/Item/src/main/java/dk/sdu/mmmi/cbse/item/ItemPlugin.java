@@ -9,8 +9,7 @@ import java.util.Random;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
-@ServiceProviders(value = {
-    @ServiceProvider(service = IGamePluginService.class),})
+@ServiceProviders(value = { @ServiceProvider(service = IGamePluginService.class), })
 
 public class ItemPlugin implements IGamePluginService {
 
@@ -30,12 +29,12 @@ public class ItemPlugin implements IGamePluginService {
 
     @Override
     public void stop(GameData gameData, World world) {
-        for (Entity e : world.getEntities(Item.class)) {
+        for (Entity e : world.getEntities(PowerUp.class)) {
             world.removeEntity(e);
         }
     }
 
-    private Item createItem(GameData gameData) {
+    private Entity createItem(GameData gameData) {
 
         float x = (float) (gameData.getDisplayWidth() * Math.random());
         float y = (float) (gameData.getDisplayHeight() * Math.random());
@@ -44,7 +43,7 @@ public class ItemPlugin implements IGamePluginService {
         Random rng = new Random();
         int itemSelect = rng.nextInt(2) + 1;
 
-        Item newItem;
+        Entity newItem;
 
         switch (itemSelect) {
             case 1:
@@ -54,12 +53,12 @@ public class ItemPlugin implements IGamePluginService {
                 newItem = new EnlargeBulletPowerUp();
                 break;
             default:
-                newItem = new Item();
+                newItem = new Entity();
                 break;
         }
         
         newItem.add(new PositionPart(x, y));
-        newItem.setRadius(15);
+        newItem.setRadius(24);
         
         return newItem;
     }

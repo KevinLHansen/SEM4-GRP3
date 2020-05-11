@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.cbse.collisionsystem;
+package dk.sdu.mmmi.cbse.common.collision;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
@@ -12,15 +12,23 @@ import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
-@ServiceProviders(value = {
-    @ServiceProvider(service = IPostEntityProcessingService.class),})
+@ServiceProviders(value = { @ServiceProvider(service = IPostEntityProcessingService.class), })
 public class CollisionDetector implements IPostEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
         for (Entity e : world.getEntities()) {
+            // exclude items from this processing loop
+            if (e.getType() == "enlargeplayerpowerup" || e.getType() == "enlargebulletpowerup") {
+                continue;
+            }
             for (Entity f : world.getEntities()) {
                 if (e.getID().equals(f.getID())) { // so that entity cannot collide with oneself
+                    continue;
+                }
+
+                // exclude items from this processing loop
+                if (f.getType() == "enlargeplayerpowerup" || f.getType() == "enlargebulletpowerup") {
                     continue;
                 }
 
@@ -85,17 +93,21 @@ public class CollisionDetector implements IPostEntityProcessingService {
                 }
                 if (e.getPart(LifePart.class) != null) {
                     LifePart lpe = e.getPart(LifePart.class);
-                    if (lpe.isDead()) { world.removeEntity(e); }
+                    if (lpe.isDead()) {
+                        world.removeEntity(e);
+                    }
                 }
                 if (f.getPart(LifePart.class) != null) {
                     LifePart lpf = f.getPart(LifePart.class);
-                    if (lpf.isDead()) { world.removeEntity(f); }
+                    if (lpf.isDead()) {
+                        world.removeEntity(f);
+                    }
                 }
             }
         }
     }
 
-    private boolean circleCollision(Entity e, Entity f) {
+    public boolean circleCollision(Entity e, Entity f) {
         PositionPart ep = e.getPart(PositionPart.class);
         PositionPart fp = f.getPart(PositionPart.class);
 

@@ -3,6 +3,7 @@ package dk.sdu.mmmi.cbse.playersystem;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.common.data.entityparts.ItemPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
@@ -44,14 +45,17 @@ public class PlayerPlugin implements IGamePluginService {
 
 
         player = new Player();
-        player.setRadius(10);
+        player.setRadius(32);
         player.add(new MovingPart(3));
         player.add(new PositionPart(x, y, radians));
         UUID uuid = UUID.randomUUID();
         player.add(new ShootingPart(uuid.toString()));
         player.add(new LifePart(1));
         player.add(new TimerPart());
-
+        player.add(new ItemPart());
+        
+        player.setOrigin(new Entity(player));
+        
         return player;
     }
 

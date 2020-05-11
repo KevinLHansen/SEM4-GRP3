@@ -2,16 +2,16 @@ package dk.sdu.mmmi.cbse.item;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 
-public class EnlargeBulletPowerUp extends Item implements IPowerUp {
+public class EnlargeBulletPowerUp extends PowerUp {
 
     public EnlargeBulletPowerUp() {
         assignTexture("/img/enlargebullet.png");
-        setSpriteConfig(32, 32, 1);
+        setType("enlargebulletpowerup");
     }
 
     @Override
     public void affectPlayer(Entity playerEntity) {
-        playerEntity.setSpriteConfig(10, 10, 2);
-        playerEntity.setRadius(4);
+//        playerEntity.setSpriteConfig(10, 10, 2);
+//        playerEntity.setRadius(32);
     }
 }

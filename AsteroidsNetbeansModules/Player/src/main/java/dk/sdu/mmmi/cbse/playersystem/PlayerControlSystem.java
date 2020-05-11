@@ -4,6 +4,7 @@ import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.GameKeys;
 import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.common.data.entityparts.ItemPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
@@ -26,6 +27,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
             ShootingPart shootingPart = player.getPart(ShootingPart.class);
             LifePart lifePart = player.getPart(LifePart.class);
             TimerPart timerPart = player.getPart(TimerPart.class);
+            ItemPart itemPart = player.getPart(ItemPart.class);
 
             movingPart.setUp(gameData.getKeys().isDown(GameKeys.W));
             movingPart.setLeft(gameData.getKeys().isDown(GameKeys.A));
@@ -56,6 +58,7 @@ public class PlayerControlSystem implements IEntityProcessingService {
             shootingPart.process(gameData, player);
             lifePart.process(gameData, player);
             timerPart.process(gameData, player);
+            itemPart.process(gameData, player);
         }
     }
 }
