@@ -19,7 +19,7 @@ public class CollisionDetector implements IPostEntityProcessingService {
     public void process(GameData gameData, World world) {
         for (Entity e : world.getEntities()) {
             // exclude items from this processing loop
-            if (e.getType() == "enlargeplayerpowerup" || e.getType() == "enlargebulletpowerup") {
+            if (e.getType() == "enlargeplayerpowerup" || e.getType() == "enlargebulletpowerup" || e.getType() == "increasefireratepowerup") {
                 continue;
             }
             for (Entity f : world.getEntities()) {
@@ -28,7 +28,7 @@ public class CollisionDetector implements IPostEntityProcessingService {
                 }
 
                 // exclude items from this processing loop
-                if (f.getType() == "enlargeplayerpowerup" || f.getType() == "enlargebulletpowerup") {
+                if (f.getType() == "enlargeplayerpowerup" || f.getType() == "enlargebulletpowerup" || f.getType() == "increasefireratepowerup") {
                     continue;
                 }
                 
@@ -86,8 +86,6 @@ public class CollisionDetector implements IPostEntityProcessingService {
                 < (e.getRadius() + f.getRadius()) * (e.getRadius() + f.getRadius())) {
             return true;
         }
-
         return false;
     }
-
 }

@@ -18,7 +18,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publicPackages>
-                        <publicPakcage>dk.sdu.mmmi.cbse.common.collision</publicPakcage>
+                        <publicPackage>dk.sdu.mmmi.cbse.common.collision</publicPackage>
                         <publicPackage>dk.sdu.mmmi.cbse.common.data</publicPackage>
                         <publicPackage>dk.sdu.mmmi.cbse.common.data.entityparts</publicPackage>
                         <publicPackage>dk.sdu.mmmi.cbse.common.events</publicPackage>

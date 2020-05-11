@@ -59,12 +59,9 @@ public class ItemSystem implements IEntityProcessingService {
                             ip.setTimer(5000);
                             world.removeEntity(entity);
                         }
-
                     }
                 }
-
             }
-
         }
     }
 }

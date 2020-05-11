@@ -14,7 +14,7 @@ public class IncreaseFireRatePowerUp extends PowerUp {
     public void affectPlayer(Entity player) {
         ShootingPart shootingPart = player.getPart(ShootingPart.class);
         shootingPart.setBulletRadius(shootingPart.getBulletRadius() * 0.7f);
-        shootingPart.setFireRate((int) (shootingPart.getFireRate() / 2)); // half delay between shots = doule fire rate
+        shootingPart.setFireRate((int) (shootingPart.getFireRate() / 3)); // increase fire rate by lowering attribute
     }
 
     @Override
