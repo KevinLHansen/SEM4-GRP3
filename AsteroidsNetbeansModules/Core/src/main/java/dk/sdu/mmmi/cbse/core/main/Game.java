@@ -37,6 +37,7 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
+import dk.sdu.mmmi.cbse.maploader.TileLoader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -54,12 +55,12 @@ public class Game implements ApplicationListener {
     private final Lookup lookup = Lookup.getDefault();
     private final GameData gameData = new GameData();
     private World world = new World();
+    private TileLoader tileLoader;
     private List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
     private Lookup.Result<IGamePluginService> result;
     private Texture background;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private TiledMap tiledMap;
-    private Box2DDebugRenderer b2dr;
+    private TmxMapLoader tmxMapLoader = new TmxMapLoader();
 
     @Override
     public void create() {
@@ -81,8 +82,9 @@ public class Game implements ApplicationListener {
         }
 
         // Tilemap
-        b2dr = new Box2DDebugRenderer();
-        loadMap("tilemap.tmx");
+        tileLoader = new TileLoader(tmxMapLoader);
+        tileLoader.load("tilemap.tmx");
+        this.mapRenderer = tileLoader.getRenderer();
         
         // Camera
         float aspectRatio = h / w;
@@ -120,17 +122,9 @@ public class Game implements ApplicationListener {
         updateServices();
         drawMap();
         drawSprites();
-        b2dr.render(world.getB2dWorld(), camera.combined);
         updateCamera();
     }
 
-    private void loadMap(String mapPath) {
-        //TmxMapLoader mapLoader = new TmxMapLoader(new AbsoluteFileHandleResolver());
-        TmxMapLoader mapLoader = new TmxMapLoader();//new InternalFileHandleResolver()); // TEMPORARY SOLUTION
-        tiledMap = mapLoader.load(mapPath);
-        mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        this.createWalls(tiledMap);
-    }
     
     private void createWalls(Map map){
         String layerName = "walls";
@@ -139,6 +133,8 @@ public class Game implements ApplicationListener {
         if (layer == null){
             System.out.println("\n\n\n\n\n\n\nno walls!!!\n\n\n\n\n");
         }
+        
+        System.out.println(world.getB2dWorld().toString() + "\n\n\n\n\n\n\n\n\n\n");
         
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
@@ -212,10 +208,10 @@ public class Game implements ApplicationListener {
                 float playerX = pp.getX();
                 float playerY = pp.getY();
                 
-                int mapWidth = tiledMap.getProperties().get("width", Integer.class);
-                int mapHeight = tiledMap.getProperties().get("height", Integer.class);
-                int tileWidth = tiledMap.getProperties().get("tilewidth", Integer.class);
-                int tileHeight = tiledMap.getProperties().get("tileheight", Integer.class);
+                int mapWidth = tileLoader.getMapWidth();
+                int mapHeight = tileLoader.getMapHeight();
+                int tileWidth = tileLoader.getTileWidth();
+                int tileHeight = tileLoader.getTileHeight();
                 
                 // prevent camera from showing out of bounds area when near edge of world
                 if (playerX > mapWidth * tileWidth - camera.viewportWidth / 2 || playerX < 0 + camera.viewportWidth / 2) {
