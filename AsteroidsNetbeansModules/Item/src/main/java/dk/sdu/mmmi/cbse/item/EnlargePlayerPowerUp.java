@@ -13,4 +13,10 @@ public class EnlargePlayerPowerUp extends PowerUp {
     public void affectPlayer(Entity playerEntity) {
         playerEntity.setRadius(playerEntity.getRadius() * 1.5f);
     }
+
+    @Override
+    public void unaffectPlayer(Entity player) {
+        Entity playerOrigin = player.getOrigin();
+        player.setRadius(playerOrigin.getRadius());
+    }
 }

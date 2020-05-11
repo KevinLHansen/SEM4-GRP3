@@ -2,6 +2,7 @@ package dk.sdu.mmmi.cbse.common.data;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import dk.sdu.mmmi.cbse.common.data.entityparts.EntityPart;
+import dk.sdu.mmmi.cbse.common.data.entityparts.ShootingPart;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -39,7 +40,14 @@ public class Entity implements Serializable {
     
     // copy-constructor for making clones of instances (for use with origin)
     public Entity(Entity clonee) {
+        
+        parts = new ConcurrentHashMap<>();
+        type = "entity";
+        
         this.radius = clonee.radius;
+        
+        ShootingPart shootingPart = clonee.getPart(ShootingPart.class);
+        this.add(new ShootingPart(shootingPart.getBulletRadius()));
         // potentially more relevant attributes
     }
 

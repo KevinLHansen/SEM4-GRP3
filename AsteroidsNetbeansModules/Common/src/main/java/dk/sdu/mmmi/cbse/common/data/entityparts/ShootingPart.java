@@ -8,9 +8,14 @@ public class ShootingPart implements EntityPart {
     private boolean isShooting;
     private String direction;
     private String ID;
+    private float bulletRadius;
 
     public ShootingPart(String id) {
         this.ID = id;
+    }
+    
+    public ShootingPart(float bulletRadius) {
+        this.bulletRadius = bulletRadius;
     }
 
     public boolean isShooting() {
@@ -40,4 +45,14 @@ public class ShootingPart implements EntityPart {
     public String getDirection() {
         return direction;
     }
+
+    public float getBulletRadius() {
+        return bulletRadius;
+    }
+
+    public void setBulletRadius(float bulletRadius) {
+        this.bulletRadius = bulletRadius;
+    }
+    
+    
 }

@@ -1,6 +1,7 @@
 package dk.sdu.mmmi.cbse.item;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
+import dk.sdu.mmmi.cbse.common.data.entityparts.ShootingPart;
 
 public class EnlargeBulletPowerUp extends PowerUp {
 
@@ -10,8 +11,16 @@ public class EnlargeBulletPowerUp extends PowerUp {
     }
 
     @Override
-    public void affectPlayer(Entity playerEntity) {
-//        playerEntity.setSpriteConfig(10, 10, 2);
-//        playerEntity.setRadius(32);
+    public void affectPlayer(Entity player) {
+        ShootingPart shootingPart = player.getPart(ShootingPart.class);
+        shootingPart.setBulletRadius(shootingPart.getBulletRadius() * 2);
+    }
+
+    @Override
+    public void unaffectPlayer(Entity player) {
+        Entity playerOrigin = player.getOrigin();
+        ShootingPart shootingPart = player.getPart(ShootingPart.class);
+        ShootingPart shootingPartOrigin = playerOrigin.getPart(ShootingPart.class);
+        shootingPart.setBulletRadius(shootingPartOrigin.getBulletRadius());
     }
 }

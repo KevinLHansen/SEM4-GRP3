@@ -6,8 +6,9 @@ public abstract class PowerUp extends Entity {
 
     public PowerUp() {
         assignTexture("/img/item.png");
-        setSpriteConfig(32, 32, 1);
     }
 
-    public abstract void affectPlayer(Entity entity);
+    public abstract void affectPlayer(Entity player);
+    
+    public abstract void unaffectPlayer(Entity player);
 }

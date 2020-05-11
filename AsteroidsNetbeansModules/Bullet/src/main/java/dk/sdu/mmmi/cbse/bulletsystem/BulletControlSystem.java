@@ -14,8 +14,8 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
-@ServiceProviders(value = {
-    @ServiceProvider(service = IEntityProcessingService.class),})
+@ServiceProviders(value = { @ServiceProvider(service = IEntityProcessingService.class), })
+
 public class BulletControlSystem implements IEntityProcessingService {
 
     private Entity bullet;
@@ -34,7 +34,7 @@ public class BulletControlSystem implements IEntityProcessingService {
                     if (timerPart.getTimer() > fireRate) { // if [fireRate] ms has passed since last bullet fired
                         timerPart.resetTimer();
                         PositionPart positionPart = entity.getPart(PositionPart.class);
-                        bullet = createBullet(positionPart.getX(), positionPart.getY(), shootingPart.getDirection(), 8, shootingPart.getID());
+                        bullet = createBullet(positionPart.getX(), positionPart.getY(), shootingPart.getDirection(), shootingPart.getBulletRadius(), shootingPart.getID());
                         world.addEntity(bullet);
                     }
                     shootingPart.setIsShooting(false);

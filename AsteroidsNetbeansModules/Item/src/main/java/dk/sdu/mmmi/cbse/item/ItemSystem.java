@@ -30,10 +30,15 @@ public class ItemSystem implements IEntityProcessingService {
         // if player is still alive
         if (player != null) {
             ItemPart ip = player.getPart(ItemPart.class);
-            playerOrigin = player.getOrigin();
-            // if no item active, make sure player stats are that of origin
+            
+            // if no item active, revert stats to original
             if (!ip.isActive()) {
-                player.setRadius(playerOrigin.getRadius());
+                EnlargePlayerPowerUp pwrUp1 = new EnlargePlayerPowerUp();
+                EnlargeBulletPowerUp pwrUp2 = new EnlargeBulletPowerUp();
+                
+                pwrUp1.unaffectPlayer(player);
+                pwrUp2.unaffectPlayer(player);
+                
             }
             
             

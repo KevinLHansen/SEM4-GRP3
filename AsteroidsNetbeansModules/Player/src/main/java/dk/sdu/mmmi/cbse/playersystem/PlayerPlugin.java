@@ -43,15 +43,23 @@ public class PlayerPlugin implements IGamePluginService {
         float y = gameData.getDisplayHeight() / 2;
         float radians = 3.1415f / 2;
 
-
         player = new Player();
+        
         player.setRadius(16);
+        
         player.add(new MovingPart(3));
+        
         player.add(new PositionPart(x, y, radians));
+        
         UUID uuid = UUID.randomUUID();
-        player.add(new ShootingPart(uuid.toString()));
+        ShootingPart shootingPart = new ShootingPart(uuid.toString());
+        shootingPart.setBulletRadius(8);
+        player.add(shootingPart);
+        
         player.add(new LifePart(1));
+        
         player.add(new TimerPart());
+        
         player.add(new ItemPart());
         
         player.setOrigin(new Entity(player));
