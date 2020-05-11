@@ -9,6 +9,11 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.Map;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -22,6 +27,7 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
+import dk.sdu.mmmi.cbse.maploader.TileLoader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -39,12 +45,12 @@ public class Game implements ApplicationListener {
     private final Lookup lookup = Lookup.getDefault();
     private final GameData gameData = new GameData();
     private World world = new World();
+    private TileLoader tileLoader;
     private List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
     private Lookup.Result<IGamePluginService> result;
     private Texture background;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private TiledMap tiledMap;
-    private ShapeRenderer shapeRenderer;
+    private Box2DDebugRenderer b2dr;
 
     @Override
     public void create() {
@@ -68,7 +74,11 @@ public class Game implements ApplicationListener {
         }
 
         // Tilemap
-        loadMap("tilemap.tmx");
+        //tileLoader = new TileLoader(tmxMapLoader);
+        tileLoader = new TileLoader();
+        tileLoader.load("tilemap.tmx");
+        this.mapRenderer = tileLoader.getRenderer();
+        this.b2dr = tileLoader.getB2dRenderer();
         
         // Camera
         float aspectRatio = h / w;
@@ -109,17 +119,11 @@ public class Game implements ApplicationListener {
         drawSprites();
         updateCamera();
     }
-
-    private void loadMap(String mapPath) {
-        //TmxMapLoader mapLoader = new TmxMapLoader(new AbsoluteFileHandleResolver());
-        TmxMapLoader mapLoader = new TmxMapLoader();//new InternalFileHandleResolver()); // TEMPORARY SOLUTION
-        tiledMap = mapLoader.load(mapPath);
-        mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-    }
     
     private void drawMap() {
         mapRenderer.setView((OrthographicCamera) camera);
         mapRenderer.render();
+        b2dr.render(tileLoader.getWorld(), camera.combined);
     }
     
     private void updateServices() {
@@ -169,10 +173,10 @@ public class Game implements ApplicationListener {
                 float playerX = pp.getX();
                 float playerY = pp.getY();
                 
-                int mapWidth = tiledMap.getProperties().get("width", Integer.class);
-                int mapHeight = tiledMap.getProperties().get("height", Integer.class);
-                int tileWidth = tiledMap.getProperties().get("tilewidth", Integer.class);
-                int tileHeight = tiledMap.getProperties().get("tileheight", Integer.class);
+                int mapWidth = tileLoader.getMapWidth();
+                int mapHeight = tileLoader.getMapHeight();
+                int tileWidth = tileLoader.getTileWidth();
+                int tileHeight = tileLoader.getTileHeight();
                 
 
                 // prevent camera from showing out of bounds area when near edge of world

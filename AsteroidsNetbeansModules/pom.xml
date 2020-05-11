@@ -65,6 +65,8 @@
         <module>Bullet</module>
         <module>Enemy</module>
         <module>Item</module>
+        <module>MapLoader</module>
+        <module>LibGDX</module>
     </modules>
 
     <properties>
