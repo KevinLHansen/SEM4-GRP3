@@ -33,7 +33,7 @@ public class BulletControlSystem implements IEntityProcessingService {
                     if (timerPart.getTimer() > shootingPart.getFireRate()) { // if [fireRate] ms has passed since last bullet fired
                         timerPart.resetTimer();
                         PositionPart positionPart = entity.getPart(PositionPart.class);
-                        bullet = createBullet(positionPart.getX(), positionPart.getY(), shootingPart.getDirection(), shootingPart.getBulletRadius(), shootingPart.getID());
+                        bullet = createBullet(positionPart.getX(), positionPart.getY(), shootingPart.getDirection(), entity.getRadius(), shootingPart.getBulletRadius(), shootingPart.getID());
                         world.addEntity(bullet);
                     }
                     shootingPart.setIsShooting(false);
@@ -55,7 +55,7 @@ public class BulletControlSystem implements IEntityProcessingService {
         }
     }
 
-    private Entity createBullet(float x, float y, String direction, float radius, String uuid) {
+    private Entity createBullet(float x, float y, String direction, float entityRadius, float bulletRadius, String uuid) {
         Entity bullet = new Bullet();
 
         PositionPart pp;
@@ -69,7 +69,7 @@ public class BulletControlSystem implements IEntityProcessingService {
                 mp.setDown(false);
                 mp.setRight(false);
 
-                pp = new PositionPart(x, y + radius, 0);
+                pp = new PositionPart(x, y + entityRadius, 0);
                 break;
             case "left":
                 mp.setUp(false);
@@ -77,7 +77,7 @@ public class BulletControlSystem implements IEntityProcessingService {
                 mp.setDown(false);
                 mp.setRight(false);
 
-                pp = new PositionPart(x - radius, y, 0);
+                pp = new PositionPart(x - entityRadius, y, 0);
                 break;
             case "down":
                 mp.setUp(false);
@@ -85,7 +85,7 @@ public class BulletControlSystem implements IEntityProcessingService {
                 mp.setDown(true);
                 mp.setRight(false);
 
-                pp = new PositionPart(x, y - radius, 0);
+                pp = new PositionPart(x, y - entityRadius, 0);
                 break;
             case "right":
                 mp.setUp(false);
@@ -93,7 +93,7 @@ public class BulletControlSystem implements IEntityProcessingService {
                 mp.setDown(false);
                 mp.setRight(true);
 
-                pp = new PositionPart(x + radius, y, 0);
+                pp = new PositionPart(x + entityRadius, y, 0);
                 break;
             default:
                 pp = new PositionPart(x, y, 0);
@@ -106,7 +106,7 @@ public class BulletControlSystem implements IEntityProcessingService {
         bullet.add(new LifePart(1));
         // Projectile Part only used for better collision detection     
         bullet.add(new ProjectilePart(uuid.toString()));
-        bullet.setRadius(radius);
+        bullet.setRadius(bulletRadius);
 
         return bullet;
     }
