@@ -9,13 +9,14 @@ public class ShootingPart implements EntityPart {
     private String direction;
     private String ID;
     private float bulletRadius;
+    private int fireRate; // ms between shots
 
-    public ShootingPart(String id) {
-        this.ID = id;
+    public ShootingPart() {
+        
     }
     
-    public ShootingPart(float bulletRadius) {
-        this.bulletRadius = bulletRadius;
+    public ShootingPart(String id) {
+        this.ID = id;
     }
 
     public boolean isShooting() {
@@ -54,5 +55,12 @@ public class ShootingPart implements EntityPart {
         this.bulletRadius = bulletRadius;
     }
     
+    public int getFireRate() {
+        return fireRate;
+    }
+    
+    public void setFireRate(int fireRate) {
+        this.fireRate = fireRate;
+    }
     
 }

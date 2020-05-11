@@ -19,7 +19,6 @@ import org.openide.util.lookup.ServiceProviders;
 public class BulletControlSystem implements IEntityProcessingService {
 
     private Entity bullet;
-    int fireRate = 200; // ms between shots
 
     @Override
     public void process(GameData gameData, World world) {
@@ -31,7 +30,7 @@ public class BulletControlSystem implements IEntityProcessingService {
 
                 // Shoot if isShooting is true
                 if (shootingPart.isShooting()) {
-                    if (timerPart.getTimer() > fireRate) { // if [fireRate] ms has passed since last bullet fired
+                    if (timerPart.getTimer() > shootingPart.getFireRate()) { // if [fireRate] ms has passed since last bullet fired
                         timerPart.resetTimer();
                         PositionPart positionPart = entity.getPart(PositionPart.class);
                         bullet = createBullet(positionPart.getX(), positionPart.getY(), shootingPart.getDirection(), shootingPart.getBulletRadius(), shootingPart.getID());

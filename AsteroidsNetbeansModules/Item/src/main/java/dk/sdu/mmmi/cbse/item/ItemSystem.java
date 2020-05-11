@@ -1,11 +1,15 @@
 package dk.sdu.mmmi.cbse.item;
 
+import dk.sdu.mmmi.cbse.item.powerups.PowerUp;
+import dk.sdu.mmmi.cbse.item.powerups.EnlargePlayerPowerUp;
+import dk.sdu.mmmi.cbse.item.powerups.EnlargeBulletPowerUp;
 import dk.sdu.mmmi.cbse.common.collision.CollisionDetector;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.ItemPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
+import dk.sdu.mmmi.cbse.item.powerups.IncreaseFireRatePowerUp;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
@@ -19,7 +23,7 @@ public class ItemSystem implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         Entity player = null;
-        Entity playerOrigin;
+        
         // get player entity
         for (Entity entity : world.getEntities()) {
             if (entity.getType() == "player") {
@@ -35,12 +39,12 @@ public class ItemSystem implements IEntityProcessingService {
             if (!ip.isActive()) {
                 EnlargePlayerPowerUp pwrUp1 = new EnlargePlayerPowerUp();
                 EnlargeBulletPowerUp pwrUp2 = new EnlargeBulletPowerUp();
+                IncreaseFireRatePowerUp pwrUp3 = new IncreaseFireRatePowerUp();
                 
                 pwrUp1.unaffectPlayer(player);
                 pwrUp2.unaffectPlayer(player);
-                
+                pwrUp3.unaffectPlayer(player);
             }
-            
             
             for (Entity entity : world.getEntities()) {
                 if (entity instanceof PowerUp) {

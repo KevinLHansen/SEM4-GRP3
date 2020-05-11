@@ -1,19 +1,20 @@
-package dk.sdu.mmmi.cbse.item;
+package dk.sdu.mmmi.cbse.item.powerups;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.entityparts.ShootingPart;
 
-public class EnlargeBulletPowerUp extends PowerUp {
+public class IncreaseFireRatePowerUp extends PowerUp {
 
-    public EnlargeBulletPowerUp() {
-        assignTexture("/img/enlargebullet.png");
-        setType("enlargebulletpowerup");
+    public IncreaseFireRatePowerUp() {
+        assignTexture("/img/increasefirerate.png");
+        setType("increasefireratepowerup");
     }
 
     @Override
     public void affectPlayer(Entity player) {
         ShootingPart shootingPart = player.getPart(ShootingPart.class);
-        shootingPart.setBulletRadius(shootingPart.getBulletRadius() * 2);
+        shootingPart.setBulletRadius(shootingPart.getBulletRadius() * 0.7f);
+        shootingPart.setFireRate((int) (shootingPart.getFireRate() / 2)); // half delay between shots = doule fire rate
     }
 
     @Override
@@ -22,5 +23,6 @@ public class EnlargeBulletPowerUp extends PowerUp {
         ShootingPart shootingPart = player.getPart(ShootingPart.class);
         ShootingPart shootingPartOrigin = playerOrigin.getPart(ShootingPart.class);
         shootingPart.setBulletRadius(shootingPartOrigin.getBulletRadius());
+        shootingPart.setFireRate(shootingPartOrigin.getFireRate());
     }
 }

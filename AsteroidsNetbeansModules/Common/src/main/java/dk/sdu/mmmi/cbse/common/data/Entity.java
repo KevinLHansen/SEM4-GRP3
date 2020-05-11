@@ -46,8 +46,12 @@ public class Entity implements Serializable {
         
         this.radius = clonee.radius;
         
+        // make a clone of clonee's shootingpart
         ShootingPart shootingPart = clonee.getPart(ShootingPart.class);
-        this.add(new ShootingPart(shootingPart.getBulletRadius()));
+        ShootingPart shootingPartClone = new ShootingPart();
+        shootingPartClone.setBulletRadius(shootingPart.getBulletRadius());
+        shootingPartClone.setFireRate(shootingPart.getFireRate());
+        this.add(shootingPartClone);
         // potentially more relevant attributes
     }
 

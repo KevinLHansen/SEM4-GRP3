@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.cbse.item;
+package dk.sdu.mmmi.cbse.item.powerups;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 
