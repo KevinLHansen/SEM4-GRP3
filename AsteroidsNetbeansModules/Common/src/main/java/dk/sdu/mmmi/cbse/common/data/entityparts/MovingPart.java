@@ -1,7 +1,9 @@
 package dk.sdu.mmmi.cbse.common.data.entityparts;
 
+import com.badlogic.gdx.math.Rectangle;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+import java.util.List;
 
 public class MovingPart implements EntityPart {
 
@@ -58,7 +60,21 @@ public class MovingPart implements EntityPart {
         // prevent entity from leaving world boundaries
         if (x > gameData.getDisplayWidth() || x < 0) { x = positionPart.getX(); }
         if (y > gameData.getDisplayHeight() || y < 0) { y = positionPart.getY(); }
-
+        
+        // get list of walls from GameData
+        List<Rectangle> walls = gameData.getWalls();
+        boolean collides = false;
+        // check if entity will collide with any wall
+        for (Rectangle wall : walls) {
+            if (wall.contains(x, y)) {
+                collides = true;
+            }
+        }
+        if (collides) {
+            x = positionPart.getX();
+            y = positionPart.getY();
+        }
+        
         positionPart.setX(x);
         positionPart.setY(y);
 

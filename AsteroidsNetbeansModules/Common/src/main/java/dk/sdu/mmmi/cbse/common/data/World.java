@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.cbse.common.data;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,6 +22,8 @@ public class World {
         entityMap.put(entity.getID(), entity);
         return entity.getID();
     }
+    
+    
 
     public void removeEntity(String entityID) {
         entityMap.remove(entityID);

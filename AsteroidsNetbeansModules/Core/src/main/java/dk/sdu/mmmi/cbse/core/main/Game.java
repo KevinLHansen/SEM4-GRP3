@@ -79,6 +79,10 @@ public class Game implements ApplicationListener {
         //tileLoader = new TileLoader(tmxMapLoader);
         tileLoader = new TileLoader();
         tileLoader.load("tilemap.tmx");
+        
+        // assign walls to GameData
+        gameData.setWalls(tileLoader.createWalls());
+        
         this.mapRenderer = tileLoader.getRenderer();
         this.b2dr = tileLoader.getB2dRenderer();
         

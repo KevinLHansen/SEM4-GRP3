@@ -38,11 +38,9 @@ public class TileLoader {
     public void load(String mapPath) {
         tiledMap = mapLoader.load(mapPath);
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        
-        this.createWalls(tiledMap);
     }
     
-    private List<Rectangle> createWalls(TiledMap tiledMap){
+    public List<Rectangle> createWalls(){
         String layerName = "walls";
         
         MapLayer layer = tiledMap.getLayers().get(layerName);
