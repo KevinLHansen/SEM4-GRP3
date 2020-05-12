@@ -42,6 +42,9 @@ public class GameInputProcessor extends InputAdapter {
         if (k == Keys.SPACE) {
             gameData.getKeys().setKey(GameKeys.SPACE, true);
         }
+        if (k == Keys.M) {
+            gameData.getKeys().setKey(GameKeys.M, true);
+        }
         
         return true;
     }
@@ -73,6 +76,9 @@ public class GameInputProcessor extends InputAdapter {
         }
         if (k == Keys.SPACE) {
             gameData.getKeys().setKey(GameKeys.SPACE, false);
+        }
+        if (k == Keys.M) {
+            gameData.getKeys().setKey(GameKeys.M, false);
         }
         
         return true;

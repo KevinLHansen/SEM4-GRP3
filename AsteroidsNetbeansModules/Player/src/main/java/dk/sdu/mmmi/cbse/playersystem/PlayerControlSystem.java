@@ -52,6 +52,16 @@ public class PlayerControlSystem implements IEntityProcessingService {
                 shootingPart.setDirection("right");
             }
             
+            // additional controls
+            if(gameData.getKeys().isDown(GameKeys.M)) { // toggle drawing debug
+                if (gameData.isDrawDebug()) {
+                    gameData.setDrawDebug(false);
+                } else {
+                    gameData.setDrawDebug(true);
+                }
+                // reset keypress to avoid registering multiple keypresses
+                gameData.getKeys().setKey(GameKeys.M, false);
+            }
 
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);

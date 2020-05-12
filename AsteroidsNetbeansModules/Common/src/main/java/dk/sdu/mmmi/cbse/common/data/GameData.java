@@ -14,6 +14,7 @@ public class GameData {
     private final GameKeys keys = new GameKeys();
     private List<Event> events = new CopyOnWriteArrayList<>();
     private List<Rectangle> wallList = new ArrayList<>();
+    private boolean drawDebug = false;
 
     
     public void setWalls(List<Rectangle> walls) {
@@ -64,6 +65,16 @@ public class GameData {
         return displayHeight;
     }
 
+    public boolean isDrawDebug() {
+        return drawDebug;
+    }
+
+    public void setDrawDebug(boolean drawDebug) {
+        this.drawDebug = drawDebug;
+    }
+
+    
+    
     public <E extends Event> List<Event> getEvents(Class<E> type, String sourceID) {
         List<Event> r = new ArrayList();
         for (Event event : events) {

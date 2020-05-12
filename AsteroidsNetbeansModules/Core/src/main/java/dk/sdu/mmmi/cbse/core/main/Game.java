@@ -19,6 +19,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
@@ -124,7 +125,7 @@ public class Game implements ApplicationListener {
         drawMap();
         drawSprites();
         updateCamera();
-        drawDebug(); // debug drawing. commentize to disable
+        drawDebug(); // debug drawing. Toggleable on M key
     }
     
     private void drawMap() {
@@ -208,16 +209,43 @@ public class Game implements ApplicationListener {
     }
 
     public void drawDebug() {
+        if (gameData.isDrawDebug()) {
+            shapeRenderer.begin(ShapeType.Line);
+        float alpha = 125;
         // draw radius circle for every entity
         for (Entity entity : world.getEntities()) {
             PositionPart pp = entity.getPart(PositionPart.class);
-
-            shapeRenderer.setColor(Color.WHITE);
-            shapeRenderer.begin(ShapeType.Line);
-
+            String entityType = entity.getType();
+            switch (entityType) {
+                case "player":
+                    shapeRenderer.setColor(0, 255, 255, alpha);
+                    break;
+                case "enemy":
+                    shapeRenderer.setColor(255, 0, 0, alpha);
+                    break;
+                case "enlargeplayerpowerup":
+                    shapeRenderer.setColor(0, 255, 0, alpha);
+                    break;
+                case "enlargebulletpowerup":
+                    shapeRenderer.setColor(0, 255, 0, alpha);
+                    break;
+                case "increasefireratepowerup":
+                    shapeRenderer.setColor(0, 255, 0, alpha);
+                    break;
+                default:
+                    shapeRenderer.setColor(255, 255, 255, alpha);
+            }
             shapeRenderer.circle(pp.getX(), pp.getY(), entity.getRadius());
-            shapeRenderer.end();
+            shapeRenderer.circle(pp.getX(), pp.getY(), 1);
         }
+        shapeRenderer.setColor(200, 200, 200, alpha);
+        // draw outline for all walls
+        for (Rectangle wall : gameData.getWalls()) {
+            shapeRenderer.rect(wall.x, wall.y, wall.width, wall.height);
+        }
+        shapeRenderer.end();
+        }
+        
     }
 
     @Override
