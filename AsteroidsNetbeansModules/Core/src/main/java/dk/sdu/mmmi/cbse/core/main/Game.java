@@ -119,11 +119,12 @@ public class Game implements ApplicationListener {
         gameData.setDelta(Gdx.graphics.getDeltaTime());
         gameData.getKeys().update();
 
-        //drawDebug(); // debug drawing. commentize to disable
+        
         updateServices();
         drawMap();
         drawSprites();
         updateCamera();
+        drawDebug(); // debug drawing. commentize to disable
     }
     
     private void drawMap() {

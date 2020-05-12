@@ -50,7 +50,7 @@ public class MovingPart implements EntityPart {
         float y = positionPart.getY();
         float radians = positionPart.getRadians();
         float delta = gameData.getDelta();
-
+        
         // move entity by altering coordinates depending on input
         if (up)    { y +=  speed; }
         if (left)  { x += -speed; }
@@ -70,6 +70,7 @@ public class MovingPart implements EntityPart {
                 collides = true;
             }
         }
+        // if movement will cause collision, reset position to original (no movement)
         if (collides) {
             x = positionPart.getX();
             y = positionPart.getY();
