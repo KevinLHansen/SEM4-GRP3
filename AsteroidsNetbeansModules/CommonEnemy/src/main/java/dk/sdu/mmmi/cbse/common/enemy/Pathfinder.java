@@ -33,10 +33,8 @@ public class Pathfinder {
     
     public Graph calculatePath(Vector2 startPos, Vector2 goalPos) {
         
-        //Node startNode = graph.getNodeByPosition(startPos.x, startPos.y);
-        
-        float distance = Math.abs(startPos.x - goalPos.x) + Math.abs(startPos.y - goalPos.y);
-        
+        AStar as = new AStar();
+        as.doTheThing(graph.getNodeByPosition((int) startPos.x, (int) startPos.y), graph.getNodeByPosition((int) goalPos.x, (int) goalPos.y));
         
         
         return graph;

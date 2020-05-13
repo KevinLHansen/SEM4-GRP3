@@ -32,7 +32,7 @@ public class GraphGenerator {
             for (int x = 0; x < mapWidth; x++) {
                 
                 Node node = new Node();
-                node.setType(1);
+                node.setType(Node.Type.FLOOR);
                 nodes.get(y).add(node);
             }
         }
@@ -65,7 +65,7 @@ public class GraphGenerator {
                     }
                 }
                 else {
-                    targetNode.setType(0);
+                    targetNode.setType(Node.Type.WALL);
                 } 
             }
         }

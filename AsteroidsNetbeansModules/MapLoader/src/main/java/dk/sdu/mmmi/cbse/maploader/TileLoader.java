@@ -21,6 +21,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import dk.sdu.mmmi.cbse.common.data.Heuristic;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +54,9 @@ public class TileLoader {
         mapPixelHeight = mapHeight * tileHeight;
         mapPixelWidth = mapWidth * tileWidth;
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        
+        // This is shit!!!!!
+        Heuristic.setTileSize(tileWidth, tileHeight);
     }
     
     public List<Rectangle> createWalls(){
