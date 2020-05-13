@@ -36,6 +36,11 @@ public class CollisionDetector implements IPostEntityProcessingService {
                 if (f.getType() == "bullet" && e.getType() == "bullet") {
                     continue;
                 }
+                
+                // so that enemies cannot collide with enemies
+                if (f.getType() == "enemy" && e.getType() == "enemy") {
+                    continue;
+                }
 
                 if (circleCollision(e, f)) {
                     // avoid bullets damaging the entity that created said bullet

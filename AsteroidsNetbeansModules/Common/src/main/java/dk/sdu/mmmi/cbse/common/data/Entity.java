@@ -20,13 +20,11 @@ public class Entity implements Serializable {
     private Sprite sprite;
     private Map<Class, EntityPart> parts;
     private String type;
-    private SpriteConfig spriteCfg;
     private Entity origin; // stores a copy of the original version of the object. For use when reverting item effects
 
     public Entity() {
 
         parts = new ConcurrentHashMap<>();
-        spriteCfg = new SpriteConfig();
         type = "entity";
         try {
             // assign default texture
@@ -101,14 +99,6 @@ public class Entity implements Serializable {
 
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
-    }
-
-    public SpriteConfig getSpriteCfg() {
-        return spriteCfg;
-    }
-
-    public void setSpriteConfig(int width, int height, float scale) {
-        spriteCfg = new SpriteConfig(width, height, scale);
     }
 
     public String getType() {

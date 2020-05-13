@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.cbse.common.data;
 
+import com.badlogic.gdx.math.Rectangle;
 import dk.sdu.mmmi.cbse.common.events.Event;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +14,25 @@ public class GameData {
     private final GameKeys keys = new GameKeys();
     private List<Event> events = new CopyOnWriteArrayList<>();
     private Graph graph;
-    
+    private List<Rectangle> wallList = new ArrayList<>();
+    private boolean drawDebug = false;
+
     public void setGraph(Graph graph) {
-        this.graph = graph;
+    	this.graph = graph;
     }
     
     public Graph getGraph() {
         return graph;
     } 
-
+    
+    public void setWalls(List<Rectangle> walls) {
+        this.wallList = walls;
+    }
+    
+    public List<Rectangle> getWalls() {
+        return wallList;
+    }
+    
     public void addEvent(Event e) {
         events.add(e);
     }
@@ -62,6 +73,16 @@ public class GameData {
         return displayHeight;
     }
 
+    public boolean isDrawDebug() {
+        return drawDebug;
+    }
+
+    public void setDrawDebug(boolean drawDebug) {
+        this.drawDebug = drawDebug;
+    }
+
+    
+    
     public <E extends Event> List<Event> getEvents(Class<E> type, String sourceID) {
         List<Event> r = new ArrayList();
         for (Event event : events) {

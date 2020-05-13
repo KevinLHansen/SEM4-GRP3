@@ -53,11 +53,9 @@ public class TileLoader {
         mapPixelHeight = mapHeight * tileHeight;
         mapPixelWidth = mapWidth * tileWidth;
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        
-        this.createWalls(tiledMap);
     }
     
-    private List<Rectangle> createWalls(TiledMap tiledMap){
+    public List<Rectangle> createWalls(){
         String layerName = "walls";
         
         MapLayer layer = tiledMap.getLayers().get(layerName);
