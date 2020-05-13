@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+import dk.sdu.mmmi.cbse.common.data.Graph;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
@@ -25,8 +26,8 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-
-        Entity player = null;
+        
+                Entity player = null;
         // get player from world
         for (Entity entity : world.getEntities()) {
             if (entity.getType() == "player") {
@@ -40,7 +41,11 @@ public class EnemyControlSystem implements IEntityProcessingService {
             for (Entity enemy : world.getEntities(Enemy.class)) {
                 PositionPart enemyPos = enemy.getPart(PositionPart.class);
                 LifePart lifePart = enemy.getPart(LifePart.class);
-
+                
+                Vector2 enemyVector = new Vector2(enemyPos.getX(), enemyPos.getY());
+                Vector2 playerVector = new Vector2(playerPos.getX(), playerPos.getY());
+                Graph graph = ((Enemy) enemy).getPathfinder().calculatePath(enemyVector, playerVector);
+                
                 float x = enemyPos.getX();
                 float y = enemyPos.getY();
                 float radius = enemy.getRadius();
@@ -54,12 +59,16 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
                 x += vector.x;
                 y += vector.y;
-                
+
                 float tempY = y;
-                
+
                 // prevent entity from leaving world boundaries
-                if (x > gameData.getDisplayWidth() || x < 0) { x = enemyPos.getX(); }
-                if (y > gameData.getDisplayHeight() || y < 0) { y = enemyPos.getY(); }
+                if (x > gameData.getDisplayWidth() || x < 0) {
+                    x = enemyPos.getX();
+                }
+                if (y > gameData.getDisplayHeight() || y < 0) {
+                    y = enemyPos.getY();
+                }
 
                 // get list of walls from GameData
                 List<Rectangle> walls = gameData.getWalls();
@@ -69,16 +78,17 @@ public class EnemyControlSystem implements IEntityProcessingService {
                     if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
                         // try changing only x
                         y = enemyPos.getY();
-                    if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
-                        // try changing only y
-                        y = tempY;
-                        x = enemyPos.getX();
-                    }
-                    if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
-                        y = enemyPos.getY();
+                        if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
+                            // try changing only y
+                            y = tempY;
+                            x = enemyPos.getX();
+                        }
+                        if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
+                            y = enemyPos.getY();
+                        }
                     }
                 }
-            }
+            
 
                 enemyPos.setX(x);
                 enemyPos.setY(y);

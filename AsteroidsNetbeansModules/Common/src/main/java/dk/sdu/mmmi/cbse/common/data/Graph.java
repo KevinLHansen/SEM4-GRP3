@@ -16,9 +16,9 @@ public class Graph {
     private int mapWidth = 0;
     private int tileHeight = 0;
     private int tileWidth = 0;
-    private Array<Node> nodes = new Array<Node>();
+    private Array<Array<Node>> nodes = new Array<Array<Node>>();
     
-    public Graph(int mapWidth, int tileHeigth, int tileWidth, Array<Node> nodes) {
+    public Graph(int mapWidth, int tileHeight, int tileWidth, Array<Array<Node>> nodes) {
         this.mapWidth = mapWidth;
         this.tileHeight = tileHeight;
         this.tileWidth = tileWidth;
@@ -32,12 +32,18 @@ public class Graph {
     public int getNodeCount() {
         return nodes.size;
     }
+
+    public Array<Array<Node>> getNodes() {
+        return nodes;
+    }
     
     public Node getNodeByPosition(int x, int y) {
         int modX = x / tileWidth;
         int modY = y / tileHeight;
         
-        return nodes.get(tileWidth * modY + modX);
+        return nodes.get(x).get(y);
+        
+        //return nodes.get(tileWidth * modY + modX);
     }
     
 }

@@ -23,6 +23,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+import dk.sdu.mmmi.cbse.common.data.Graph;
+import dk.sdu.mmmi.cbse.common.data.Node;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
@@ -55,6 +57,7 @@ public class Game implements ApplicationListener {
     private OrthogonalTiledMapRenderer mapRenderer;
     private Box2DDebugRenderer b2dr;
     private ShapeRenderer shapeRenderer;
+    private Graph graph;
 
     @Override
     public void create() {
@@ -82,7 +85,9 @@ public class Game implements ApplicationListener {
         tileLoader = new TileLoader();
         tileLoader.load("tilemap.tmx");
         
-        gameData.setGraph(GraphGenerator.generateGraph(tileLoader.getTiledMap()));
+        graph = GraphGenerator.generateGraph(tileLoader.getTiledMap());
+        
+        gameData.setGraph(graph);
         
         // assign walls to GameData
         gameData.setWalls(tileLoader.createWalls());
@@ -189,6 +194,7 @@ public class Game implements ApplicationListener {
                 int tileWidth = tileLoader.getTileWidth();
                 int tileHeight = tileLoader.getTileHeight();
                 
+                
 
                 // prevent camera from showing out of bounds area when near edge of world
                 if (playerX > mapWidth * tileWidth - camera.viewportWidth / 2 || playerX < 0 + camera.viewportWidth / 2) {
@@ -246,9 +252,16 @@ public class Game implements ApplicationListener {
         for (Rectangle wall : gameData.getWalls()) {
             shapeRenderer.rect(wall.x, wall.y, wall.width, wall.height);
         }
+            for (int i = 0; i < graph.getNodeCount(); i++) {
+                for (int j = 0; j < graph.getNodes().get(i).size; j++) {
+                    if (graph.getNodes().get(i).get(j).getType() == 1){
+                    shapeRenderer.circle(j * tileLoader.getTileWidth() + (tileLoader.getTileWidth()/2), i * tileLoader.getTileHeight() + (tileLoader.getTileHeight()/2), tileLoader.getTileWidth()/2);
+                }
+                }
+                
+            }
         shapeRenderer.end();
         }
-        
     }
 
     @Override

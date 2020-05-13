@@ -5,10 +5,40 @@
  */
 package dk.sdu.mmmi.cbse.common.enemy;
 
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import dk.sdu.mmmi.cbse.common.data.Entity;
+import dk.sdu.mmmi.cbse.common.data.Graph;
+import dk.sdu.mmmi.cbse.common.data.Node;
+import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
+import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
+import java.util.List;
+
 /**
  *
  * @author rasmusstamm
  */
 public class Pathfinder {
+
+    private Graph graph;
     
+    public Pathfinder(Graph graph) {
+        this.graph = graph;
+    }
+
+    
+    
+    public Graph calculatePath(Vector2 startPos, Vector2 goalPos) {
+        
+        //Node startNode = graph.getNodeByPosition(startPos.x, startPos.y);
+        
+        float distance = Math.abs(startPos.x - goalPos.x) + Math.abs(startPos.y - goalPos.y);
+        
+        
+        
+        return graph;
+    }
 }

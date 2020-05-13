@@ -67,7 +67,7 @@ public class EnemyPlugin implements IGamePluginService {
             }
         }
 
-        Entity enemy = new Enemy();
+        Entity enemy = new Enemy(gameData.getGraph());
         enemy.setRadius(radius);
         enemy.add(new MovingPart());
         enemy.add(new PositionPart(x, y));

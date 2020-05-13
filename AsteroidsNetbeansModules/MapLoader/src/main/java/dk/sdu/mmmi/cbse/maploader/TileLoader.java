@@ -49,7 +49,7 @@ public class TileLoader {
         mapHeight = properties.get("height", Integer.class);
         mapWidth = properties.get("width", Integer.class);
         tileHeight = properties.get("tileheight", Integer.class);
-        tileWidth = properties.get("tileWidth", Integer.class);
+        tileWidth = properties.get("tilewidth", Integer.class);
         mapPixelHeight = mapHeight * tileHeight;
         mapPixelWidth = mapWidth * tileWidth;
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);

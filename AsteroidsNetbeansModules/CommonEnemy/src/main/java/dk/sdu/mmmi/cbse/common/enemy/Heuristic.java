@@ -9,8 +9,8 @@ package dk.sdu.mmmi.cbse.common.enemy;
  *
  * @author rasmusstamm
  */
-public class AStar {
-    public void doTheThing() {
-        
+public class Heuristic<Node> {
+    public float estimate(Node startNode, Node endNode){
+        return 1f;
     }
 }
