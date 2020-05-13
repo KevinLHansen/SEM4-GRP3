@@ -1,5 +1,7 @@
 package dk.sdu.mmmi.cbse.common.data.entityparts;
 
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
@@ -49,7 +51,9 @@ public class MovingPart implements EntityPart {
         float x = positionPart.getX();
         float y = positionPart.getY();
         float radians = positionPart.getRadians();
+        float radius = entity.getRadius();
         float delta = gameData.getDelta();
+        
         
         // move entity by altering coordinates depending on input
         if (up)    { y +=  speed; }
@@ -57,23 +61,28 @@ public class MovingPart implements EntityPart {
         if (down)  { y += -speed; }
         if (right) { x +=  speed; }
 
+        float tempY = y;
+        
         // prevent entity from leaving world boundaries
         if (x > gameData.getDisplayWidth() || x < 0) { x = positionPart.getX(); }
         if (y > gameData.getDisplayHeight() || y < 0) { y = positionPart.getY(); }
         
         // get list of walls from GameData
         List<Rectangle> walls = gameData.getWalls();
-        boolean collides = false;
         // check if entity will collide with any wall
         for (Rectangle wall : walls) {
-            if (wall.contains(x, y)) {
-                collides = true;
+            if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
+                // try changing only x
+                y = positionPart.getY();
+                if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
+                    // try changing only y
+                    y = tempY;
+                    x = positionPart.getX();
+                    if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
+                        y = positionPart.getY();
+                    }
+                }
             }
-        }
-        // if movement will cause collision, reset position to original (no movement)
-        if (collides) {
-            x = positionPart.getX();
-            y = positionPart.getY();
         }
         
         positionPart.setX(x);

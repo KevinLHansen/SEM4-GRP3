@@ -1,5 +1,7 @@
 package dk.sdu.mmmi.cbse.enemysystem;
 
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import dk.sdu.mmmi.cbse.common.data.Entity;
@@ -41,6 +43,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
                 float x = enemyPos.getX();
                 float y = enemyPos.getY();
+                float radius = enemy.getRadius();
 
                 // calculate vector from enemy to player
                 float vectX = playerPos.getX() - x;
@@ -52,6 +55,8 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 x += vector.x;
                 y += vector.y;
                 
+                float tempY = y;
+                
                 // prevent entity from leaving world boundaries
                 if (x > gameData.getDisplayWidth() || x < 0) { x = enemyPos.getX(); }
                 if (y > gameData.getDisplayHeight() || y < 0) { y = enemyPos.getY(); }
@@ -61,15 +66,19 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 boolean collides = false;
                 // check if entity will collide with any wall
                 for (Rectangle wall : walls) {
-                    if (wall.contains(x, y)) {
-                        collides = true;
+                    if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
+                        // try changing only x
+                        y = enemyPos.getY();
+                    if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
+                        // try changing only y
+                        y = tempY;
+                        x = enemyPos.getX();
+                    }
+                    if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
+                        y = enemyPos.getY();
                     }
                 }
-                // if movement will cause collision, reset position to original (no movement)
-                if (collides) {
-                    x = enemyPos.getX();
-                    y = enemyPos.getY();
-                }
+            }
 
                 enemyPos.setX(x);
                 enemyPos.setY(y);
