@@ -1,24 +1,16 @@
 package dk.sdu.mmmi.cbse.core.main;
 
-import com.badlogic.gdx.ApplicationListener;
+// @author Kevin Hansen
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.Map;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.PolygonMapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import dk.sdu.mmmi.cbse.common.data.Entity;
@@ -28,7 +20,6 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
-import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
 import dk.sdu.mmmi.cbse.maploader.TileLoader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,31 +31,37 @@ import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 
-public class Game implements ApplicationListener {
-
-    private static OrthographicCamera camera;
+public class GameScreen implements Screen {
+    
+    private PepegaHunter2020 game;
+    private GameData gameData;
+    private World world;
+    
     private SpriteBatch batch;
-    private final Lookup lookup = Lookup.getDefault();
-    private final GameData gameData = new GameData();
-    private World world = new World();
-    private TileLoader tileLoader;
-    private List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
-    private Lookup.Result<IGamePluginService> result;
+    private ShapeRenderer shapeRenderer;
+    private OrthographicCamera camera;
+    
     private Texture background;
+    private TileLoader tileLoader;
     private OrthogonalTiledMapRenderer mapRenderer;
     private Box2DDebugRenderer b2dr;
-    private ShapeRenderer shapeRenderer;
+    
+    private List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
+    private final Lookup lookup = Lookup.getDefault();
+    private Lookup.Result<IGamePluginService> result;
+   
+    
+    public GameScreen(PepegaHunter2020 game) {
+        this.game = game;
+        this.gameData = game.getGameData();
+        this.world = game.getWorld();
+    }
 
     @Override
-    public void create() {
+    public void show() {
+        
         shapeRenderer = new ShapeRenderer();
-
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
-
-        gameData.setDisplayWidth((int) w);
-        gameData.setDisplayHeight((int) h);
-
+        
         // Background
         InputStream streamBg = Entity.class.getResourceAsStream("/img/background.png");
         byte[] bytesBg;
@@ -75,9 +72,8 @@ public class Game implements ApplicationListener {
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }
-
+        
         // Tilemap
-        //tileLoader = new TileLoader(tmxMapLoader);
         tileLoader = new TileLoader();
         tileLoader.load("tilemap.tmx");
         
@@ -88,14 +84,14 @@ public class Game implements ApplicationListener {
         this.b2dr = tileLoader.getB2dRenderer();
         
         // Camera
-        float aspectRatio = h / w;
+        float aspectRatio = gameData.getDisplayHeight() / gameData.getDisplayWidth();
         camera = new OrthographicCamera(600, 600 * aspectRatio);
+        camera = new OrthographicCamera();
         camera.update();
-
+        
         batch = new SpriteBatch();
-
-        Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
-
+        
+        // Modules
         result = lookup.lookupResult(IGamePluginService.class);
         result.addLookupListener(lookupListener);
         result.allItems();
@@ -107,8 +103,8 @@ public class Game implements ApplicationListener {
     }
 
     @Override
-    public void render() {
-        // clear screen to black
+    public void render(float delta) {
+        // clear screen
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -121,19 +117,20 @@ public class Game implements ApplicationListener {
         gameData.getKeys().update();
 
         
+        
         updateServices();
         drawMap();
         drawSprites();
         updateCamera();
         drawDebug(); // debug drawing. Toggleable on M key
     }
-    
+
     private void drawMap() {
         mapRenderer.setView((OrthographicCamera) camera);
         mapRenderer.render();
         b2dr.render(tileLoader.getWorld(), camera.combined);
     }
-    
+
     private void updateServices() {
         // Update
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices()) {
@@ -147,6 +144,7 @@ public class Game implements ApplicationListener {
     }
 
     private void drawSprites() {
+        
         batch.begin();
 
         for (Entity entity : world.getEntities()) {
@@ -159,7 +157,7 @@ public class Game implements ApplicationListener {
             } else {
                 sprite = entity.getSprite();
             }
-            
+
             // get positionPart to attach sprite to position
             PositionPart pp = entity.getPart(PositionPart.class);
             // configure and draw sprite using positionpart and entity radius
@@ -180,12 +178,11 @@ public class Game implements ApplicationListener {
                 float newY;
                 float playerX = pp.getX();
                 float playerY = pp.getY();
-                
+
                 int mapWidth = tileLoader.getMapWidth();
                 int mapHeight = tileLoader.getMapHeight();
                 int tileWidth = tileLoader.getTileWidth();
                 int tileHeight = tileLoader.getTileHeight();
-                
 
                 // prevent camera from showing out of bounds area when near edge of world
                 if (playerX > mapWidth * tileWidth - camera.viewportWidth / 2 || playerX < 0 + camera.viewportWidth / 2) {
@@ -193,59 +190,57 @@ public class Game implements ApplicationListener {
                 } else {
                     newX = playerX;
                 }
-                
-                //if (playerY > Gdx.graphics.getHeight() - camera.viewportHeight / 2 || playerY < 0 + camera.viewportHeight / 2) {
-                
                 if (playerY > mapHeight * tileHeight - camera.viewportHeight / 2 || playerY < 0 + camera.viewportHeight / 2) {
                     newY = camera.position.y;
                 } else {
                     newY = playerY;
                 }
+                
                 camera.position.set(newX, newY, 0);
             }
         }
         camera.update();
-        batch.setProjectionMatrix(camera.combined);
+        batch.setProjectionMatrix(camera.combined); // this line is somehow causing trouble. to be fixed soonTM
     }
 
     public void drawDebug() {
         if (gameData.isDrawDebug()) {
-            shapeRenderer.begin(ShapeType.Line);
-        float alpha = 125;
-        // draw radius circle for every entity
-        for (Entity entity : world.getEntities()) {
-            PositionPart pp = entity.getPart(PositionPart.class);
-            String entityType = entity.getType();
-            switch (entityType) {
-                case "player":
-                    shapeRenderer.setColor(0, 255, 255, alpha);
-                    break;
-                case "enemy":
-                    shapeRenderer.setColor(255, 0, 0, alpha);
-                    break;
-                case "enlargeplayerpowerup":
-                    shapeRenderer.setColor(0, 255, 0, alpha);
-                    break;
-                case "enlargebulletpowerup":
-                    shapeRenderer.setColor(0, 255, 0, alpha);
-                    break;
-                case "increasefireratepowerup":
-                    shapeRenderer.setColor(0, 255, 0, alpha);
-                    break;
-                default:
-                    shapeRenderer.setColor(255, 255, 255, alpha);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            float alpha = 125;
+            // draw radius circle for every entity
+            for (Entity entity : world.getEntities()) {
+                PositionPart pp = entity.getPart(PositionPart.class);
+                String entityType = entity.getType();
+                switch (entityType) {
+                    case "player":
+                        shapeRenderer.setColor(0, 255, 255, alpha);
+                        break;
+                    case "enemy":
+                        shapeRenderer.setColor(255, 0, 0, alpha);
+                        break;
+                    case "enlargeplayerpowerup":
+                        shapeRenderer.setColor(0, 255, 0, alpha);
+                        break;
+                    case "enlargebulletpowerup":
+                        shapeRenderer.setColor(0, 255, 0, alpha);
+                        break;
+                    case "increasefireratepowerup":
+                        shapeRenderer.setColor(0, 255, 0, alpha);
+                        break;
+                    default:
+                        shapeRenderer.setColor(255, 255, 255, alpha);
+                }
+                shapeRenderer.circle(pp.getX(), pp.getY(), entity.getRadius());
+                shapeRenderer.circle(pp.getX(), pp.getY(), 1);
             }
-            shapeRenderer.circle(pp.getX(), pp.getY(), entity.getRadius());
-            shapeRenderer.circle(pp.getX(), pp.getY(), 1);
+            shapeRenderer.setColor(200, 200, 200, alpha);
+            // draw outline for all walls
+            for (Rectangle wall : gameData.getWalls()) {
+                shapeRenderer.rect(wall.x, wall.y, wall.width, wall.height);
+            }
+            shapeRenderer.end();
         }
-        shapeRenderer.setColor(200, 200, 200, alpha);
-        // draw outline for all walls
-        for (Rectangle wall : gameData.getWalls()) {
-            shapeRenderer.rect(wall.x, wall.y, wall.width, wall.height);
-        }
-        shapeRenderer.end();
-        }
-        
+
     }
 
     @Override
@@ -295,4 +290,9 @@ public class Game implements ApplicationListener {
             }
         }
     };
+
+    @Override
+    public void hide() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
