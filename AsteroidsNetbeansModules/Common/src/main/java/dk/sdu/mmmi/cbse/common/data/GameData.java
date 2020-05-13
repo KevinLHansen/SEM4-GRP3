@@ -12,6 +12,15 @@ public class GameData {
     private int displayHeight;
     private final GameKeys keys = new GameKeys();
     private List<Event> events = new CopyOnWriteArrayList<>();
+    private Graph graph;
+    
+    public void setGraph(Graph graph) {
+        this.graph = graph;
+    }
+    
+    public Graph getGraph() {
+        return graph;
+    } 
 
     public void addEvent(Event e) {
         events.add(e);

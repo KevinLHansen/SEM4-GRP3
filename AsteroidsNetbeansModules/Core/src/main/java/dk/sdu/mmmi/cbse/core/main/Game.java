@@ -28,6 +28,7 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
+import dk.sdu.mmmi.cbse.maploader.GraphGenerator;
 import dk.sdu.mmmi.cbse.maploader.TileLoader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -79,6 +80,7 @@ public class Game implements ApplicationListener {
         //tileLoader = new TileLoader(tmxMapLoader);
         tileLoader = new TileLoader();
         tileLoader.load("tilemap.tmx");
+        gameData.setGraph(GraphGenerator.generateGraph(tileLoader.getTiledMap()));
         this.mapRenderer = tileLoader.getRenderer();
         this.b2dr = tileLoader.getB2dRenderer();
         

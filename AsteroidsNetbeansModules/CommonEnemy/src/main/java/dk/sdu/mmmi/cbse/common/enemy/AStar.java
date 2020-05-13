@@ -9,6 +9,6 @@ package dk.sdu.mmmi.cbse.common.enemy;
  *
  * @author rasmusstamm
  */
-public class AStar {
+public static class AStar {
     
 }

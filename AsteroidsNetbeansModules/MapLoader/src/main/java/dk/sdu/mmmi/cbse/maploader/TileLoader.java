@@ -81,6 +81,10 @@ public class TileLoader {
         return this.b2dWorld;
     }
     
+    public TiledMap getTiledMap() {
+        return tiledMap;
+    }
+    
     public OrthogonalTiledMapRenderer getRenderer() {
         return this.mapRenderer;
     }
