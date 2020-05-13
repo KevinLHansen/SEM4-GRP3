@@ -21,6 +21,7 @@ public class Entity implements Serializable {
     private Map<Class, EntityPart> parts;
     private String type;
     private Entity origin; // stores a copy of the original version of the object. For use when reverting item effects
+    private float scoreVal;
 
     public Entity() {
 
@@ -116,5 +117,12 @@ public class Entity implements Serializable {
     public void setOrigin(Entity origin) {
         this.origin = origin;
     }
-    
+
+    public float getScoreVal() {
+        return scoreVal;
+    }
+
+    public void setScoreVal(float scoreVal) {
+        this.scoreVal = scoreVal;
+    }
 }

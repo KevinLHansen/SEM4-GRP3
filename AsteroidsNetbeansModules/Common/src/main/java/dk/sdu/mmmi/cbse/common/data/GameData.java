@@ -15,6 +15,7 @@ public class GameData {
     private List<Event> events = new CopyOnWriteArrayList<>();
     private List<Rectangle> wallList = new ArrayList<>();
     private boolean drawDebug = false;
+    private float score = 0;
 
     
     public void setWalls(List<Rectangle> walls) {
@@ -71,6 +72,14 @@ public class GameData {
 
     public void setDrawDebug(boolean drawDebug) {
         this.drawDebug = drawDebug;
+    }
+
+    public float getScore() {
+        return score;
+    }
+
+    public void setScore(float score) {
+        this.score = score;
     }
 
     

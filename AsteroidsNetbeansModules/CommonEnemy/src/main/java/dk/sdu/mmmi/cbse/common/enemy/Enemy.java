@@ -7,5 +7,6 @@ public class Enemy extends Entity {
     public Enemy() {
         assignTexture("/img/enemy.png");
         setType("enemy");
+        setScoreVal(75);
     }
 }

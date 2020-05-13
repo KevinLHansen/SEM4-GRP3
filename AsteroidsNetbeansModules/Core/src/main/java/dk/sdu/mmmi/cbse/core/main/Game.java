@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.Map;
@@ -21,6 +22,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
@@ -28,6 +31,7 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
+import dk.sdu.mmmi.cbse.core.main.scenes.Hud;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
 import dk.sdu.mmmi.cbse.maploader.TileLoader;
 import java.io.IOException;
@@ -43,7 +47,10 @@ import org.openide.util.LookupListener;
 public class Game implements ApplicationListener {
 
     private static OrthographicCamera camera;
+    private Viewport gamePort;
     private SpriteBatch batch;
+    private SpriteBatch hudBatch;
+    private Hud hud;
     private final Lookup lookup = Lookup.getDefault();
     private final GameData gameData = new GameData();
     private World world = new World();
@@ -57,6 +64,8 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create() {
+        batch = new SpriteBatch();
+        hudBatch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
 
         float w = Gdx.graphics.getWidth();
@@ -65,6 +74,10 @@ public class Game implements ApplicationListener {
         gameData.setDisplayWidth((int) w);
         gameData.setDisplayHeight((int) h);
 
+        // HUD
+        gamePort = new FitViewport(w, h, camera);
+        hud = new Hud(gameData, hudBatch);
+        
         // Background
         InputStream streamBg = Entity.class.getResourceAsStream("/img/background.png");
         byte[] bytesBg;
@@ -92,8 +105,6 @@ public class Game implements ApplicationListener {
         camera = new OrthographicCamera(600, 600 * aspectRatio);
         camera.update();
 
-        batch = new SpriteBatch();
-
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
 
         result = lookup.lookupResult(IGamePluginService.class);
@@ -111,7 +122,7 @@ public class Game implements ApplicationListener {
         // clear screen to black
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        
         // Background
         batch.begin();
         batch.draw(background, 0, 0, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -125,6 +136,7 @@ public class Game implements ApplicationListener {
         drawMap();
         drawSprites();
         updateCamera();
+        drawHud();
         drawDebug(); // debug drawing. Toggleable on M key
     }
     
@@ -210,6 +222,12 @@ public class Game implements ApplicationListener {
         shapeRenderer.setProjectionMatrix(camera.combined);
     }
 
+    public void drawHud() {
+        hudBatch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.update(gameData);
+        hud.stage.draw();
+    }
+    
     public void drawDebug() {
         if (gameData.isDrawDebug()) {
             shapeRenderer.begin(ShapeType.Line);

@@ -63,7 +63,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
                 // get list of walls from GameData
                 List<Rectangle> walls = gameData.getWalls();
-                boolean collides = false;
                 // check if entity will collide with any wall
                 for (Rectangle wall : walls) {
                     if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
@@ -79,12 +78,11 @@ public class EnemyControlSystem implements IEntityProcessingService {
                     }
                 }
             }
+            enemyPos.setX(x);
+            enemyPos.setY(y);
 
-                enemyPos.setX(x);
-                enemyPos.setY(y);
-
-                enemyPos.process(gameData, enemy);
-                lifePart.process(gameData, enemy);
+            enemyPos.process(gameData, enemy);
+            lifePart.process(gameData, enemy);
             }
         }
     }

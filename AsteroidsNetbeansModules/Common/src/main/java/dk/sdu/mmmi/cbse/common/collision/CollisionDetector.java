@@ -64,18 +64,18 @@ public class CollisionDetector implements IPostEntityProcessingService {
                         }
                     }
                     
-                    world.removeEntity(f);
+                    gameData.setScore(gameData.getScore() + world.removeEntity(f, 1));
                 }
                 if (e.getPart(LifePart.class) != null) {
                     LifePart lpe = e.getPart(LifePart.class);
                     if (lpe.isDead()) {
-                        world.removeEntity(e);
+                        gameData.setScore(gameData.getScore() + world.removeEntity(e, 1));
                     }
                 }
                 if (f.getPart(LifePart.class) != null) {
                     LifePart lpf = f.getPart(LifePart.class);
                     if (lpf.isDead()) {
-                        world.removeEntity(f);
+                        gameData.setScore(gameData.getScore() + world.removeEntity(f, 1));
                     }
                 }
             }

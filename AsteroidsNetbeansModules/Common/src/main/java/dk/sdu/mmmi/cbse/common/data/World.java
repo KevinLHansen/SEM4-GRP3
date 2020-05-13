@@ -32,6 +32,11 @@ public class World {
     public void removeEntity(Entity entity) {
         entityMap.remove(entity.getID());
     }
+    
+    public float removeEntity(Entity entity, int multiplier) {
+        entityMap.remove(entity.getID());
+        return entity.getScoreVal() * multiplier;
+    }
 
     public Collection<Entity> getEntities() {
         return entityMap.values();
