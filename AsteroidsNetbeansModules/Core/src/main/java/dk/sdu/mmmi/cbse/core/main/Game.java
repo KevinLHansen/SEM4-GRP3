@@ -205,7 +205,9 @@ public class Game implements ApplicationListener {
             }
         }
         camera.update();
+        // set projectingmatrix of renderers to match what camera sees
         batch.setProjectionMatrix(camera.combined);
+        shapeRenderer.setProjectionMatrix(camera.combined);
     }
 
     public void drawDebug() {
