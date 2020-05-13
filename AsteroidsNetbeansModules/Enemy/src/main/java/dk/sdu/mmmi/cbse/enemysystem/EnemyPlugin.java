@@ -29,7 +29,7 @@ public class EnemyPlugin implements IGamePluginService {
         safezone = new Circle(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2, safezoneRadius);
         
         // add enemies to the world
-        int enemyCount = 5;
+        int enemyCount = 10;
         for (int i = 0; i < enemyCount; i++) {
             enemy = createEnemy(gameData);
             world.addEntity(enemy);

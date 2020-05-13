@@ -6,12 +6,12 @@ import org.openide.modules.ModuleInstall;
 
 public class Installer extends ModuleInstall {
 
-    private static Game game;
+    private static PepegaHunter2020 game;
 
     @Override
     public void restored() {
 
-        game = new Game();
+        game = new PepegaHunter2020();
 
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Pepega Hunter 2020";
