@@ -36,8 +36,7 @@ public class GameScreen implements Screen {
     private PepegaHunter2020 game;
     private GameData gameData;
     private World world;
-    
-    private SpriteBatch batch;
+
     private ShapeRenderer shapeRenderer;
     private OrthographicCamera camera;
     
@@ -59,8 +58,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        
         shapeRenderer = new ShapeRenderer();
+        
+        float w = gameData.getDisplayWidth();
+        float h = gameData.getDisplayHeight();
         
         // Background
         InputStream streamBg = Entity.class.getResourceAsStream("/img/background.png");
@@ -80,16 +81,13 @@ public class GameScreen implements Screen {
         // assign walls to GameData
         gameData.setWalls(tileLoader.createWalls());
         
-        this.mapRenderer = tileLoader.getRenderer();
-        this.b2dr = tileLoader.getB2dRenderer();
+        mapRenderer = tileLoader.getRenderer();
+        b2dr = tileLoader.getB2dRenderer();
         
         // Camera
-        float aspectRatio = gameData.getDisplayHeight() / gameData.getDisplayWidth();
+        float aspectRatio = h / w;
         camera = new OrthographicCamera(600, 600 * aspectRatio);
-        camera = new OrthographicCamera();
         camera.update();
-        
-        batch = new SpriteBatch();
         
         // Modules
         result = lookup.lookupResult(IGamePluginService.class);
@@ -104,19 +102,35 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        
+        // check if player is dead (removed from world)
+        boolean playerIsAlive = false;
+        for (Entity entity : world.getEntities()) {
+            if (entity.getType() == "player") {
+                playerIsAlive = true;
+                break;
+            } 
+        } // if dead, restart screen
+        if (!playerIsAlive) {
+            System.out.println("\n\n\n\nPLAYER DIED\n\n\n\n");
+            game.setScreen(new GameScreen(game));
+            //show();
+        }
+        
         // clear screen
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
+        float w = gameData.getDisplayWidth();
+        float h = gameData.getDisplayHeight();
 
         // Background
-        batch.begin();
-        batch.draw(background, 0, 0, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.end();
+        game.batch.begin();
+        game.batch.draw(background, 0, 0, 0, 0, (int) w, (int) h);
+        game.batch.end();
 
         gameData.setDelta(Gdx.graphics.getDeltaTime());
         gameData.getKeys().update();
-
-        
         
         updateServices();
         drawMap();
@@ -145,7 +159,7 @@ public class GameScreen implements Screen {
 
     private void drawSprites() {
         
-        batch.begin();
+        game.batch.begin();
 
         for (Entity entity : world.getEntities()) {
             Sprite sprite;
@@ -163,10 +177,10 @@ public class GameScreen implements Screen {
             // configure and draw sprite using positionpart and entity radius
             sprite.setSize(entity.getRadius() * 2, entity.getRadius() * 2);
             sprite.setCenter(pp.getX(), pp.getY());
-            sprite.draw(batch);
+            sprite.draw(game.batch);
             entity.setSprite(sprite);
         }
-        batch.end();
+        game.batch.end();
     }
 
     public void updateCamera() {
@@ -200,7 +214,7 @@ public class GameScreen implements Screen {
             }
         }
         camera.update();
-        batch.setProjectionMatrix(camera.combined); // this line is somehow causing trouble. to be fixed soonTM
+        game.batch.setProjectionMatrix(camera.combined); // this line is somehow causing trouble. to be fixed soonTM
     }
 
     public void drawDebug() {
@@ -293,6 +307,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Entity entity : world.getEntities()) {
+            world.removeEntity(entity);
+        }
     }
 }
