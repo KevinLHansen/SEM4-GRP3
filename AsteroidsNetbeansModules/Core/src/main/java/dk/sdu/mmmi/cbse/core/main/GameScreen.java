@@ -44,7 +44,10 @@ public class GameScreen implements Screen {
 
     private ShapeRenderer shapeRenderer;
     private OrthographicCamera camera;
+    private SpriteBatch hudBatch;
     
+    private Viewport gamePort;
+    private Hud hud;
     private Texture background;
     private TileLoader tileLoader;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -64,9 +67,14 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         shapeRenderer = new ShapeRenderer();
+        hudBatch = new SpriteBatch();
         
         float w = gameData.getDisplayWidth();
         float h = gameData.getDisplayHeight();
+        
+        // HUD
+        gamePort = new FitViewport(w, h, camera);
+        hud = new Hud(gameData, hudBatch);
         
         // Background
         InputStream streamBg = Entity.class.getResourceAsStream("/img/background.png");
@@ -220,10 +228,13 @@ public class GameScreen implements Screen {
             }
         }
         camera.update();
-        game.batch.setProjectionMatrix(camera.combined); // this line is somehow causing trouble. to be fixed soonTM
+        // make renderers compensate for what camera sees
+        game.batch.setProjectionMatrix(camera.combined);
+        shapeRenderer.setProjectionMatrix(camera.combined);
     }
 
     public void drawHud() {
+        hudBatch = new SpriteBatch();
         hudBatch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.update(gameData);
         hud.stage.draw();
@@ -321,6 +332,7 @@ public class GameScreen implements Screen {
     public void hide() {
         for (Entity entity : world.getEntities()) {
             world.removeEntity(entity);
+            gameData.setScore(0);
         }
     }
 }
