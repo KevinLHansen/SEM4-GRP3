@@ -38,7 +38,9 @@ public class SpriteLoader {
             Exceptions.printStackTrace(ex);
         }
         Pixmap pixmap = new Pixmap(textureBytes, 0, textureBytes.length);
-        return new Texture(pixmap);
+        Texture texture = new Texture(pixmap);
+        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        return texture;
     }
     
 }
