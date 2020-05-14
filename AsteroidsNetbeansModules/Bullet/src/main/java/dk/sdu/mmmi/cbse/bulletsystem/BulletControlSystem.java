@@ -51,7 +51,6 @@ public class BulletControlSystem implements IEntityProcessingService {
             mpb.process(gameData, bullet);
             btp.process(gameData, bullet);
             lpb.process(gameData, bullet);
-
         }
     }
 

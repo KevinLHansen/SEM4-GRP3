@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.cbse.core.main;
+package dk.sdu.mmmi.cbse.core.main.screens;
 
 // @author Kevin Hansen
 import com.badlogic.gdx.Gdx;
@@ -23,8 +23,10 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
+import dk.sdu.mmmi.cbse.core.main.PepegaHunter2020;
 import dk.sdu.mmmi.cbse.core.main.scenes.Hud;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
+import dk.sdu.mmmi.cbse.core.managers.SpriteLoader;
 import dk.sdu.mmmi.cbse.maploader.TileLoader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,15 +79,8 @@ public class GameScreen implements Screen {
         hud = new Hud(gameData, hudBatch);
         
         // Background
-        InputStream streamBg = Entity.class.getResourceAsStream("/img/background.png");
-        byte[] bytesBg;
-        try {
-            bytesBg = streamBg.readAllBytes();
-            background = new Texture(new Pixmap(bytesBg, 0, bytesBg.length));
-            background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        } catch (IOException ex) {
-            Exceptions.printStackTrace(ex);
-        }
+        background = SpriteLoader.loadTexture("/img/background.png");
+        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         
         // Tilemap
         tileLoader = new TileLoader();
@@ -100,7 +95,6 @@ public class GameScreen implements Screen {
         // Camera
         float aspectRatio = h / w;
         camera = new OrthographicCamera(600, 600 * aspectRatio);
-        camera.update();
         
         // Modules
         result = lookup.lookupResult(IGamePluginService.class);
@@ -125,8 +119,7 @@ public class GameScreen implements Screen {
             } 
         } // if dead, restart screen
         if (!playerIsAlive) {
-            System.out.println("\n\n\n\nPLAYER DIED\n\n\n\n");
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new MenuScreen(game));
             //show();
         }
         
@@ -180,8 +173,8 @@ public class GameScreen implements Screen {
             // if sprite has not already been created for entity
             if (entity.getSprite() == null) {
                 // get byte array from entity and convert to texture
-                Pixmap pixmap = new Pixmap(entity.getTextureBytes(), 0, entity.getTextureBytes().length);
-                sprite = new Sprite((new Texture(pixmap)));
+                sprite = SpriteLoader.loadSprite(entity.getTextureBytes());
+                entity.setSprite(sprite);
             } else {
                 sprite = entity.getSprite();
             }

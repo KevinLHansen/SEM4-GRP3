@@ -1,10 +1,12 @@
  package dk.sdu.mmmi.cbse.core.main;
 
+import dk.sdu.mmmi.cbse.core.main.screens.GameScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.core.main.screens.MenuScreen;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
 
 public class PepegaHunter2020 extends Game {
@@ -27,7 +29,8 @@ public class PepegaHunter2020 extends Game {
 
         Gdx.input.setInputProcessor(new GameInputProcessor(gameData));
         
-        this.setScreen(new GameScreen(this));
+        //this.setScreen(new GameScreen(this));
+        this.setScreen(new MenuScreen(this));
     }
 
     @Override

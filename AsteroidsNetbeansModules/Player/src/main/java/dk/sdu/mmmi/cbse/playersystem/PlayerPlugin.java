@@ -53,7 +53,7 @@ public class PlayerPlugin implements IGamePluginService {
         
         UUID uuid = UUID.randomUUID();
         ShootingPart shootingPart = new ShootingPart(uuid.toString());
-        shootingPart.setBulletRadius(8);
+        shootingPart.setBulletRadius(5);
         shootingPart.setFireRate(200);
         player.add(shootingPart);
         
