@@ -15,8 +15,12 @@ public class Node {
     private Array<Connection<Node>> connections = new Array<Connection<Node>>();
     private int index;
     private int type; 
+    private float x;
+    private float y;
     
-    public Node() {
+    public Node(float x, float y) {
+        this.x = x;
+        this.y = y;
         index = Node.Indexer.getIndex();
     }
     
@@ -26,6 +30,14 @@ public class Node {
 
     public Array<Connection<Node>> getConnections() {
         return connections;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
     }
 
     public int getIndex() {

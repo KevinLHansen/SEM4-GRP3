@@ -56,7 +56,7 @@ public class TileLoader {
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         
         // This is shit!!!!!
-        Heuristic.setTileSize(tileWidth, tileHeight);
+        Heuristic.getInstance().setTileSize(mapWidth, mapHeight);
     }
     
     public List<Rectangle> createWalls(){

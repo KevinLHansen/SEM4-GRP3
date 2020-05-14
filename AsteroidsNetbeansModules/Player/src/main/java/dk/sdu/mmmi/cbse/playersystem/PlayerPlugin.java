@@ -40,7 +40,7 @@ public class PlayerPlugin implements IGamePluginService {
     private Entity createPlayer(GameData gameData) {
         
         float x = gameData.getDisplayWidth() / 2;
-        float y = gameData.getDisplayHeight() / 2;
+        float y = 370; //gameData.getDisplayHeight() / 2;
         float radians = 3.1415f / 2;
 
         player = new Player();

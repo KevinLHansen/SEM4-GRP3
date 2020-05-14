@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.Graph;
+import dk.sdu.mmmi.cbse.common.data.Node;
+import dk.sdu.mmmi.cbse.common.data.Path;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
@@ -23,11 +25,12 @@ import org.openide.util.lookup.ServiceProviders;
 public class EnemyControlSystem implements IEntityProcessingService {
 
     private float speed = 1;
+    private Path path;
 
     @Override
     public void process(GameData gameData, World world) {
         
-                Entity player = null;
+        Entity player = null;
         // get player from world
         for (Entity entity : world.getEntities()) {
             if (entity.getType() == "player") {
@@ -44,15 +47,37 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 
                 Vector2 enemyVector = new Vector2(enemyPos.getX(), enemyPos.getY());
                 Vector2 playerVector = new Vector2(playerPos.getX(), playerPos.getY());
-                Graph graph = ((Enemy) enemy).getPathfinder().calculatePath(enemyVector, playerVector);
+                
+                if (path == null) {
+                    Node currentNode = gameData.getGraph().getNodeByPosition((int) enemyVector.x, (int) enemyVector.y);
+                    Node goalNode = gameData.getGraph().getNodeByPosition((int) playerVector.x, (int) playerVector.y);
+                    
+                    path = ((Enemy) enemy).getPath(currentNode, goalNode);
+                }
+                
+                System.out.println(path.getNodeCount());
                 
                 float x = enemyPos.getX();
                 float y = enemyPos.getY();
                 float radius = enemy.getRadius();
+                
+//                if (gameData.getGraph().getNodeByPosition((int) enemyPos.getX(), (int) enemyPos.getY()).equals(path.getNodes().get(0))) {
+//                    path.remove(0);
+//                }
+
+                if ((path.get(0).getX() == enemyPos.getX()) && (path.get(0).getY() == enemyPos.getY())) {
+                    if (path.getNodeCount() > 1) {
+                        path.remove(0);
+                    }
+                }
+                
+                Node target = path.getNodes().get(0);
+                System.out.println("x: " + path.getNodes().get(0).getX());
+                System.out.println("y: " + path.getNodes().get(0).getY());
 
                 // calculate vector from enemy to player
-                float vectX = playerPos.getX() - x;
-                float vectY = playerPos.getY() - y;
+                float vectX = target.getX() - x;
+                float vectY = target.getY() - y;
                 Vector2 vector = new Vector2(vectX, vectY);
                 // length of vector = how far entity moves per frame
                 vector.setLength(speed);
@@ -60,34 +85,34 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 x += vector.x;
                 y += vector.y;
 
-                float tempY = y;
-
-                // prevent entity from leaving world boundaries
-                if (x > gameData.getDisplayWidth() || x < 0) {
-                    x = enemyPos.getX();
-                }
-                if (y > gameData.getDisplayHeight() || y < 0) {
-                    y = enemyPos.getY();
-                }
-
-                // get list of walls from GameData
-                List<Rectangle> walls = gameData.getWalls();
-                boolean collides = false;
-                // check if entity will collide with any wall
-                for (Rectangle wall : walls) {
-                    if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
-                        // try changing only x
-                        y = enemyPos.getY();
-                        if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
-                            // try changing only y
-                            y = tempY;
-                            x = enemyPos.getX();
-                        }
-                        if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
-                            y = enemyPos.getY();
-                        }
-                    }
-                }
+//                float tempY = y;
+//
+//                // prevent entity from leaving world boundaries
+//                if (x > gameData.getDisplayWidth() || x < 0) {
+//                    x = enemyPos.getX();
+//                }
+//                if (y > gameData.getDisplayHeight() || y < 0) {
+//                    y = enemyPos.getY();
+//                }
+//
+//                // get list of walls from GameData
+//                List<Rectangle> walls = gameData.getWalls();
+//                boolean collides = false;
+//                // check if entity will collide with any wall
+//                for (Rectangle wall : walls) {
+//                    if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
+//                        // try changing only x
+//                        y = enemyPos.getY();
+//                        if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
+//                            // try changing only y
+//                            y = tempY;
+//                            x = enemyPos.getX();
+//                        }
+//                        if (Intersector.overlaps(new Circle(x, y, radius), wall)) {
+//                            y = enemyPos.getY();
+//                        }
+//                    }
+//                }
             
 
                 enemyPos.setX(x);

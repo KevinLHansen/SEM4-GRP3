@@ -25,22 +25,47 @@ public class AStar {
     
     public Path doTheThing(Node initial, Node goal) {
         
-        Path og = new Path(initial);
+        pqHeap = new PQHeap();
         
-        for (Connection con : initial.getConnections()) {
-            Path newPath = og; 
-            newPath.addNode((Node) con.getToNode());
-            
-            pqHeap.insert(newPath);
+        Path path = new Path(initial, goal);
+        
+        //pqHeap.insert(path);
+        
+        while (!path.get(path.getNodeCount() - 1).equals(goal)) {
+            System.out.println(path.getF());
+            expand(path);
+            path = pqHeap.extractMin();
         }
         
-        return null;
+        System.out.println("poggers");
+        
+        return path;
+        
+    }
+    
+    private void expand(Path path) {
+        
+        Node node = path.get(path.getNodeCount() - 1);
+        
+        System.out.println("Expanding: " + node.getIndex());
+        System.out.println("Cost: " + path.getTotalCost());
+        //System.out.println("Node count: " + path.getNodeCount());
+        
+        for (Connection con : node.getConnections()) {
+            Path newPath = new Path(path);
+            if(!newPath.getNodes().contains((Node) con.getToNode(), false)){
+                newPath.addConnection(con);
+            
+                pqHeap.insert(newPath);
+            }
+        }
     }
     
     private class PQHeap {
-        private Array<Path> minHeap;
+        private Array<Path> minHeap = new Array<Path>();
         
         public Path extractMin(){
+            System.out.println("heapsize " + minHeap.size);
             Path min = minHeap.get(0);
             
             minHeap.set(0, minHeap.get(minHeap.size - 1));
@@ -56,7 +81,7 @@ public class AStar {
             
             int i = minHeap.size - 1;
             
-            while(i > 0 && minHeap.get(parent(i)).getF()> minHeap.get(i).getF()) {
+            while(i > 0 && minHeap.get(parent(i)).getF() > minHeap.get(i).getF()) {
                 swap(i, parent(i));
                 i = parent(i);
             }
@@ -68,12 +93,12 @@ public class AStar {
             
             int smallest;
             
-            if (l <= minHeap.size - 1 && minHeap.get(l).getF()< minHeap.get(i).getF()) {
+            if (l <= minHeap.size - 1 && minHeap.get(l).getF() < minHeap.get(i).getF()) {
                 smallest = l;
             } else {
                 smallest = i;
             }
-            if (r <= minHeap.size - 1 && minHeap.get(r).getF()< minHeap.get(smallest).getF()) {
+            if (r <= minHeap.size - 1 && minHeap.get(r).getF() < minHeap.get(smallest).getF()) {
                 smallest = r;
             }
             

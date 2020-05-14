@@ -29,9 +29,12 @@ public class EnemyPlugin implements IGamePluginService {
         safezone = new Circle(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2, safezoneRadius);
         
         // add enemies to the world
-        int enemyCount = 5;
+        int enemyCount = 1;
         for (int i = 0; i < enemyCount; i++) {
             enemy = createEnemy(gameData);
+            PositionPart pp = enemy.getPart(PositionPart.class);
+            pp.setX(480);
+            pp.setY(370);
             world.addEntity(enemy);
         }
     }
@@ -67,7 +70,9 @@ public class EnemyPlugin implements IGamePluginService {
             }
         }
 
-        Entity enemy = new Enemy(gameData.getGraph());
+        //Entity enemy = new Enemy(gameData.getGraph().getNodeByPosition((int) x, (int y));
+        
+        Entity enemy = new Enemy();
         enemy.setRadius(radius);
         enemy.add(new MovingPart());
         enemy.add(new PositionPart(x, y));

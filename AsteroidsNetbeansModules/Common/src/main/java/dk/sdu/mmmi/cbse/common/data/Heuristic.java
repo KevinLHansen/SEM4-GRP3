@@ -5,30 +5,54 @@
  */
 package dk.sdu.mmmi.cbse.common.data;
 
+import com.badlogic.gdx.math.Vector2;
+
 /**
  *
  * @author rasmusstamm
  */
 public class Heuristic {
-    private static int tileWidth;
-    private static int tileHeight;
+    private int mapWidth;
+    private int mapHeight;
+    private static Heuristic h;
     
-    public static void setTileSize(int width, int height){
-        tileWidth = width;
-        tileHeight = height;
+    public void setTileSize(int width, int height){
+        mapWidth = width;
+        mapHeight = height;
     }
     
-    public static float estimate(Node startNode, Node endNode) {
+    public static Heuristic getInstance(){
+        if (h == null) {
+            h = new Heuristic();
+        }
+        return h;
+    }
+    
+    public float estimate(Node startNode, Node endNode) {
         int startIndex = startNode.getIndex();
         int endIndex = endNode.getIndex();
         
-        int startX = startIndex * tileWidth;
-        int startY = startIndex * tileHeight;
+//        int startX = startIndex * tileWidth;
+//        int startY = startIndex * tileHeight;
+        int startX = startIndex % mapWidth;
+        int startY = startIndex / mapWidth;
         
-        int endX = endIndex * tileWidth;
-        int endY = endIndex * tileHeight;
+//        
+//        int endX = endIndex * tileWidth;
+//        int endY = endIndex * tileHeight;
+
+        int endX = endIndex % mapWidth;
+        int endY = endIndex / mapWidth;
         
-        float distance = Math.abs(startX - endX) + Math.abs(startY - endY);
+        Vector2 distVect = new Vector2(endX - startX, endY - startY);
+        
+        
+        
+        //float distance = Math.abs(startX - endX) + Math.abs(startY - endY);
+//        System.out.println("start: " + startX + ", " + startY);
+//        System.out.println("end: " + endX + ", " + endY);
+        float distance = (float) Math.sqrt(Math.pow(distVect.x, 2) + Math.pow(distVect.y, 2));
+        //System.out.println("distance: " + distance);
         return distance;
     }
 }

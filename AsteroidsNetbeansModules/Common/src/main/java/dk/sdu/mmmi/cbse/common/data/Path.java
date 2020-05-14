@@ -14,10 +14,18 @@ import com.badlogic.gdx.utils.Array;
 public class Path {
     private Array<Node> nodes = new Array<Node>();
     private Node goal;
-    private float totalCost = 0;
+    private float totalCost;
 
-    public Path(Node current) {
+    public Path(Node current, Node goal) {
         nodes.add(current);
+        this.goal = goal;
+        totalCost = 0;
+    }
+    
+    public Path(Path path) {
+        this.goal = path.goal;
+        this.nodes = new Array<Node>(path.getNodes());
+        this.totalCost = path.getTotalCost();
     }
     
     public int getNodeCount(){
@@ -32,6 +40,10 @@ public class Path {
         nodes.add(node);
     }
     
+    public void addCost(float cost) {
+        totalCost = totalCost + cost;
+    }
+    
     public void addConnection(Connection con) {
         nodes.add((Node) con.getToNode());
         totalCost = totalCost + con.getCost();
@@ -42,7 +54,7 @@ public class Path {
     }
     
     public float getF() {
-        return totalCost + Heuristic.estimate(nodes.get(nodes.size), goal);
+        return totalCost + Heuristic.getInstance().estimate(nodes.get(nodes.size - 1), goal);
     }
     
     public Node get(int i) {

@@ -31,7 +31,7 @@ public class GraphGenerator {
             nodes.add(new Array<Node>());
             for (int x = 0; x < mapWidth; x++) {
                 
-                Node node = new Node();
+                Node node = new Node(x * tileWidth, y * tileHeight);
                 node.setType(Node.Type.FLOOR);
                 nodes.get(y).add(node);
             }
@@ -69,6 +69,8 @@ public class GraphGenerator {
                 } 
             }
         }
+        
+        System.out.println("\n\n\n\n\n\n\n\n\nGraph Generated!!!!");
         
         return new Graph(mapWidth, tileHeight, tileWidth, nodes);
     }
