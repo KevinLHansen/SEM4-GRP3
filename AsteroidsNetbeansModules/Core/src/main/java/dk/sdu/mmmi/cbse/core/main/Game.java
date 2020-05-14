@@ -2,7 +2,6 @@ package dk.sdu.mmmi.cbse.core.main;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -33,6 +32,7 @@ import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
 import dk.sdu.mmmi.cbse.maploader.GraphGenerator;
 import dk.sdu.mmmi.cbse.maploader.TileLoader;
+import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -255,7 +255,16 @@ public class Game implements ApplicationListener {
             for (int i = 0; i < graph.getNodeCount(); i++) {
                 for (int j = 0; j < graph.getNodes().get(i).size; j++) {
                     if (graph.getNodes().get(i).get(j).getType() == 1){
-                    shapeRenderer.circle(j * tileLoader.getTileWidth() + (tileLoader.getTileWidth()/2), i * tileLoader.getTileHeight() + (tileLoader.getTileHeight()/2), tileLoader.getTileWidth()/2);
+                        switch (graph.getNodes().get(i).get(j).getColor()) {
+                            case 0:
+                                shapeRenderer.setColor(com.badlogic.gdx.graphics.Color.WHITE);
+                                break;
+                                
+                            case 1:
+                                shapeRenderer.setColor(com.badlogic.gdx.graphics.Color.RED);
+                                break;
+                        }
+                        shapeRenderer.circle(j * tileLoader.getTileWidth() + (tileLoader.getTileWidth()/2), i * tileLoader.getTileHeight() + (tileLoader.getTileHeight()/2), tileLoader.getTileWidth()/2);
                 }
                 }
                 

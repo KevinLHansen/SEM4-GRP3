@@ -65,9 +65,17 @@ public class EnemyControlSystem implements IEntityProcessingService {
 //                    path.remove(0);
 //                }
 
-                if ((path.get(0).getX() == enemyPos.getX()) && (path.get(0).getY() == enemyPos.getY())) {
+                Circle c = new Circle(x, y, 2);
+                
+
+                if (c.contains(path.get(0).getX(), path.get(0).getY())) {
                     if (path.getNodeCount() > 1) {
                         path.remove(0);
+                    } else {
+                        Node currentNode = gameData.getGraph().getNodeByPosition((int) enemyVector.x, (int) enemyVector.y);
+                        Node goalNode = gameData.getGraph().getNodeByPosition((int) playerVector.x, (int) playerVector.y);
+                    
+                        path = ((Enemy) enemy).getPath(currentNode, goalNode);
                     }
                 }
                 

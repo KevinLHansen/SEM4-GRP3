@@ -45,8 +45,11 @@ public class Path {
     }
     
     public void addConnection(Connection con) {
-        nodes.add((Node) con.getToNode());
+        Node node = (Node) con.getToNode();
+        node.setColor(1);
         totalCost = totalCost + con.getCost();
+        node.setCheapest(getF());
+        nodes.add((Node) con.getToNode());
     }
 
     public float getTotalCost() {

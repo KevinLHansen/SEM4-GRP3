@@ -45,6 +45,11 @@ public class GraphGenerator {
                 TiledMapTileLayer.Cell left = tiles.getCell(x-1, y);
                 TiledMapTileLayer.Cell right = tiles.getCell(x+1, y);
                 
+                TiledMapTileLayer.Cell upLeft = tiles.getCell(x-1, y+1);
+                TiledMapTileLayer.Cell upRight = tiles.getCell(x+1, y+1);
+                TiledMapTileLayer.Cell downLeft = tiles.getCell(x-1, y-1);
+                TiledMapTileLayer.Cell downRight = tiles.getCell(x+1, y-1);
+                
                 Node targetNode = nodes.get(y).get(x);
                 if (target == null) {
                     if(y != 0 && down == null) {
@@ -63,6 +68,24 @@ public class GraphGenerator {
                         Node rightNode = nodes.get(y).get(x+1);
                         targetNode.createConnection(rightNode, 1);
                     }
+                    
+//                    if(y != mapHeight - 1 && x != 0 && upLeft == null) {
+//                        Node upLeftNode = nodes.get(y+1).get(x-1);
+//                        targetNode.createConnection(upLeftNode, 1);
+//                    }
+//                    if(y != mapHeight - 1 && x != mapWidth - 1 && upRight == null) {
+//                        Node upRightNode = nodes.get(y+1).get(x+1);
+//                        targetNode.createConnection(upRightNode, 1);
+//                    }
+//                    if(y != 0 && x != 0 && downLeft == null) {
+//                        Node downLeftNode = nodes.get(y-1).get(x-1);
+//                        targetNode.createConnection(downLeftNode, 1);
+//                    }
+//                    if(y != 0 && x != mapWidth -1 && downRight == null) {
+//                        Node downRightNode = nodes.get(y-1).get(x+1);
+//                        targetNode.createConnection(downRightNode, 1);
+//                    }
+                    
                 }
                 else {
                     targetNode.setType(Node.Type.WALL);
