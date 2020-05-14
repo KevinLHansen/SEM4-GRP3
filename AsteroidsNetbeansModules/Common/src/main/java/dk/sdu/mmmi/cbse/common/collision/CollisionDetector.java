@@ -7,7 +7,6 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.ProjectilePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.ShootingPart;
-import dk.sdu.mmmi.cbse.common.data.entityparts.SplitterPart;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
@@ -43,29 +42,28 @@ public class CollisionDetector implements IPostEntityProcessingService {
                 }
 
                 if (circleCollision(e, f)) {
-                    // avoid bullets damaging the entity that created said bullet
-                    if (e.getPart(ProjectilePart.class) != null) {
-                        ProjectilePart epp = e.getPart(ProjectilePart.class);
-                        if (f.getPart(ShootingPart.class) != null) {
-                            ShootingPart fsp = f.getPart(ShootingPart.class);
-                            if (epp.getID().equals(fsp.getID())) {
-                                continue;
-                            }
+                    // enemy <-> player
+                    if ((e.getType() == "enemy" && f.getType() == "player") || (e.getType() == "player" && f.getType() == "enemy")) {
+                        if (e.getType() == "player") {
+                            world.removeEntity(e);
+                        } else {
+                            world.removeEntity(f);
                         }
                     }
-                    // avoid bullets damaging the entity that created said bullet
-                    if (f.getPart(ProjectilePart.class) != null) {
-                        ProjectilePart fpp = f.getPart(ProjectilePart.class);
-                        if (e.getPart(ShootingPart.class) != null) {
-                            ShootingPart esp = e.getPart(ShootingPart.class);
-                            if (fpp.getID().equals(esp.getID())) {
-                                continue;
-                            }
-                        }
+                    // bullet <-> player
+                    if ((e.getType() == "bullet" && f.getType() == "player") || (e.getType() == "player" && f.getType() == "bullet")) {
+                        continue;
                     }
                     
+                    // bullet <-> enemy
+                    if ((e.getType() == "bullet" && f.getType() == "enemy") || (e.getType() == "enemy" && f.getType() == "bullet")) {
+                        world.removeEntity(f);
+                        world.removeEntity(e);
+                    }
                     gameData.setScore(gameData.getScore() + world.removeEntity(f, 1));
                 }
+                
+                // remove dead entities
                 if (e.getPart(LifePart.class) != null) {
                     LifePart lpe = e.getPart(LifePart.class);
                     if (lpe.isDead()) {

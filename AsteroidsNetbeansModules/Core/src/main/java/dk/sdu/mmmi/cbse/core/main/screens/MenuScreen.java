@@ -87,7 +87,6 @@ public class MenuScreen implements Screen {
         batch.begin();
         batch.draw(banner, displayWidth / 2 - bannerW / 2, bannerY, bannerW, bannerH);
         
-        
         int playBtnH = MENU_ITEM_H;
         int quitBtnH = MENU_ITEM_H;
         int playBtnW = playButton.getWidth() * (playBtnH / playButton.getHeight());
