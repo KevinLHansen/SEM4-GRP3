@@ -21,7 +21,7 @@ import org.openide.util.lookup.ServiceProviders;
     @ServiceProvider(service = IEntityProcessingService.class),})
 public class EnemyControlSystem implements IEntityProcessingService {
 
-    private float speed = 1;
+    private float speed = 3;
 
     @Override
     public void process(GameData gameData, World world) {
