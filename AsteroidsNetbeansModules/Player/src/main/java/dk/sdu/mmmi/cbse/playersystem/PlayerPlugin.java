@@ -57,7 +57,7 @@ public class PlayerPlugin implements IGamePluginService {
         shootingPart.setFireRate(200);
         player.add(shootingPart);
         
-        player.add(new LifePart(1));
+        player.add(new LifePart(3));
         
         player.add(new TimerPart());
         

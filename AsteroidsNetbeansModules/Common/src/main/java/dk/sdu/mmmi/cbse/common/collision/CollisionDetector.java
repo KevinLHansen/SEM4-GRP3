@@ -12,13 +12,14 @@ import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
 @ServiceProviders(value = { @ServiceProvider(service = IPostEntityProcessingService.class), })
+
 public class CollisionDetector implements IPostEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
         for (Entity e : world.getEntities()) {
             // exclude items from this processing loop
-            if (e.getType() == "enlargeplayerpowerup" || e.getType() == "enlargebulletpowerup" || e.getType() == "increasefireratepowerup") {
+            if ("enlargeplayerpowerup".equalsIgnoreCase(e.getType()) || "enlargebulletpowerup".equalsIgnoreCase(e.getType()) || "increasefireratepowerup".equalsIgnoreCase(e.getType())) {
                 continue;
             }
             for (Entity f : world.getEntities()) {
@@ -27,52 +28,64 @@ public class CollisionDetector implements IPostEntityProcessingService {
                 }
 
                 // exclude items from this processing loop
-                if (f.getType() == "enlargeplayerpowerup" || f.getType() == "enlargebulletpowerup" || f.getType() == "increasefireratepowerup") {
+                if ("enlargeplayerpowerup".equalsIgnoreCase(f.getType()) || "enlargebulletpowerup".equalsIgnoreCase(f.getType()) || "increasefireratepowerup".equalsIgnoreCase(f.getType())) {
                     continue;
                 }
                 
                 // so that bullets cannot collide with bullets
-                if (f.getType() == "bullet" && e.getType() == "bullet") {
+                if ("bullet".equalsIgnoreCase(f.getType()) && "bullet".equalsIgnoreCase(e.getType())) {
                     continue;
                 }
                 
                 // so that enemies cannot collide with enemies
-                if (f.getType() == "enemy" && e.getType() == "enemy") {
+                if ("enemy".equalsIgnoreCase(f.getType()) && "enemy".equalsIgnoreCase(e.getType())) {
                     continue;
                 }
 
                 if (circleCollision(e, f)) {
                     // enemy <-> player
-                    if ((e.getType() == "enemy" && f.getType() == "player") || (e.getType() == "player" && f.getType() == "enemy")) {
-                        if (e.getType() == "player") {
-                            world.removeEntity(e);
-                        } else {
+                    if (("enemy".equalsIgnoreCase(e.getType()) && "player".equalsIgnoreCase(f.getType())) || ("player".equalsIgnoreCase(e.getType()) && "enemy".equalsIgnoreCase(f.getType()))) {
+                        Entity player;
+                        if ("player".equalsIgnoreCase(e.getType())) {
+                            player = e;
                             world.removeEntity(f);
+                        } else {
+                            player = f;
+                            world.removeEntity(e);
                         }
+                        LifePart life = player.getPart(LifePart.class);
+                        life.setLife(life.getLife() - 1);
                     }
                     // bullet <-> player
-                    if ((e.getType() == "bullet" && f.getType() == "player") || (e.getType() == "player" && f.getType() == "bullet")) {
+                    if (("bullet".equalsIgnoreCase(e.getType()) && "player".equalsIgnoreCase(f.getType())) || ("player".equalsIgnoreCase(e.getType()) && "bullet".equalsIgnoreCase(f.getType()))) {
                         continue;
                     }
                     
                     // bullet <-> enemy
-                    if ((e.getType() == "bullet" && f.getType() == "enemy") || (e.getType() == "enemy" && f.getType() == "bullet")) {
-                        world.removeEntity(f);
-                        world.removeEntity(e);
+                    if (("bullet".equalsIgnoreCase(e.getType()) && "enemy".equalsIgnoreCase(f.getType())) || ("enemy".equalsIgnoreCase(e.getType()) && "bullet".equalsIgnoreCase(f.getType()))) {
+                        Entity enemy;
+                        if ("enemy".equalsIgnoreCase(e.getType())) {
+                            enemy = e;
+                            world.removeEntity(f);
+                        } else {
+                            enemy = f;
+                            world.removeEntity(e);
+                        }
+                        LifePart life = enemy.getPart(LifePart.class);
+                        life.setLife(life.getLife() - 1);
                     }
-                    gameData.setScore(gameData.getScore() + world.removeEntity(f, 1));
                 }
                 
                 // remove dead entities
                 if (e.getPart(LifePart.class) != null) {
-                    LifePart lpe = e.getPart(LifePart.class);
-                    if (lpe.isDead()) {
+                    LifePart life = e.getPart(LifePart.class);
+                    if (life.isDead()) {
                         gameData.setScore(gameData.getScore() + world.removeEntity(e, 1));
                     }
                 }
                 if (f.getPart(LifePart.class) != null) {
-                    LifePart lpf = f.getPart(LifePart.class);
-                    if (lpf.isDead()) {
+                    LifePart life = f.getPart(LifePart.class);
+                    if (life.isDead()) {
                         gameData.setScore(gameData.getScore() + world.removeEntity(f, 1));
                     }
                 }
