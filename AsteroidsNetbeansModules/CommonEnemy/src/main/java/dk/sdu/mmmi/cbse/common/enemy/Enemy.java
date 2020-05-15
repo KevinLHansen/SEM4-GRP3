@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.cbse.common.enemy;
 
+import com.badlogic.gdx.math.Circle;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.Graph;
 import dk.sdu.mmmi.cbse.common.data.Node;
@@ -8,8 +9,10 @@ import dk.sdu.mmmi.cbse.common.data.Path;
 public class Enemy extends Entity {
     
     private AStar as;
+    private int aggroRange;
     
-    public Enemy() {
+    public Enemy(int aggroRange) {
+        this.aggroRange = aggroRange;
         as = new AStar();
         assignTexture("/img/enemy.png");
         setType("enemy");
@@ -18,6 +21,14 @@ public class Enemy extends Entity {
     public Path getPath(Node current, Node goal) {
         Path path = as.doTheThing(current, goal);
         return path;
+    }
+    
+    public void setAggroRange(int aggroRange) {
+        this.aggroRange = aggroRange;
+    }
+
+    public int getAggroRange() {
+        return aggroRange;
     }
     
 }
