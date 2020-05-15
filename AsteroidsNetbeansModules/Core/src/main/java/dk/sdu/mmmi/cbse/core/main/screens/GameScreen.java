@@ -258,7 +258,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         if (gameData.isDrawDebug()) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            float alpha = 0.8f;
+            float alpha = 1;
             // draw radius circle for every entity
             for (Entity entity : world.getEntities()) {
                 PositionPart pp = entity.getPart(PositionPart.class);
