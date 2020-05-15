@@ -3,6 +3,7 @@ package dk.sdu.mmmi.cbse.core.main.screens;
 // @author Kevin Hansen
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
@@ -43,6 +45,8 @@ public class GameScreen implements Screen {
     private PepegaHunter2020 game;
     private GameData gameData;
     private World world;
+    private Entity player;
+    private int maxLife = -1;
 
     private ShapeRenderer shapeRenderer;
     private OrthographicCamera camera;
@@ -110,17 +114,21 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         
-        // check if player is dead (removed from world)
+        // get player and check if player is dead (removed from world)
         boolean playerIsAlive = false;
         for (Entity entity : world.getEntities()) {
             if (entity.getType() == "player") {
+                player = entity;
+                if (maxLife == -1) {
+                    LifePart life = player.getPart(LifePart.class);
+                    maxLife = life.getLife();
+                }
                 playerIsAlive = true;
                 break;
             } 
         } // if dead, restart screen
         if (!playerIsAlive) {
             game.setScreen(new MenuScreen(game));
-            //show();
         }
         
         // clear screen
@@ -139,9 +147,9 @@ public class GameScreen implements Screen {
         gameData.getKeys().update();
         
         updateServices();
+        updateCamera();
         drawMap();
         drawSprites();
-        updateCamera();
         drawHud();
         drawDebug(); // debug drawing. Toggleable on M key
     }
@@ -192,34 +200,31 @@ public class GameScreen implements Screen {
 
     public void updateCamera() {
         // find player and set camera to its location
-        for (Entity entity : world.getEntities()) {
-            if (entity.getType().toLowerCase() == "player") {
-                PositionPart pp = entity.getPart(PositionPart.class);
-                float newX;
-                float newY;
-                float playerX = pp.getX();
-                float playerY = pp.getY();
+        PositionPart pp = player.getPart(PositionPart.class);
+        float newX;
+        float newY;
+        float playerX = pp.getX();
+        float playerY = pp.getY();
 
-                int mapWidth = tileLoader.getMapWidth();
-                int mapHeight = tileLoader.getMapHeight();
-                int tileWidth = tileLoader.getTileWidth();
-                int tileHeight = tileLoader.getTileHeight();
+        int mapWidth = tileLoader.getMapWidth();
+        int mapHeight = tileLoader.getMapHeight();
+        int tileWidth = tileLoader.getTileWidth();
+        int tileHeight = tileLoader.getTileHeight();
 
-                // prevent camera from showing out of bounds area when near edge of world
-                if (playerX > mapWidth * tileWidth - camera.viewportWidth / 2 || playerX < 0 + camera.viewportWidth / 2) {
-                    newX = camera.position.x;
-                } else {
-                    newX = playerX;
-                }
-                if (playerY > mapHeight * tileHeight - camera.viewportHeight / 2 || playerY < 0 + camera.viewportHeight / 2) {
-                    newY = camera.position.y;
-                } else {
-                    newY = playerY;
-                }
-                
-                camera.position.set(newX, newY, 0);
-            }
+        // prevent camera from showing out of bounds area when near edge of world
+        if (playerX > mapWidth * tileWidth - camera.viewportWidth / 2 || playerX < 0 + camera.viewportWidth / 2) {
+            newX = camera.position.x;
+        } else {
+            newX = playerX;
         }
+        if (playerY > mapHeight * tileHeight - camera.viewportHeight / 2 || playerY < 0 + camera.viewportHeight / 2) {
+            newY = camera.position.y;
+        } else {
+            newY = playerY;
+        }
+                
+        camera.position.set(newX, newY, 0);
+        
         camera.update();
         // make renderers compensate for what camera sees
         game.batch.setProjectionMatrix(camera.combined);
@@ -231,46 +236,63 @@ public class GameScreen implements Screen {
         hudBatch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.update(gameData);
         hud.stage.draw();
+        
+        PositionPart playerPos = player.getPart(PositionPart.class);
+        LifePart life = player.getPart(LifePart.class);
+        float lifeBarX = playerPos.getX() - player.getRadius();
+        float lifeBarY = playerPos.getY() - (player.getRadius() + 5);
+        float lifeBarW = (player.getRadius() * 2) * life.getLife() / maxLife;
+        float lifeBarH = 2;
+        
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(1, 0, 0, 0.7f);
+        shapeRenderer.rect(lifeBarX, lifeBarY, lifeBarW, lifeBarH);
+        shapeRenderer.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
     }
     
     public void drawDebug() {
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         if (gameData.isDrawDebug()) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            float alpha = 125;
+            float alpha = 0.8f;
             // draw radius circle for every entity
             for (Entity entity : world.getEntities()) {
                 PositionPart pp = entity.getPart(PositionPart.class);
                 String entityType = entity.getType();
                 switch (entityType) {
                     case "player":
-                        shapeRenderer.setColor(0, 255, 255, alpha);
+                        shapeRenderer.setColor(0, 1, 1, alpha);
                         break;
                     case "enemy":
-                        shapeRenderer.setColor(255, 0, 0, alpha);
+                        shapeRenderer.setColor(1, 0, 0, alpha);
                         break;
                     case "enlargeplayerpowerup":
-                        shapeRenderer.setColor(0, 255, 0, alpha);
+                        shapeRenderer.setColor(0, 1, 0, alpha);
                         break;
                     case "enlargebulletpowerup":
-                        shapeRenderer.setColor(0, 255, 0, alpha);
+                        shapeRenderer.setColor(0, 1, 0, alpha);
                         break;
                     case "increasefireratepowerup":
-                        shapeRenderer.setColor(0, 255, 0, alpha);
+                        shapeRenderer.setColor(0, 1, 0, alpha);
                         break;
                     default:
-                        shapeRenderer.setColor(255, 255, 255, alpha);
+                        shapeRenderer.setColor(1, 1, 1, alpha);
                 }
                 shapeRenderer.circle(pp.getX(), pp.getY(), entity.getRadius());
                 shapeRenderer.circle(pp.getX(), pp.getY(), 1);
             }
-            shapeRenderer.setColor(200, 200, 200, alpha);
+            shapeRenderer.setColor(0.8f, 0.8f, 0.8f, alpha);
             // draw outline for all walls
             for (Rectangle wall : gameData.getWalls()) {
                 shapeRenderer.rect(wall.x, wall.y, wall.width, wall.height);
             }
             shapeRenderer.end();
         }
-
+        Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
     @Override
