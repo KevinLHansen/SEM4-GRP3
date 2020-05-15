@@ -35,8 +35,10 @@ public class ItemPlugin implements IGamePluginService {
 
     @Override
     public void stop(GameData gameData, World world) {
-        for (Entity e : world.getEntities(PowerUp.class)) {
-            world.removeEntity(e);
+        for (Entity entity : world.getEntities()) {
+            if (entity instanceof PowerUp) {
+                world.removeEntity(entity);
+            }
         }
     }
 
