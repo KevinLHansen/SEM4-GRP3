@@ -1,5 +1,6 @@
 package dk.sdu.mmmi.cbse.common.collision;
 
+import com.badlogic.gdx.math.Vector2;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
@@ -94,12 +95,14 @@ public class CollisionDetector implements IPostEntityProcessingService {
     }
 
     public boolean circleCollision(Entity e, Entity f) {
-        PositionPart ep = e.getPart(PositionPart.class);
-        PositionPart fp = f.getPart(PositionPart.class);
-
-        if ((ep.getX() - fp.getX()) * (ep.getX() - fp.getX())
-                + (ep.getY() - fp.getY()) * (ep.getY() - fp.getY())
-                < (e.getRadius() + f.getRadius()) * (e.getRadius() + f.getRadius())) {
+        
+        PositionPart ePos = e.getPart(PositionPart.class);
+        PositionPart fPos = f.getPart(PositionPart.class);
+        
+        // get vector from e to f
+        Vector2 dist = new Vector2(ePos.getX(), ePos.getY()).sub(new Vector2(fPos.getX(), fPos.getY()));
+        // if distance smaller than radius of both entities
+        if (dist.len() < e.getRadius() + f.getRadius()) {
             return true;
         }
         return false;
