@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dk.sdu.mmmi.cbse</groupId>
-    <artifactId>AsteroidsNetbeansModules-parent</artifactId>
+    <artifactId>PepegaHunter2020-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>AsteroidsNetbeansModules-parent</name>
+    <name>PepegaHunter2020-parent</name>
 
     <repositories>
         <!--

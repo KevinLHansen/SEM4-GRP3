@@ -8,10 +8,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>AsteroidsNetbeansModules-app</artifactId>
+    <artifactId>PepegaHunter2020-app</artifactId>
     <packaging>nbm-application</packaging>
 
-    <name>AsteroidsNetbeansModules-app</name>
+    <name>PepegaHunter2020-app</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
