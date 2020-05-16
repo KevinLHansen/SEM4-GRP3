@@ -3,6 +3,8 @@ package dk.sdu.mmmi.cbse.item.powerups;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.entityparts.ShootingPart;
 
+// @author Group 3
+
 public class IncreaseFireRatePowerUp extends PowerUp {
 
     public IncreaseFireRatePowerUp() {

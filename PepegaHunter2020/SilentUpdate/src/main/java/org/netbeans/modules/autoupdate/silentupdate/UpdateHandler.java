@@ -21,9 +21,8 @@ import org.netbeans.api.autoupdate.UpdateUnit;
 import org.netbeans.api.autoupdate.UpdateUnitProvider;
 import org.netbeans.api.autoupdate.UpdateUnitProviderFactory;
 
-/**
- *
- */
+// @author Group 3
+
 public final class UpdateHandler {
 
     public static final String SILENT_UC_CODE_NAME = "org_netbeans_modules_autoupdate_silentupdate_update_center"; // NOI18N
@@ -68,7 +67,7 @@ public final class UpdateHandler {
         if (containerForInstall != null) {
             try {
                 handleInstall(containerForInstall);
-                LOGGER.info("Install new modules done.");
+                LOGGER.info("Installing new modules done.");
             } catch (UpdateHandlerException ex) {
                 LOGGER.log(Level.INFO, ex.getLocalizedMessage(), ex.getCause());
                 return;
@@ -92,7 +91,7 @@ public final class UpdateHandler {
         if (containerForUninstall != null) {
             try {
                 handleUninstall(containerForUninstall);
-                LOGGER.info("Unstall modules done.");
+                LOGGER.info("Uninstalling modules done.");
             } catch (UpdateHandlerException ex) {
                 LOGGER.log(Level.INFO, ex.getLocalizedMessage(), ex.getCause());
                 return;
@@ -101,7 +100,6 @@ public final class UpdateHandler {
     }
 
     public static boolean isLicenseApproved(String license) {
-        // place your code there
         return true;
     }
 
@@ -336,5 +334,4 @@ public final class UpdateHandler {
     static Restarter doInstall(InstallSupport support, Installer installer) throws OperationException {
         return support.doInstall(installer, null);
     }
-
 }

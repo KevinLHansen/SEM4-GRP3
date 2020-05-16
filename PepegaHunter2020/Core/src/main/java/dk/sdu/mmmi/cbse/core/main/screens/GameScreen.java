@@ -1,6 +1,5 @@
 package dk.sdu.mmmi.cbse.core.main.screens;
 
-// @author Kevin Hansen
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -37,6 +36,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
+
+// @author Group 3
 
 public class GameScreen implements Screen {
     
@@ -175,7 +176,6 @@ public class GameScreen implements Screen {
     }
 
     private void drawSprites() {
-        
         game.batch.begin();
 
         for (Entity entity : world.getEntities()) {
@@ -208,10 +208,10 @@ public class GameScreen implements Screen {
         float playerX = pp.getX();
         float playerY = pp.getY();
 
-        int mapWidth = tileLoader.getMapWidth();
-        int mapHeight = tileLoader.getMapHeight();
-        int tileWidth = tileLoader.getTileWidth();
-        int tileHeight = tileLoader.getTileHeight();
+        int mapWidth = TileLoader.getMapWidth();
+        int mapHeight = TileLoader.getMapHeight();
+        int tileWidth = TileLoader.getTileWidth();
+        int tileHeight = TileLoader.getTileHeight();
 
         // prevent camera from showing out of bounds area when near edge of world
         if (playerX > mapWidth * tileWidth - camera.viewportWidth / 2 || playerX < 0 + camera.viewportWidth / 2) {
@@ -225,10 +225,9 @@ public class GameScreen implements Screen {
             newY = playerY;
         }
                 
-        camera.position.set(newX, newY, 0);
-        
+        camera.position.set(newX, newY, 0); 
         camera.update();
-        // make renderers compensate for what camera sees
+        // make renderers render according to camera view
         game.batch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
     }

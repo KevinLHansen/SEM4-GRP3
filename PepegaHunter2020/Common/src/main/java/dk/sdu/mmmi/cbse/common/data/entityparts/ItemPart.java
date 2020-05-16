@@ -1,6 +1,7 @@
 package dk.sdu.mmmi.cbse.common.data.entityparts;
 
-// @author Kevin Hansen
+// @author Group 3
+
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 
@@ -35,5 +36,4 @@ public class ItemPart implements EntityPart {
     public void setTimer(float timer) {
         this.timer = timer;
     }
-
 }

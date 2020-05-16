@@ -6,11 +6,11 @@ import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
-import dk.sdu.mmmi.cbse.common.data.entityparts.ProjectilePart;
-import dk.sdu.mmmi.cbse.common.data.entityparts.ShootingPart;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
+
+// @author Group 3
 
 @ServiceProviders(value = { @ServiceProvider(service = IPostEntityProcessingService.class), })
 
@@ -54,6 +54,7 @@ public class CollisionDetector implements IPostEntityProcessingService {
                             player = f;
                             world.removeEntity(e);
                         }
+                        // reduce life of player
                         LifePart life = player.getPart(LifePart.class);
                         life.setLife(life.getLife() - 1);
                     }
@@ -72,12 +73,13 @@ public class CollisionDetector implements IPostEntityProcessingService {
                             enemy = f;
                             world.removeEntity(e);
                         }
+                        // reduce life of enemy
                         LifePart life = enemy.getPart(LifePart.class);
                         life.setLife(life.getLife() - 1);
                     }
                 }
                 
-                // remove dead entities
+                // remove dead entities and register corresponding score gain
                 if (e.getPart(LifePart.class) != null) {
                     LifePart life = e.getPart(LifePart.class);
                     if (life.isDead()) {

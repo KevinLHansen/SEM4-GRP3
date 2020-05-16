@@ -1,25 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dk.sdu.mmmi.cbse.maploader;
 
-import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.utils.Array;
 import dk.sdu.mmmi.cbse.common.data.Graph;
 import dk.sdu.mmmi.cbse.common.data.Node;
 
-/**
- *
- * @author rasmusstamm
- */
+// @author Group 3
+
 public class GraphGenerator {
     
     public static Graph generateGraph(TiledMap map){
-        Array<Array<Node>> nodes = new Array<Array<Node>>();
+        Array<Array<Node>> nodes = new Array<>();
         TiledMapTileLayer tiles = (TiledMapTileLayer) map.getLayers().get("objects");
         
         int mapHeight = TileLoader.getMapHeight();
@@ -28,7 +20,7 @@ public class GraphGenerator {
         int tileHeight = TileLoader.getTileHeight();
         
         for (int y = 0; y < mapHeight; y++) {
-            nodes.add(new Array<Node>());
+            nodes.add(new Array<>());
             for (int x = 0; x < mapWidth; x++) {
                 
                 Node node = new Node(x * tileWidth + tileWidth / 2, y * tileHeight + tileHeight / 2);
@@ -85,16 +77,12 @@ public class GraphGenerator {
                         Node downRightNode = nodes.get(y-1).get(x+1);
                         targetNode.createConnection(downRightNode, 1);
                     }
-                    
                 }
                 else {
                     targetNode.setType(Node.Type.WALL);
                 } 
             }
         }
-        
-        System.out.println("\n\n\n\n\n\n\n\n\nGraph Generated!!!!");
-        
         return new Graph(mapWidth, tileHeight, tileWidth, nodes);
     }
 }

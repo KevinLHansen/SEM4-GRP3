@@ -1,20 +1,18 @@
 package dk.sdu.mmmi.cbse.core.main.screens;
 
-// @author Kevin Hansen
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.core.main.PepegaHunter2020;
 import dk.sdu.mmmi.cbse.core.managers.SpriteLoader;
+
+// @author Group 3
 
 public class MenuScreen implements Screen {
     
@@ -23,7 +21,6 @@ public class MenuScreen implements Screen {
     
     private ShapeRenderer shapeRenderer;
     private SpriteBatch batch;
-    private OrthographicCamera camera;
     
     private static final int BANNER_W = 1000;
     private static final int MENU_ITEM_H = 80;
@@ -150,5 +147,4 @@ public class MenuScreen implements Screen {
     public void dispose() {
         
     }
-
 }

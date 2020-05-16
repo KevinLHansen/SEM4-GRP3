@@ -2,6 +2,8 @@ package dk.sdu.mmmi.cbse.common.enemy;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 
+// @author Group 3
+
 public class Enemy extends Entity {
     
     private float aggroRange;
@@ -20,5 +22,4 @@ public class Enemy extends Entity {
     public float getAggroRange() {
         return aggroRange;
     }
-    
 }

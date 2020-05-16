@@ -10,21 +10,19 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.ProjectilePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.ShootingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.TimerPart;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
-
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
+
+// @author Group 3
 
 @ServiceProviders(value = { @ServiceProvider(service = IEntityProcessingService.class), })
 
 public class BulletControlSystem implements IEntityProcessingService {
 
-    private Entity bullet;
-
     @Override
     public void process(GameData gameData, World world) {
         for (Entity entity : world.getEntities()) {
             if (entity.getPart(ShootingPart.class) != null) {
-
                 ShootingPart shootingPart = entity.getPart(ShootingPart.class);
                 TimerPart timerPart = entity.getPart(TimerPart.class);
 
@@ -33,7 +31,7 @@ public class BulletControlSystem implements IEntityProcessingService {
                     if (timerPart.getTimer() > shootingPart.getFireRate()) { // if [fireRate] ms has passed since last bullet fired
                         timerPart.resetTimer();
                         PositionPart positionPart = entity.getPart(PositionPart.class);
-                        bullet = createBullet(positionPart.getX(), positionPart.getY(), shootingPart.getDirection(), entity.getRadius(), shootingPart.getBulletRadius(), shootingPart.getID());
+                        Entity bullet = createBullet(positionPart.getX(), positionPart.getY(), shootingPart.getDirection(), entity.getRadius(), shootingPart.getBulletRadius(), shootingPart.getID());
                         world.addEntity(bullet);
                     }
                     shootingPart.setIsShooting(false);
@@ -56,11 +54,10 @@ public class BulletControlSystem implements IEntityProcessingService {
 
     private Entity createBullet(float x, float y, String direction, float entityRadius, float bulletRadius, String uuid) {
         Entity bullet = new Bullet();
-
         PositionPart pp;
         MovingPart mp = new MovingPart(4);
 
-        // Assign direction of bullet and add entity radius to start position of bullet to avoid immediate collision
+        // assign direction of bullet and add entity radius to start position of bullet
         switch (direction) {
             case "up":
                 mp.setUp(true);
@@ -68,7 +65,7 @@ public class BulletControlSystem implements IEntityProcessingService {
                 mp.setDown(false);
                 mp.setRight(false);
 
-                pp = new PositionPart(x, y + entityRadius, 0);
+                pp = new PositionPart(x, y + entityRadius);
                 break;
             case "left":
                 mp.setUp(false);
@@ -76,7 +73,7 @@ public class BulletControlSystem implements IEntityProcessingService {
                 mp.setDown(false);
                 mp.setRight(false);
 
-                pp = new PositionPart(x - entityRadius, y, 0);
+                pp = new PositionPart(x - entityRadius, y);
                 break;
             case "down":
                 mp.setUp(false);
@@ -84,7 +81,7 @@ public class BulletControlSystem implements IEntityProcessingService {
                 mp.setDown(true);
                 mp.setRight(false);
 
-                pp = new PositionPart(x, y - entityRadius, 0);
+                pp = new PositionPart(x, y - entityRadius);
                 break;
             case "right":
                 mp.setUp(false);
@@ -92,10 +89,10 @@ public class BulletControlSystem implements IEntityProcessingService {
                 mp.setDown(false);
                 mp.setRight(true);
 
-                pp = new PositionPart(x + entityRadius, y, 0);
+                pp = new PositionPart(x + entityRadius, y);
                 break;
             default:
-                pp = new PositionPart(x, y, 0);
+                pp = new PositionPart(x, y);
                 break;
         }
 
@@ -104,7 +101,7 @@ public class BulletControlSystem implements IEntityProcessingService {
         bullet.add(new TimerPart(3, true));
         bullet.add(new LifePart(1));
         // Projectile Part only used for better collision detection     
-        bullet.add(new ProjectilePart(uuid.toString()));
+        bullet.add(new ProjectilePart(uuid));
         bullet.setRadius(bulletRadius);
 
         return bullet;

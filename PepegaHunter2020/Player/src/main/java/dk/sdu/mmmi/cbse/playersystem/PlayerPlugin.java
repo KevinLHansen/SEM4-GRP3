@@ -14,6 +14,8 @@ import java.util.UUID;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
+// @author Group 3
+
 @ServiceProviders(value = { @ServiceProvider(service = IGamePluginService.class), })
 
 public class PlayerPlugin implements IGamePluginService {
@@ -25,15 +27,14 @@ public class PlayerPlugin implements IGamePluginService {
 
     @Override
     public void start(GameData gameData, World world) {
-
-        // Add entities to the world
+        // add player entity to world
         player = createPlayer(gameData);
         world.addEntity(player);
     }
 
     @Override
     public void stop(GameData gameData, World world) {
-        // Remove entities
+        // remove player from world
         world.removeEntity(player);
     }
 
@@ -41,7 +42,6 @@ public class PlayerPlugin implements IGamePluginService {
         
         float x = gameData.getDisplayWidth() / 2;
         float y = 370; //gameData.getDisplayHeight() / 2;
-        float radians = 3.1415f / 2;
 
         player = new Player();
         
@@ -49,23 +49,19 @@ public class PlayerPlugin implements IGamePluginService {
         
         player.add(new MovingPart(3));
         
-        player.add(new PositionPart(x, y, radians));
+        player.add(new PositionPart(x, y));
         
         UUID uuid = UUID.randomUUID();
         ShootingPart shootingPart = new ShootingPart(uuid.toString());
         shootingPart.setBulletRadius(5);
         shootingPart.setFireRate(200);
         player.add(shootingPart);
-        
         player.add(new LifePart(3));
-        
         player.add(new TimerPart());
-        
         player.add(new ItemPart());
         
         player.setOrigin(new Entity(player));
         
         return player;
     }
-
 }

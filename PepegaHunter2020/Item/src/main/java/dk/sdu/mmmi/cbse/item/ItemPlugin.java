@@ -14,6 +14,8 @@ import java.util.Random;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
+// @author Group 3
+
 @ServiceProviders(value = { @ServiceProvider(service = IGamePluginService.class), })
 
 public class ItemPlugin implements IGamePluginService {
@@ -85,11 +87,9 @@ public class ItemPlugin implements IGamePluginService {
                 newItem = new Entity();
                 break;
         }
-        
         newItem.add(new PositionPart(x, y));
         newItem.setRadius(radius);
         
         return newItem;
     }
-
 }

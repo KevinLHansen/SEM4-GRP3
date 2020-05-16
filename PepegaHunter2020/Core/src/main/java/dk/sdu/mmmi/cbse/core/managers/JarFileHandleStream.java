@@ -8,6 +8,8 @@ import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+// @author Group 3
+
 public class JarFileHandleStream extends FileHandleStream {
 
     private JarFile jarFile = null;

@@ -1,16 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dk.sdu.mmmi.cbse.common.data;
 
 import com.badlogic.gdx.math.Vector2;
 
-/**
- *
- * @author rasmusstamm
- */
+// @author Group 3
+
 public class Heuristic {
     private int mapWidth;
     private int mapHeight;
@@ -39,7 +32,6 @@ public class Heuristic {
         int endY = endIndex / mapWidth;
         
         Vector2 distVect = new Vector2(endX - startX, endY - startY);
-
         
         float distance = (float) Math.sqrt(Math.pow(distVect.x, 2) + Math.pow(distVect.y, 2));
         return distance;

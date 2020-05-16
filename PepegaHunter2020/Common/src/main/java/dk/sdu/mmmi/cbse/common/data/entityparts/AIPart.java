@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dk.sdu.mmmi.cbse.common.data.entityparts;
 
 import com.badlogic.gdx.math.Vector2;
@@ -11,10 +6,8 @@ import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.Node;
 import dk.sdu.mmmi.cbse.common.data.Path;
 
-/**
- *
- * @author rasmusstamm
- */
+// @author Group 3
+
 public class AIPart implements EntityPart {
 
     private Path path;
@@ -68,12 +61,10 @@ public class AIPart implements EntityPart {
 
             path.remove(0);
         }
-
         x += vector.x;
         y += vector.y;
         
         entityPos.setX(x);
         entityPos.setY(y);
     }
-
 }

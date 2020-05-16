@@ -1,6 +1,6 @@
 package dk.sdu.mmmi.cbse.core.managers;
 
-// @author Kevin Hansen
+// @author Group 3
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -42,5 +42,4 @@ public class SpriteLoader {
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         return texture;
     }
-    
 }

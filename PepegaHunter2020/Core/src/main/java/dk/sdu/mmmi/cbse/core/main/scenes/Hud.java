@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 
 public class Hud {
+    
     public Stage stage;
     private Viewport viewport;
     
@@ -56,7 +57,6 @@ public class Hud {
         score += scoreDiff;
         score += delta;
         gameData.setScore(score);
-        scoreLabel.setText("SCORE: " + (int) score);
-        
+        scoreLabel.setText("SCORE: " + (int) score);     
     }
 }

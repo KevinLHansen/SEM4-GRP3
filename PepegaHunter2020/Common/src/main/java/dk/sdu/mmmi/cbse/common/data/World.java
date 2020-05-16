@@ -1,12 +1,13 @@
 package dk.sdu.mmmi.cbse.common.data;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+// @author Group 3
 
 public class World {
 
@@ -18,13 +19,10 @@ public class World {
         return this.b2dWorld;
     }
     
-    
     public String addEntity(Entity entity) {
         entityMap.put(entity.getID(), entity);
         return entity.getID();
     }
-    
-    
 
     public void removeEntity(String entityID) {
         entityMap.remove(entityID);
@@ -58,5 +56,4 @@ public class World {
     public Entity getEntity(String ID) {
         return entityMap.get(ID);
     }
-
 }

@@ -7,6 +7,8 @@ import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
+// @author Group 3
+
 @ServiceProviders(value = { @ServiceProvider(service = IGamePluginService.class), })
 
 public class BulletPlugin implements IGamePluginService {
@@ -18,6 +20,7 @@ public class BulletPlugin implements IGamePluginService {
 
     @Override
     public void stop(GameData gameData, World world) {
+        // remove all existing bullets from world
         for (Entity e : world.getEntities()) {
             if (e.getClass() == Bullet.class) {
                 world.removeEntity(e);

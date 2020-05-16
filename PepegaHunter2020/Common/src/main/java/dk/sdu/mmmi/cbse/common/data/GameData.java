@@ -1,10 +1,10 @@
 package dk.sdu.mmmi.cbse.common.data;
 
 import com.badlogic.gdx.math.Rectangle;
-import dk.sdu.mmmi.cbse.common.events.Event;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+
+// @author Group 3
 
 public class GameData {
 
@@ -12,7 +12,6 @@ public class GameData {
     private int displayWidth;
     private int displayHeight;
     private final GameKeys keys = new GameKeys();
-    private List<Event> events = new CopyOnWriteArrayList<>();
     private Graph graph;
     private List<Path> pathingDebugList = new ArrayList<>();
     private List<Rectangle> wallList = new ArrayList<>();
@@ -33,18 +32,6 @@ public class GameData {
     
     public List<Rectangle> getWalls() {
         return wallList;
-    }
-    
-    public void addEvent(Event e) {
-        events.add(e);
-    }
-
-    public void removeEvent(Event e) {
-        events.remove(e);
-    }
-
-    public List<Event> getEvents() {
-        return events;
     }
 
     public GameKeys getKeys() {
@@ -97,18 +84,5 @@ public class GameData {
 
     public void setPathingDebugList(List<Path> pathingDebugList) {
         this.pathingDebugList = pathingDebugList;
-    }
-
-    
-    
-    public <E extends Event> List<Event> getEvents(Class<E> type, String sourceID) {
-        List<Event> r = new ArrayList();
-        for (Event event : events) {
-            if (event.getClass().equals(type) && event.getSource().getID().equals(sourceID)) {
-                r.add(event);
-            }
-        }
-
-        return r;
     }
 }

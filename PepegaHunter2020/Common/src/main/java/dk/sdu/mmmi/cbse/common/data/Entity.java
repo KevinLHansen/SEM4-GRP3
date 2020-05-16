@@ -11,20 +11,20 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import org.openide.util.Exceptions;
 
+// @author Group 3
+
 public class Entity implements Serializable {
 
     private final UUID ID = UUID.randomUUID();
-
     private float radius;
     private byte[] textureBytes;
     private Sprite sprite;
     private Map<Class, EntityPart> parts;
     private String type;
     private Entity origin; // stores a copy of the original version of the object. For use when reverting item effects
-    private float scoreVal;
+    private float scoreValue;
 
     public Entity() {
-
         parts = new ConcurrentHashMap<>();
         type = "entity";
         try {
@@ -39,10 +39,8 @@ public class Entity implements Serializable {
     
     // copy-constructor for making clones of instances (for use with origin)
     public Entity(Entity clonee) {
-        
         parts = new ConcurrentHashMap<>();
-        type = "entity";
-        
+        this.type = clonee.type;
         this.radius = clonee.radius;
         
         // make a clone of clonee's shootingpart
@@ -51,6 +49,7 @@ public class Entity implements Serializable {
         shootingPartClone.setBulletRadius(shootingPart.getBulletRadius());
         shootingPartClone.setFireRate(shootingPart.getFireRate());
         this.add(shootingPartClone);
+        
         // potentially more relevant attributes
     }
 
@@ -119,10 +118,10 @@ public class Entity implements Serializable {
     }
 
     public float getScoreVal() {
-        return scoreVal;
+        return scoreValue;
     }
 
     public void setScoreVal(float scoreVal) {
-        this.scoreVal = scoreVal;
+        this.scoreValue = scoreVal;
     }
 }

@@ -13,8 +13,9 @@ import dk.sdu.mmmi.cbse.item.powerups.IncreaseFireRatePowerUp;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
-@ServiceProviders(value = {
-    @ServiceProvider(service = IEntityProcessingService.class),})
+// @author Group 3
+
+@ServiceProviders(value = { @ServiceProvider(service = IEntityProcessingService.class), })
 
 public class ItemSystem implements IEntityProcessingService {
 

@@ -14,6 +14,8 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
+// @author Group 3
+
 @ServiceProviders(value = { @ServiceProvider(service = IEntityProcessingService.class), })
 
 public class PlayerControlSystem implements IEntityProcessingService {
@@ -62,7 +64,6 @@ public class PlayerControlSystem implements IEntityProcessingService {
                 // reset keypress to avoid registering multiple keypresses
                 gameData.getKeys().setKey(GameKeys.M, false);
             }
-
             movingPart.process(gameData, player);
             positionPart.process(gameData, player);
             shootingPart.process(gameData, player);

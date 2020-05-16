@@ -16,8 +16,10 @@ import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
-@ServiceProviders(value = {
-    @ServiceProvider(service = IGamePluginService.class),})
+// @author Group 3
+
+@ServiceProviders(value = { @ServiceProvider(service = IGamePluginService.class), })
+
 public class EnemyPlugin implements IGamePluginService {
 
     private Entity enemy;

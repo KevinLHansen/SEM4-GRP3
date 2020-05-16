@@ -3,6 +3,8 @@ package dk.sdu.mmmi.cbse.common.data.entityparts;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 
+// @author Group 3
+
 public class ShootingPart implements EntityPart {
 
     private boolean isShooting;
@@ -62,5 +64,4 @@ public class ShootingPart implements EntityPart {
     public void setFireRate(int fireRate) {
         this.fireRate = fireRate;
     }
-    
 }

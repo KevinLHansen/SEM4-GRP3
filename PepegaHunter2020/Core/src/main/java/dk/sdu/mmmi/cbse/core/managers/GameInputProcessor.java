@@ -5,6 +5,8 @@ import com.badlogic.gdx.InputAdapter;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.GameKeys;
 
+// @author Group 3
+
 public class GameInputProcessor extends InputAdapter {
 
     private final GameData gameData;
@@ -45,7 +47,6 @@ public class GameInputProcessor extends InputAdapter {
         if (k == Keys.M) {
             gameData.getKeys().setKey(GameKeys.M, true);
         }
-        
         return true;
     }
 
@@ -79,8 +80,7 @@ public class GameInputProcessor extends InputAdapter {
         }
         if (k == Keys.M) {
             gameData.getKeys().setKey(GameKeys.M, false);
-        }
-        
+        } 
         return true;
     }
 }

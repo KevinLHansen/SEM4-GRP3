@@ -13,8 +13,10 @@ import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
-@ServiceProviders(value = {
-    @ServiceProvider(service = IEntityProcessingService.class),})
+// @author Group 3
+
+@ServiceProviders(value = { @ServiceProvider(service = IEntityProcessingService.class), })
+
 public class EnemyControlSystem implements IEntityProcessingService {
 
     private Circle aggroCircle;

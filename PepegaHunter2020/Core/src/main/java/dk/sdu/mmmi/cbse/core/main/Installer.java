@@ -4,6 +4,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import org.openide.modules.ModuleInstall;
 
+// @author Group 3
+
 public class Installer extends ModuleInstall {
 
     private static PepegaHunter2020 game;

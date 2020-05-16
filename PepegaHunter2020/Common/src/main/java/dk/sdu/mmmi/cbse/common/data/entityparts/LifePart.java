@@ -1,8 +1,9 @@
-
 package dk.sdu.mmmi.cbse.common.data.entityparts;
 
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+
+// @author Group 3
 
 public class LifePart implements EntityPart {
 
@@ -43,6 +44,5 @@ public class LifePart implements EntityPart {
         if (life <= 0) {
             dead = true;
         }
-
     }
 }

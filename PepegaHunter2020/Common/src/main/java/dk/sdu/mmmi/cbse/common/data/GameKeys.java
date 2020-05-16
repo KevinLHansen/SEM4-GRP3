@@ -1,5 +1,7 @@
 package dk.sdu.mmmi.cbse.common.data;
 
+// @author Group 3
+
 public class GameKeys {
 
     private static boolean[] keys;
@@ -17,7 +19,6 @@ public class GameKeys {
     public static final int SPACE = 8;
     public static final int M = 9;
     
-
     public GameKeys() {
         keys = new boolean[NUM_KEYS];
         pkeys = new boolean[NUM_KEYS];
@@ -41,5 +42,4 @@ public class GameKeys {
     public boolean isPressed(int k) {
         return keys[k] && !pkeys[k];
     }
-
 }

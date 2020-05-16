@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dk.sdu.mmmi.cbse.common.data.entityparts;
 
 import com.badlogic.gdx.utils.Array;
@@ -13,10 +8,8 @@ import dk.sdu.mmmi.cbse.common.data.Node;
 import dk.sdu.mmmi.cbse.common.data.Path;
 import java.util.HashMap;
 
-/**
- *
- * @author rasmusstamm
- */
+// @author Group 3
+
 public class PathFinderPart implements EntityPart {
 
     private PQHeap pqHeap;
@@ -69,7 +62,6 @@ public class PathFinderPart implements EntityPart {
     public void setGameData(GameData gameData) {
         this.gameData = gameData;
     }
-    
 
     private class PQHeap {
 
