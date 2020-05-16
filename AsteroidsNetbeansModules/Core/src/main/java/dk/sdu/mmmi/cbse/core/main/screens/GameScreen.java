@@ -314,8 +314,8 @@ public class GameScreen implements Screen {
                 for (Node node : path.getNodes()) {
                     shapeRenderer.circle(node.getX(), node.getY(), 5);
                 }
-                pathList.remove(path);
             }
+            pathList.clear();
             shapeRenderer.end();
         }
         Gdx.gl.glDisable(GL20.GL_BLEND);
