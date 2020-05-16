@@ -18,9 +18,6 @@ public class Node {
     private float x;
     private float y;
     
-    //Remove this shit
-    private int color = 0;
-    
     public Node(float x, float y) {
         this.x = x;
         this.y = y;
@@ -33,14 +30,6 @@ public class Node {
 
     public Array<Connection<Node>> getConnections() {
         return connections;
-    }
-
-    public int getColor() {
-        return color;
-    }
-
-    public void setColor(int color) {
-        this.color = color;
     }
 
     public float getX() {
