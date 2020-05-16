@@ -1,23 +1,15 @@
 package dk.sdu.mmmi.cbse.enemysystem;
 
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
-import dk.sdu.mmmi.cbse.common.data.Graph;
-import dk.sdu.mmmi.cbse.common.data.Node;
-import dk.sdu.mmmi.cbse.common.data.Path;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.AIPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
-import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.enemy.Enemy;
 import dk.sdu.mmmi.cbse.common.services.IEntityProcessingService;
-import java.util.List;
-import java.util.Random;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 

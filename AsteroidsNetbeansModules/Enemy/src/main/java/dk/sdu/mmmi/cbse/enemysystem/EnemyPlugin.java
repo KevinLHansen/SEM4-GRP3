@@ -13,7 +13,6 @@ import dk.sdu.mmmi.cbse.common.data.entityparts.PathFinderPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.enemy.Enemy;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
-import java.util.Random;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
@@ -69,9 +68,11 @@ public class EnemyPlugin implements IGamePluginService {
             }
         }
         
-        Entity enemy = new Enemy(2000);
+        Entity enemy = new Enemy(500);
         enemy.setRadius(radius);
-        enemy.add(new PathFinderPart());
+        PathFinderPart pathPart = new PathFinderPart();
+        pathPart.setGameData(gameData);
+        enemy.add(pathPart);
         enemy.add(new AIPart());
         enemy.add(new MovingPart());
         enemy.add(new PositionPart(x, y));

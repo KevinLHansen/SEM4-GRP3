@@ -21,6 +21,7 @@ public class PathFinderPart implements EntityPart {
 
     private PQHeap pqHeap;
     private HashMap cheapMap;
+    private GameData gameData;
 
     @Override
     public void process(GameData gameData, Entity entity) {
@@ -36,12 +37,14 @@ public class PathFinderPart implements EntityPart {
         Path path = new Path(initial, goal);
 
         while (!path.get(path.getNodeCount() - 1).equals(goal)) {
+            // add path to gameData for debug rendering
+            if (gameData != null) {
+                gameData.getPathingDebugList().add(path);
+            }
             expand(path);
             path = pqHeap.extractMin();
         }
-
         return path;
-
     }
 
     private void expand(Path path) {
@@ -62,6 +65,11 @@ public class PathFinderPart implements EntityPart {
             }
         }
     }
+
+    public void setGameData(GameData gameData) {
+        this.gameData = gameData;
+    }
+    
 
     private class PQHeap {
 
@@ -132,3 +140,4 @@ public class PathFinderPart implements EntityPart {
         }
     }
 }
+

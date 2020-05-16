@@ -3,12 +3,9 @@ package dk.sdu.mmmi.cbse.core.main.screens;
 // @author Kevin Hansen
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -19,6 +16,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
+import dk.sdu.mmmi.cbse.common.data.Graph;
+import dk.sdu.mmmi.cbse.common.data.Node;
+import dk.sdu.mmmi.cbse.common.data.Path;
 import dk.sdu.mmmi.cbse.common.data.World;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
@@ -27,15 +27,13 @@ import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
 import dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
 import dk.sdu.mmmi.cbse.core.main.PepegaHunter2020;
 import dk.sdu.mmmi.cbse.core.main.scenes.Hud;
-import dk.sdu.mmmi.cbse.core.managers.GameInputProcessor;
 import dk.sdu.mmmi.cbse.core.managers.SpriteLoader;
+import dk.sdu.mmmi.cbse.maploader.GraphGenerator;
 import dk.sdu.mmmi.cbse.maploader.TileLoader;
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
@@ -47,6 +45,7 @@ public class GameScreen implements Screen {
     private World world;
     private Entity player;
     private int maxLife = -1;
+    private Graph tileGraph;
 
     private ShapeRenderer shapeRenderer;
     private OrthographicCamera camera;
@@ -89,6 +88,9 @@ public class GameScreen implements Screen {
         // Tilemap
         tileLoader = new TileLoader();
         tileLoader.load("tilemap.tmx");
+        
+        tileGraph = GraphGenerator.generateGraph(tileLoader.getTiledMap());
+        gameData.setGraph(tileGraph);
         
         // assign walls to GameData
         gameData.setWalls(tileLoader.createWalls());
@@ -289,6 +291,30 @@ public class GameScreen implements Screen {
             // draw outline for all walls
             for (Rectangle wall : gameData.getWalls()) {
                 shapeRenderer.rect(wall.x, wall.y, wall.width, wall.height);
+            }
+            // draw tiles with pathfinding information
+            shapeRenderer.set(ShapeRenderer.ShapeType.Line);
+            shapeRenderer.setColor(1, 1, 1, 0.5f);
+            for (int i = 0; i < tileGraph.getNodeCount(); i++) {
+                for (int j = 0; j < tileGraph.getNodes().get(i).size; j++) {
+                    if (tileGraph.getNodes().get(i).get(j).getType() == 1) {
+                        shapeRenderer.circle(tileGraph.getNodes().get(i).get(j).getX(), tileGraph.getNodes().get(i).get(j).getY(), TileLoader.getTileHeight() / 2);
+                    }
+                }
+            }
+            // draw paths being calculated
+            shapeRenderer.setAutoShapeType(true);
+            shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(1, 0, 0, 0.5f);
+            List<Path> pathList = gameData.getPathingDebugList();
+            // add paths from one list to other, to avoid ConcurrentModifcationException
+            List<Path> drawList = new ArrayList<>();
+            drawList.addAll(pathList);
+            for (Path path : drawList) {
+                for (Node node : path.getNodes()) {
+                    shapeRenderer.circle(node.getX(), node.getY(), 5);
+                }
+                pathList.remove(path);
             }
             shapeRenderer.end();
         }
