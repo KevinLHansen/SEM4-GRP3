@@ -32,27 +32,16 @@ public class Heuristic {
         int startIndex = startNode.getIndex();
         int endIndex = endNode.getIndex();
         
-//        int startX = startIndex * tileWidth;
-//        int startY = startIndex * tileHeight;
         int startX = startIndex % mapWidth;
         int startY = startIndex / mapWidth;
-        
-//        
-//        int endX = endIndex * tileWidth;
-//        int endY = endIndex * tileHeight;
 
         int endX = endIndex % mapWidth;
         int endY = endIndex / mapWidth;
         
         Vector2 distVect = new Vector2(endX - startX, endY - startY);
+
         
-        
-        
-        //float distance = Math.abs(startX - endX) + Math.abs(startY - endY);
-//        System.out.println("start: " + startX + ", " + startY);
-//        System.out.println("end: " + endX + ", " + endY);
         float distance = (float) Math.sqrt(Math.pow(distVect.x, 2) + Math.pow(distVect.y, 2));
-        //System.out.println("distance: " + distance);
         return distance;
     }
 }

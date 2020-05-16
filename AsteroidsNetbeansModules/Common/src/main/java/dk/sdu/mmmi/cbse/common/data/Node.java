@@ -17,7 +17,6 @@ public class Node {
     private int type; 
     private float x;
     private float y;
-    private float cheapest = 0;
     
     //Remove this shit
     private int color = 0;
@@ -34,14 +33,6 @@ public class Node {
 
     public Array<Connection<Node>> getConnections() {
         return connections;
-    }
-
-    public float getCheapest() {
-        return cheapest;
-    }
-
-    public void setCheapest(float cheapest) {
-        this.cheapest = cheapest;
     }
 
     public int getColor() {

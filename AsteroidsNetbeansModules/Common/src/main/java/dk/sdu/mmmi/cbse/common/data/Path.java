@@ -48,7 +48,7 @@ public class Path {
         Node node = (Node) con.getToNode();
         node.setColor(1);
         totalCost = totalCost + con.getCost();
-        node.setCheapest(getF());
+        //node.setCheapest(getF());
         nodes.add((Node) con.getToNode());
     }
 

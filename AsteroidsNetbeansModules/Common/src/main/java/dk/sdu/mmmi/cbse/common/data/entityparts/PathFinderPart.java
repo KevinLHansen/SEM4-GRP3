@@ -35,14 +35,10 @@ public class PathFinderPart implements EntityPart {
 
         Path path = new Path(initial, goal);
 
-        //pqHeap.insert(path);
         while (!path.get(path.getNodeCount() - 1).equals(goal)) {
-            System.out.println(path.getF());
             expand(path);
             path = pqHeap.extractMin();
         }
-
-        System.out.println("poggers");
 
         return path;
 
@@ -51,10 +47,6 @@ public class PathFinderPart implements EntityPart {
     private void expand(Path path) {
 
         Node node = path.get(path.getNodeCount() - 1);
-
-        System.out.println("Expanding: " + node.getIndex());
-        System.out.println("Cost: " + path.getTotalCost());
-        //System.out.println("Node count: " + path.getNodeCount());
 
         for (Connection con : node.getConnections()) {
             Path newPath = new Path(path);
@@ -76,7 +68,6 @@ public class PathFinderPart implements EntityPart {
         private Array<Path> minHeap = new Array<Path>();
 
         public Path extractMin() {
-            System.out.println("heapsize " + minHeap.size);
             Path min = minHeap.get(0);
 
             minHeap.set(0, minHeap.get(minHeap.size - 1));

@@ -6,8 +6,10 @@ import com.badlogic.gdx.math.Rectangle;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
 import dk.sdu.mmmi.cbse.common.data.World;
+import dk.sdu.mmmi.cbse.common.data.entityparts.AIPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.LifePart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.MovingPart;
+import dk.sdu.mmmi.cbse.common.data.entityparts.PathFinderPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.enemy.Enemy;
 import dk.sdu.mmmi.cbse.common.services.IGamePluginService;
@@ -74,6 +76,8 @@ public class EnemyPlugin implements IGamePluginService {
         
         Entity enemy = new Enemy(300);
         enemy.setRadius(radius);
+        enemy.add(new PathFinderPart());
+        enemy.add(new AIPart());
         enemy.add(new MovingPart());
         enemy.add(new PositionPart(x, y));
         enemy.add(new LifePart(1));

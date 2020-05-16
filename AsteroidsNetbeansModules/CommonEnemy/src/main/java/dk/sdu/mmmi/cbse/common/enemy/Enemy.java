@@ -8,19 +8,12 @@ import dk.sdu.mmmi.cbse.common.data.Path;
 
 public class Enemy extends Entity {
     
-    private AStar as;
     private int aggroRange;
     
     public Enemy(int aggroRange) {
         this.aggroRange = aggroRange;
-        as = new AStar();
         assignTexture("/img/enemy.png");
         setType("enemy");
-    }
-    
-    public Path getPath(Node current, Node goal) {
-        Path path = as.doTheThing(current, goal);
-        return path;
     }
     
     public void setAggroRange(int aggroRange) {
