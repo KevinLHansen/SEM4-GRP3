@@ -8,6 +8,7 @@ package dk.sdu.mmmi.cbse.maploader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -20,6 +21,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import dk.sdu.mmmi.cbse.common.data.Heuristic;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +37,26 @@ public class TileLoader {
     private OrthogonalTiledMapRenderer mapRenderer;
     private Box2DDebugRenderer b2dr = new Box2DDebugRenderer();
     
+    private static int mapHeight;
+    private static int mapWidth;
+    private static int tileHeight;
+    private static int tileWidth;
+    private static int mapPixelHeight;
+    private static int mapPixelWidth;
+    
     public void load(String mapPath) {
         tiledMap = mapLoader.load(mapPath);
+        MapProperties properties = tiledMap.getProperties();
+        mapHeight = properties.get("height", Integer.class);
+        mapWidth = properties.get("width", Integer.class);
+        tileHeight = properties.get("tileheight", Integer.class);
+        tileWidth = properties.get("tilewidth", Integer.class);
+        mapPixelHeight = mapHeight * tileHeight;
+        mapPixelWidth = mapWidth * tileWidth;
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        
+        // This is shit!!!!!
+        Heuristic.getInstance().setTileSize(mapWidth, mapHeight);
     }
     
     public List<Rectangle> createWalls(){
@@ -64,6 +83,10 @@ public class TileLoader {
         return this.b2dWorld;
     }
     
+    public TiledMap getTiledMap() {
+        return tiledMap;
+    }
+    
     public OrthogonalTiledMapRenderer getRenderer() {
         return this.mapRenderer;
     }
@@ -71,22 +94,22 @@ public class TileLoader {
     public Box2DDebugRenderer getB2dRenderer() {
         return this.b2dr;
     }
-    
-    
-    
-    public int getMapHeight(){
-        return tiledMap.getProperties().get("height", Integer.class);
+
+    public static int getMapHeight() {
+        return mapHeight;
+    }
+
+    public static int getMapWidth() {
+        return mapWidth;
+    }
+
+    public static int getTileHeight() {
+        return tileHeight;
+    }
+
+    public static int getTileWidth() {
+        return tileWidth;
     }
     
-    public int getMapWidth(){
-        return tiledMap.getProperties().get("width", Integer.class);
-    }
-    
-    public int getTileWidth(){
-        return tiledMap.getProperties().get("tilewidth", Integer.class);
-    }
-    
-    public int getTileHeight(){
-        return tiledMap.getProperties().get("tileheight", Integer.class);
-    }
+   
 }

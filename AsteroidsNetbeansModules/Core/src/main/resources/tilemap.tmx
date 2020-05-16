@@ -11,7 +11,7 @@
    eJzt2MsJgEAQBcENa/OPzKuIH6RPulXwEujTMGMAfzJ34z39Gv0a/QAAAABgXXP4ERb6Nfo1+jX6AQDAGo63/9U4p1/z1Ee/e/o1+jX6Nfo1+jX6AcD3bd49EYE=
   </data>
  </layer>
- <objectgroup id="2" name="walls">
+ <objectgroup id="2" name="walls" visible="0">
   <object id="11" x="208" y="352" width="64" height="80"/>
   <object id="14" x="80" y="48" width="48" height="64"/>
   <object id="19" x="992" y="704">

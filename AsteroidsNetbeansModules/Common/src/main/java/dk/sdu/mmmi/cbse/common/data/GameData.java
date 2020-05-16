@@ -13,10 +13,18 @@ public class GameData {
     private int displayHeight;
     private final GameKeys keys = new GameKeys();
     private List<Event> events = new CopyOnWriteArrayList<>();
+    private Graph graph;
     private List<Rectangle> wallList = new ArrayList<>();
     private boolean drawDebug = false;
     private float score = 0;
 
+    public void setGraph(Graph graph) {
+    	this.graph = graph;
+    }
+    
+    public Graph getGraph() {
+        return graph;
+    } 
     
     public void setWalls(List<Rectangle> walls) {
         this.wallList = walls;
