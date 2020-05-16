@@ -56,10 +56,18 @@ public class MovingPart implements EntityPart {
         
         
         // move entity by altering coordinates depending on input
-        if (up)    { y +=  speed; }
-        if (left)  { x += -speed; }
-        if (down)  { y += -speed; }
-        if (right) { x +=  speed; }
+        float movSpeed;
+        // to prevent entity moving double speed when moving diagonally
+        if (up && left || up && right || down && left || down && right) {
+            movSpeed = speed * 0.8f;
+        } else {
+            movSpeed = speed;
+        }
+        
+        if (up)    { y +=  movSpeed; }
+        if (left)  { x += -movSpeed; }
+        if (down)  { y += -movSpeed; }
+        if (right) { x +=  movSpeed; }
 
         float tempY = y;
         
