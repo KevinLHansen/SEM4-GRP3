@@ -215,6 +215,7 @@ public class Game implements ApplicationListener {
         }
         camera.update();
         batch.setProjectionMatrix(camera.combined);
+        shapeRenderer.setProjectionMatrix(camera.combined);
     }
 
     public void drawDebug() {
@@ -264,7 +265,7 @@ public class Game implements ApplicationListener {
                                 shapeRenderer.setColor(com.badlogic.gdx.graphics.Color.RED);
                                 break;
                         }
-                        shapeRenderer.circle(j * tileLoader.getTileWidth() + (tileLoader.getTileWidth()/2), i * tileLoader.getTileHeight() + (tileLoader.getTileHeight()/2), tileLoader.getTileWidth()/2);
+                        shapeRenderer.circle(graph.getNodes().get(i).get(j).getX(), graph.getNodes().get(i).get(j).getY(), TileLoader.getTileHeight() / 2);
                 }
                 }
                 

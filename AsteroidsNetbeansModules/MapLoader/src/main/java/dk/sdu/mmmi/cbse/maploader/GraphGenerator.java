@@ -31,7 +31,7 @@ public class GraphGenerator {
             nodes.add(new Array<Node>());
             for (int x = 0; x < mapWidth; x++) {
                 
-                Node node = new Node(x * tileWidth, y * tileHeight);
+                Node node = new Node(x * tileWidth + tileWidth / 2, y * tileHeight + tileHeight / 2);
                 node.setType(Node.Type.FLOOR);
                 nodes.get(y).add(node);
             }
@@ -69,22 +69,22 @@ public class GraphGenerator {
                         targetNode.createConnection(rightNode, 1);
                     }
                     
-//                    if(y != mapHeight - 1 && x != 0 && upLeft == null) {
-//                        Node upLeftNode = nodes.get(y+1).get(x-1);
-//                        targetNode.createConnection(upLeftNode, 1);
-//                    }
-//                    if(y != mapHeight - 1 && x != mapWidth - 1 && upRight == null) {
-//                        Node upRightNode = nodes.get(y+1).get(x+1);
-//                        targetNode.createConnection(upRightNode, 1);
-//                    }
-//                    if(y != 0 && x != 0 && downLeft == null) {
-//                        Node downLeftNode = nodes.get(y-1).get(x-1);
-//                        targetNode.createConnection(downLeftNode, 1);
-//                    }
-//                    if(y != 0 && x != mapWidth -1 && downRight == null) {
-//                        Node downRightNode = nodes.get(y-1).get(x+1);
-//                        targetNode.createConnection(downRightNode, 1);
-//                    }
+                    if(y != mapHeight - 1 && x != 0 && upLeft == null) {
+                        Node upLeftNode = nodes.get(y+1).get(x-1);
+                        targetNode.createConnection(upLeftNode, 1);
+                    }
+                    if(y != mapHeight - 1 && x != mapWidth - 1 && upRight == null) {
+                        Node upRightNode = nodes.get(y+1).get(x+1);
+                        targetNode.createConnection(upRightNode, 1);
+                    }
+                    if(y != 0 && x != 0 && downLeft == null) {
+                        Node downLeftNode = nodes.get(y-1).get(x-1);
+                        targetNode.createConnection(downLeftNode, 1);
+                    }
+                    if(y != 0 && x != mapWidth -1 && downRight == null) {
+                        Node downRightNode = nodes.get(y-1).get(x+1);
+                        targetNode.createConnection(downRightNode, 1);
+                    }
                     
                 }
                 else {

@@ -25,10 +25,6 @@ import org.openide.util.lookup.ServiceProviders;
     @ServiceProvider(service = IEntityProcessingService.class),})
 public class EnemyControlSystem implements IEntityProcessingService {
 
-    private float speed = 1;
-    private Path path;
-    private Node currentNode;
-    private Node goalNode;
     private Circle aggroCircle;
 
     @Override

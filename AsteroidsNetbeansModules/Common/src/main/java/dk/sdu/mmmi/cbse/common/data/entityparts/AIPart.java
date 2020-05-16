@@ -21,7 +21,7 @@ public class AIPart implements EntityPart {
     private Node currentNode;
     private Node goalNode;
     private Entity target;
-    private float speed = 1;
+    private float speed = 3;
 
     public void setTarget(Entity target) {
         this.target = target;
