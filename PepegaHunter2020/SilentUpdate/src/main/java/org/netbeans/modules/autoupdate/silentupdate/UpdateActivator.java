@@ -9,11 +9,11 @@ import org.openide.modules.ModuleInstall;
 
 public class UpdateActivator extends ModuleInstall {
 
-    private final ScheduledExecutorService exector = Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
     @Override
     public void restored() {
-        exector.scheduleAtFixedRate(doCheck, 5000, 5000, TimeUnit.MILLISECONDS);
+        executor.scheduleAtFixedRate(doCheck, 5000, 5000, TimeUnit.MILLISECONDS);
     }
 
     private static final Runnable doCheck = new Runnable() {

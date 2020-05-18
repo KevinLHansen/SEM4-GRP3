@@ -16,6 +16,8 @@ public class GameData {
     private List<Path> pathingDebugList = new ArrayList<>();
     private List<Rectangle> wallList = new ArrayList<>();
     private boolean drawDebug = false;
+    private boolean spawnEnemies = false;
+    private boolean newGame = true;
     private float score = 0;
 
     public void setGraph(Graph graph) {
@@ -84,5 +86,21 @@ public class GameData {
 
     public void setPathingDebugList(List<Path> pathingDebugList) {
         this.pathingDebugList = pathingDebugList;
+    }
+
+    public boolean isSpawnEnemies() {
+        return spawnEnemies;
+    }
+
+    public void setSpawnEnemies(boolean spawnEnemies) {
+        this.spawnEnemies = spawnEnemies;
+    }
+
+    public boolean isNewGame() {
+        return newGame;
+    }
+
+    public void setNewGame(boolean newGame) {
+        this.newGame = newGame;
     }
 }

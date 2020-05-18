@@ -23,7 +23,6 @@ public class EnemyControlSystem implements IEntityProcessingService {
 
     @Override
     public void process(GameData gameData, World world) {
-
         Entity player = null;
         // get player from world
         for (Entity entity : world.getEntities()) {

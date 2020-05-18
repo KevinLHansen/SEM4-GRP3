@@ -72,6 +72,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        gameData.setNewGame(true);
+        
         shapeRenderer = new ShapeRenderer();
         hudBatch = new SpriteBatch();
         
@@ -120,7 +122,7 @@ public class GameScreen implements Screen {
         // get player and check if player is dead (removed from world)
         boolean playerIsAlive = false;
         for (Entity entity : world.getEntities()) {
-            if (entity.getType() == "player") {
+            if ("player".equalsIgnoreCase(entity.getType())) {
                 player = entity;
                 if (maxLife == -1) {
                     LifePart life = player.getPart(LifePart.class);
@@ -372,7 +374,7 @@ public class GameScreen implements Screen {
     public void hide() {
         for (Entity entity : world.getEntities()) {
             world.removeEntity(entity);
-            gameData.setScore(0);
+            gameData.setScore(0);        
         }
     }
 }

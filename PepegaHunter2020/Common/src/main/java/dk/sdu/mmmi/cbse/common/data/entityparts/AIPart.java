@@ -16,6 +16,10 @@ public class AIPart implements EntityPart {
     private Entity target;
     private float speed = 3;
 
+    public AIPart(float speed) {
+        this.speed = speed;
+    }
+    
     public void setTarget(Entity target) {
         this.target = target;
     }

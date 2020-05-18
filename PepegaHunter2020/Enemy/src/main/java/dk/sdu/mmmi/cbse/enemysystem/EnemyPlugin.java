@@ -22,28 +22,25 @@ import org.openide.util.lookup.ServiceProviders;
 
 public class EnemyPlugin implements IGamePluginService {
 
-    private Entity enemy;
-    Circle safezone;
-    float safezoneRadius = 250;
+    static float safezoneRadius = 250;
+    EnemySpawnSystem spawner;
 
     @Override
     public void start(GameData gameData, World world) {
-        // create safezone in middle of world to prevent enemies from spawning close to player
-        safezone = new Circle(gameData.getDisplayWidth() / 2, gameData.getDisplayHeight() / 2, safezoneRadius);
-        
-        // add enemies to the world
-        int enemyCount = 10;
-        for (int i = 0; i < enemyCount; i++) {
-            enemy = createEnemy(gameData);
-            world.addEntity(enemy);
-        }
+        // enable enemies spawning
+        gameData.setSpawnEnemies(true);
+        gameData.setNewGame(true);
     }
 
-    private Entity createEnemy(GameData gameData) {
-
+    public static Entity createEnemy(GameData gameData, World world, float speed, int life, Entity player) {
+        
         float x = 69; // default x
         float y = 420; // default y
         float radius = 12;
+        Circle safezone;
+ 
+        PositionPart playerPos = player.getPart(PositionPart.class);
+        safezone = new Circle(playerPos.getX(), playerPos.getY(), safezoneRadius);
         
         boolean isClear = false;
         
@@ -75,17 +72,19 @@ public class EnemyPlugin implements IGamePluginService {
         PathFinderPart pathPart = new PathFinderPart();
         pathPart.setGameData(gameData);
         enemy.add(pathPart);
-        enemy.add(new AIPart());
+        enemy.add(new AIPart(speed));
         enemy.add(new MovingPart());
         enemy.add(new PositionPart(x, y));
-        enemy.add(new LifePart(5));
+        enemy.add(new LifePart(life));
 
         return enemy;
     }
 
     @Override
     public void stop(GameData gameData, World world) {
-        // Remove entities
+        // deactive spawning enemies and remove all enemy entities from world
+        gameData.setSpawnEnemies(false);
+        
         for (Entity entity : world.getEntities(Enemy.class)) {
             world.removeEntity(entity);
         }
