@@ -166,12 +166,12 @@ public class GameScreen implements Screen {
     }
 
     private void updateServices() {
-        // Update
+        // process all implementations of IEntityProcessingService
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices()) {
             entityProcessorService.process(gameData, world);
         }
 
-        // Post Update
+        // process all implementations of IPostEntityProcessingService
         for (IPostEntityProcessingService postEntityProcessorService : getPostEntityProcessingServices()) {
             postEntityProcessorService.process(gameData, world);
         }
