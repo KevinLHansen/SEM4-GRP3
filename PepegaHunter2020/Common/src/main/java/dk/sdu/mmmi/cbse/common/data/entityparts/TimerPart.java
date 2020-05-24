@@ -38,6 +38,10 @@ public class TimerPart implements EntityPart {
         return timer;
     }
 
+    public void setTimer(float timer) {
+        this.timer = timer;
+    }
+
     public void resetTimer() {
         timer = 0;
     }
