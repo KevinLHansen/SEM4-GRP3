@@ -30,7 +30,7 @@ public class PathFinderPart implements EntityPart {
         Path path = new Path(initial, goal);
 
         while (!path.get(path.getNodeCount() - 1).equals(goal)) {
-            // add path to gameData for debug rendering
+            // Add path to gameData for debug rendering
             if (gameData != null) {
                 gameData.getPathingDebugList().add(path);
             }
@@ -44,6 +44,7 @@ public class PathFinderPart implements EntityPart {
 
         Node node = path.get(path.getNodeCount() - 1);
 
+        // Insert a new path into the heap for each connection of the last node
         for (Connection con : node.getConnections()) {
             Path newPath = new Path(path);
             Node newNode = ((Node) con.getToNode());

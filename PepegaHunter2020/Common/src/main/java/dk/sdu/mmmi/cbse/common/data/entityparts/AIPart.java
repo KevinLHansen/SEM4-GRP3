@@ -7,7 +7,6 @@ import dk.sdu.mmmi.cbse.common.data.Node;
 import dk.sdu.mmmi.cbse.common.data.Path;
 
 // @author Group 3
-
 public class AIPart implements EntityPart {
 
     private Path path;
@@ -19,11 +18,11 @@ public class AIPart implements EntityPart {
     public AIPart(float speed) {
         this.speed = speed;
     }
-    
+
     public void setTarget(Entity target) {
         this.target = target;
     }
-    
+
     public void setSpeed(float speed) {
         this.speed = speed;
     }
@@ -37,6 +36,7 @@ public class AIPart implements EntityPart {
         Vector2 targetVector = new Vector2(targetPos.getX(), targetPos.getY());
         PathFinderPart pfp = entity.getPart(PathFinderPart.class);
 
+        // Generate path if no path is assigned
         if (path == null) {
             currentNode = gameData.getGraph().getNodeByPosition((int) entityVector.x, (int) entityVector.y);
             goalNode = gameData.getGraph().getNodeByPosition((int) targetVector.x, (int) targetVector.y);
@@ -49,25 +49,29 @@ public class AIPart implements EntityPart {
 
         Node target = path.get(0);
 
-        // calculate vector from entity to target
+        // Calculate vector from entity to target
         float vectX = target.getX() - x;
         float vectY = target.getY() - y;
         Vector2 vector = new Vector2(vectX, vectY);
 
-        // length of vector = how far entity moves per frame
+        // Length of vector equals how far entity moves per frame
         if (!(speed >= vector.len())) {
             vector.setLength(speed);
-        } else {
-            currentNode = gameData.getGraph().getNodeByPosition((int) entityVector.x, (int) entityVector.y);
-            goalNode = gameData.getGraph().getNodeByPosition((int) targetVector.x, (int) targetVector.y);
+        }
 
-            path = pfp.findPath(currentNode, goalNode);
+        // Generates new path to targets new location
+        else {
+            if (goalNode != gameData.getGraph().getNodeByPosition((int) targetVector.x, (int) targetVector.y)) {
+                currentNode = gameData.getGraph().getNodeByPosition((int) entityVector.x, (int) entityVector.y);
+                goalNode = gameData.getGraph().getNodeByPosition((int) targetVector.x, (int) targetVector.y);
 
+                path = pfp.findPath(currentNode, goalNode);
+            }
             path.remove(0);
         }
         x += vector.x;
         y += vector.y;
-        
+
         entityPos.setX(x);
         entityPos.setY(y);
     }

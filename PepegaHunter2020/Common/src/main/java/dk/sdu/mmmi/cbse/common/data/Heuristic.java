@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 
 // @author Group 3
 
+
+// Singleton class used to calculate heristic estimate between two points
 public class Heuristic {
     private int mapWidth;
     private int mapHeight;

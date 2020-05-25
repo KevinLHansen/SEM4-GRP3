@@ -10,15 +10,20 @@ import dk.sdu.mmmi.cbse.common.data.Node;
 
 public class GraphGenerator {
     
+    // Generates graph from specific layer in TiledMap
     public static Graph generateGraph(TiledMap map){
         Array<Array<Node>> nodes = new Array<>();
-        TiledMapTileLayer tiles = (TiledMapTileLayer) map.getLayers().get("objects");
+        
+        // Specific layer graph is generated from
+        String layerName = "objects";
+        TiledMapTileLayer tiles = (TiledMapTileLayer) map.getLayers().get(layerName);
         
         int mapHeight = TileLoader.getMapHeight();
         int mapWidth = TileLoader.getMapWidth();
         int tileWidth = TileLoader.getTileWidth();
         int tileHeight = TileLoader.getTileHeight();
         
+        // Create all nodes in graph
         for (int y = 0; y < mapHeight; y++) {
             nodes.add(new Array<>());
             for (int x = 0; x < mapWidth; x++) {
@@ -29,6 +34,7 @@ public class GraphGenerator {
             }
         }
         
+        // Add connections to the nodes
         for (int y = 0; y < mapHeight; y++) {
             for (int x = 0; x < mapWidth; x++) {
                 TiledMapTileLayer.Cell target = tiles.getCell(x, y);
@@ -63,19 +69,19 @@ public class GraphGenerator {
                     
                     if(y != mapHeight - 1 && x != 0 && upLeft == null) {
                         Node upLeftNode = nodes.get(y+1).get(x-1);
-                        targetNode.createConnection(upLeftNode, 1);
+                        targetNode.createConnection(upLeftNode, 1.5f);
                     }
                     if(y != mapHeight - 1 && x != mapWidth - 1 && upRight == null) {
                         Node upRightNode = nodes.get(y+1).get(x+1);
-                        targetNode.createConnection(upRightNode, 1);
+                        targetNode.createConnection(upRightNode, 1.5f);
                     }
                     if(y != 0 && x != 0 && downLeft == null) {
                         Node downLeftNode = nodes.get(y-1).get(x-1);
-                        targetNode.createConnection(downLeftNode, 1);
+                        targetNode.createConnection(downLeftNode, 1.5f);
                     }
                     if(y != 0 && x != mapWidth -1 && downRight == null) {
                         Node downRightNode = nodes.get(y-1).get(x+1);
-                        targetNode.createConnection(downRightNode, 1);
+                        targetNode.createConnection(downRightNode, 1.5f);
                     }
                 }
                 else {
@@ -83,6 +89,6 @@ public class GraphGenerator {
                 } 
             }
         }
-        return new Graph(mapWidth, tileHeight, tileWidth, nodes);
+        return new Graph(tileHeight, tileWidth, nodes);
     }
 }

@@ -57,7 +57,6 @@ public class GameScreen implements Screen {
     private Texture background;
     private TileLoader tileLoader;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private Box2DDebugRenderer b2dr;
     
     private List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
     private final Lookup lookup = Lookup.getDefault();
@@ -98,8 +97,8 @@ public class GameScreen implements Screen {
         // assign walls to GameData
         gameData.setWalls(tileLoader.createWalls());
         
+        // Get mapRenderer from tileLoader
         mapRenderer = tileLoader.getRenderer();
-        b2dr = tileLoader.getB2dRenderer();
         
         // Camera
         float aspectRatio = h / w;
@@ -162,7 +161,6 @@ public class GameScreen implements Screen {
     private void drawMap() {
         mapRenderer.setView((OrthographicCamera) camera);
         mapRenderer.render();
-        b2dr.render(tileLoader.getWorld(), camera.combined);
     }
 
     private void updateServices() {

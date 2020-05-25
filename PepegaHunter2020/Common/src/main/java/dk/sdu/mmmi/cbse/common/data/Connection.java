@@ -2,6 +2,8 @@ package dk.sdu.mmmi.cbse.common.data;
 
 // @author Group 3
 
+// A connection between two nodes including the cost of moving from one the other
+
 public class Connection<Node> {
     private Node fromNode;
     private Node toNode;
