@@ -24,7 +24,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
     @Override
     public void process(GameData gameData, World world) {
         Entity player = null;
-        // get player from world
+        // Get player from world
         for (Entity entity : world.getEntities()) {
             if (entity.getType() == "player") {
                 player = entity;
@@ -43,6 +43,7 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 Vector2 enemyVector = new Vector2(enemyPos.getX(), enemyPos.getY());
                 Vector2 playerVector = new Vector2(playerPos.getX(), playerPos.getY());
 
+                // Check if the player is within aggro range
                 aggroCircle = new Circle(enemyVector, ((Enemy) enemy).getAggroRange());
                 if (aggroCircle.contains(playerVector)) {
                     aiPart.process(gameData, enemy);

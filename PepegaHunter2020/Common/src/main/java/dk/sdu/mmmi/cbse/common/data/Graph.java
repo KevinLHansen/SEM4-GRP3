@@ -6,13 +6,11 @@ import com.badlogic.gdx.utils.Array;
 
 public class Graph {
 
-    private int mapWidth = 0;
     private int tileHeight = 0;
     private int tileWidth = 0;
     private Array<Array<Node>> nodes = new Array<Array<Node>>();
     
-    public Graph(int mapWidth, int tileHeight, int tileWidth, Array<Array<Node>> nodes) {
-        this.mapWidth = mapWidth;
+    public Graph(int tileHeight, int tileWidth, Array<Array<Node>> nodes) {
         this.tileHeight = tileHeight;
         this.tileWidth = tileWidth;
         this.nodes = nodes;

@@ -10,15 +10,20 @@ import dk.sdu.mmmi.cbse.common.data.Node;
 
 public class GraphGenerator {
     
+    // Generates graph from specific layer in TiledMap
     public static Graph generateGraph(TiledMap map){
         Array<Array<Node>> nodes = new Array<>();
-        TiledMapTileLayer tiles = (TiledMapTileLayer) map.getLayers().get("objects");
+        
+        // Specific layer graph is generated from
+        String layerName = "objects";
+        TiledMapTileLayer tiles = (TiledMapTileLayer) map.getLayers().get(layerName);
         
         int mapHeight = TileLoader.getMapHeight();
         int mapWidth = TileLoader.getMapWidth();
         int tileWidth = TileLoader.getTileWidth();
         int tileHeight = TileLoader.getTileHeight();
         
+        // Create all nodes in graph
         for (int y = 0; y < mapHeight; y++) {
             nodes.add(new Array<>());
             for (int x = 0; x < mapWidth; x++) {
@@ -29,6 +34,7 @@ public class GraphGenerator {
             }
         }
         
+        // Add connections to the nodes
         for (int y = 0; y < mapHeight; y++) {
             for (int x = 0; x < mapWidth; x++) {
                 TiledMapTileLayer.Cell target = tiles.getCell(x, y);
@@ -83,6 +89,6 @@ public class GraphGenerator {
                 } 
             }
         }
-        return new Graph(mapWidth, tileHeight, tileWidth, nodes);
+        return new Graph(tileHeight, tileWidth, nodes);
     }
 }

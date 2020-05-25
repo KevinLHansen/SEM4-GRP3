@@ -37,10 +37,11 @@ public class AIPart implements EntityPart {
         Vector2 targetVector = new Vector2(targetPos.getX(), targetPos.getY());
         PathFinderPart pfp = entity.getPart(PathFinderPart.class);
 
+        // Generate path if no path is assigned
         if (path == null) {
             currentNode = gameData.getGraph().getNodeByPosition((int) entityVector.x, (int) entityVector.y);
             goalNode = gameData.getGraph().getNodeByPosition((int) targetVector.x, (int) targetVector.y);
-
+            
             path = pfp.findPath(currentNode, goalNode);
         }
 
@@ -49,15 +50,17 @@ public class AIPart implements EntityPart {
 
         Node target = path.get(0);
 
-        // calculate vector from entity to target
+        // Calculate vector from entity to target
         float vectX = target.getX() - x;
         float vectY = target.getY() - y;
         Vector2 vector = new Vector2(vectX, vectY);
 
-        // length of vector = how far entity moves per frame
+        // Length of vector equals how far entity moves per frame
         if (!(speed >= vector.len())) {
             vector.setLength(speed);
-        } else {
+        }
+        // Generates new path to targets new location
+        else {
             currentNode = gameData.getGraph().getNodeByPosition((int) entityVector.x, (int) entityVector.y);
             goalNode = gameData.getGraph().getNodeByPosition((int) targetVector.x, (int) targetVector.y);
 

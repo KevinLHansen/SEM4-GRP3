@@ -9,9 +9,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
 import dk.sdu.mmmi.cbse.common.data.Heuristic;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +16,10 @@ import java.util.List;
 // @author Group 3
 
 public class TileLoader {
-    private final World b2dWorld = new World(new Vector2(0, 0), true);
     
     private TmxMapLoader mapLoader = new TmxMapLoader(new InternalFileHandleResolver());
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private Box2DDebugRenderer b2dr = new Box2DDebugRenderer();
     
     private static int mapHeight;
     private static int mapWidth;
@@ -44,11 +39,13 @@ public class TileLoader {
         mapPixelWidth = mapWidth * tileWidth;
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         
-        // This is shit!!!!!
+        // Setting tilesize for the heristic class, used to calculate heristic value between two given points.
         Heuristic.getInstance().setTileSize(mapWidth, mapHeight);
     }
     
+    // Returns array with rectangles representing walls extracted from specfied TileMap-layer
     public List<Rectangle> createWalls(){
+        
         String layerName = "walls";
         
         MapLayer layer = tiledMap.getLayers().get(layerName);
@@ -63,20 +60,12 @@ public class TileLoader {
         return walls;
     }
     
-    public World getWorld(){
-        return this.b2dWorld;
-    }
-    
-    public TiledMap getTiledMap() {
-        return tiledMap;
-    }
-    
     public OrthogonalTiledMapRenderer getRenderer() {
         return this.mapRenderer;
     }
     
-    public Box2DDebugRenderer getB2dRenderer() {
-        return this.b2dr;
+    public TiledMap getTiledMap() {
+        return tiledMap;
     }
 
     public static int getMapHeight() {
