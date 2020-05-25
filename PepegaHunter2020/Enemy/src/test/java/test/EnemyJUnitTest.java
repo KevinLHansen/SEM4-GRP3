@@ -1,3 +1,5 @@
+package test;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -131,15 +133,6 @@ public class EnemyJUnitTest {
         plugin.start(gameData, world);
         ess.process(gameData, world);
 
-//        Enemy enemy = new Enemy(250);
-//        PathFinderPart pfp = new PathFinderPart();
-//        pfp.setGameData(gameData);
-//        enemy.add(pfp);
-//        AIPart aip = new AIPart(1);
-//        enemy.add(aip);
-//        enemy.add(new PositionPart(10,5));
-//        world.addEntity(enemy);
-
         int counter = 0;
         for (Entity entity : world.getEntities()) {
             if (entity.getType() == "enemy") {
@@ -158,28 +151,6 @@ public class EnemyJUnitTest {
     public void testEnemyMovement() {
 
         System.out.println("\n--- Enemy AI test ---");
-
-//            Entity target = new Entity();
-//            target.add(new PositionPart(worldWidth/2, worldHeight/2));
-//            world.addEntity(target);
-//
-//            Enemy enemy = new Enemy(250);
-//            PathFinderPart pfp = new PathFinderPart();
-//            pfp.setGameData(gameData);
-//            enemy.add(pfp);
-//            AIPart aip = new AIPart(1);
-//            aip.setTarget(target);
-//            enemy.add(aip);
-//            enemy.add(new PositionPart(0, 0));
-//            world.addEntity(enemy);
-//
-//            System.out.println("New enemy added to world!");
-//
-//            PositionPart pp = enemy.getPart(PositionPart.class);
-//            float preX = pp.getX();
-//            float preY = pp.getY();
-//
-//            enemy.getPart(AIPart.class).process(gameData, target);
 
         EnemyPlugin plugin = new EnemyPlugin();
         EnemySpawnSystem ess = new EnemySpawnSystem();
