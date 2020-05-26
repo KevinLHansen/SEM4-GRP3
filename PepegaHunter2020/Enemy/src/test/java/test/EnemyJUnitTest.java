@@ -1,11 +1,5 @@
 package test;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import com.badlogic.gdx.utils.Array;
 import dk.sdu.mmmi.cbse.common.data.Entity;
 import dk.sdu.mmmi.cbse.common.data.GameData;
@@ -13,26 +7,18 @@ import dk.sdu.mmmi.cbse.common.data.Graph;
 import dk.sdu.mmmi.cbse.common.data.Heuristic;
 import dk.sdu.mmmi.cbse.common.data.Node;
 import dk.sdu.mmmi.cbse.common.data.World;
-import dk.sdu.mmmi.cbse.common.data.entityparts.AIPart;
-import dk.sdu.mmmi.cbse.common.data.entityparts.PathFinderPart;
 import dk.sdu.mmmi.cbse.common.data.entityparts.PositionPart;
 import dk.sdu.mmmi.cbse.common.enemy.Enemy;
 import dk.sdu.mmmi.cbse.enemysystem.EnemyControlSystem;
 import dk.sdu.mmmi.cbse.enemysystem.EnemyPlugin;
 import dk.sdu.mmmi.cbse.enemysystem.EnemySpawnSystem;
-import dk.sdu.mmmi.cbse.playersystem.Player;
 import dk.sdu.mmmi.cbse.playersystem.PlayerPlugin;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- *
- * @author rasmusstamm
- */
+// @author Group 3
+
 public class EnemyJUnitTest {
 
     GameData gameData;
